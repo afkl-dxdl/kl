@@ -528,8 +528,9 @@
       margin: 0 auto;
     }
 
-    @media (min-width: 960px) and (max-width: 1319px) {
+    @media (min-width: 960px) and (max-width: 1279px) {
       .search-hero {
+        padding-top: 160px;  /* 2-row nav (136px) + 24px gap */
         padding-left: var(--space-16);
         padding-right: var(--space-16);
       }
@@ -731,7 +732,7 @@
        Above 720px — single row (all fields + button in one line).
        No intermediate two-row layout. Same pattern as Air France.            */
 
-    @media (max-width: 719px) {
+    @media (max-width: 959px) {
       .search__fields {
         grid-template-columns: 1fr;
       }
@@ -783,7 +784,8 @@
 
     @media (max-width: 959px) {
       .image-block__card {
-        border-radius: 0;
+        border-radius: var(--radius-32);
+        overflow: visible;
         display: flex;
         flex-direction: column;
       }
@@ -799,6 +801,13 @@
     @media (max-width: 959px) {
       .image-block__img {
         border-radius: var(--radius-32);
+        flex-shrink: 0;
+        aspect-ratio: 4 / 3;
+      }
+    }
+
+    @media (min-width: 720px) and (max-width: 959px) {
+      .image-block__img {
         aspect-ratio: 16 / 9;
       }
     }
@@ -820,10 +829,15 @@
     @media (max-width: 959px) {
       .image-block__content {
         position: relative;
-        max-width: 100%;
-        border-radius: 0 0 var(--radius-32) var(--radius-32);
-        padding: var(--space-24) var(--space-16);
-        padding-bottom: calc(var(--space-24) + 48px + var(--space-16));
+        left: auto;
+        right: auto;
+        bottom: auto;
+        max-width: none;
+        border-radius: var(--radius-24);
+        margin-top: -96px;
+        margin-left: var(--space-16);
+        margin-right: var(--space-16);
+        z-index: 1;
       }
     }
 
