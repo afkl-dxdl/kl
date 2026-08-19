@@ -1,0 +1,312 @@
+/* ============================================
+   KLM — generated from brand.md
+   ============================================ */
+
+/* --- @font-face ----------------------------- */
+
+@font-face {
+  font-family: 'KLM Universal Sans Display';
+  src: url('./assets/fonts/KLM UniversalSans-Display-Light.woff2') format('woff2');
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'KLM Universal Sans Display';
+  src: url('./assets/fonts/KLM UniversalSans-Display-Regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'KLM Universal Sans Display';
+  src: url('./assets/fonts/KLM UniversalSans-Display-Medium.woff2') format('woff2');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'KLM Universal Sans Display';
+  src: url('./assets/fonts/KLM UniversalSans-Display-Bold.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'KLM Universal Sans Display';
+  src: url('./assets/fonts/KLM UniversalSans-Display-ExtraBold.woff2') format('woff2');
+  font-weight: 800; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'KLM Universal Sans Text';
+  src: url('./assets/fonts/KLM UniversalSans-Text-Light.woff2') format('woff2');
+  font-weight: 300; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'KLM Universal Sans Text';
+  src: url('./assets/fonts/KLM UniversalSans-Text-Regular.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'KLM Universal Sans Text';
+  src: url('./assets/fonts/KLM UniversalSans-Text-Medium.woff2') format('woff2');
+  font-weight: 500; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'KLM Universal Sans Text';
+  src: url('./assets/fonts/KLM UniversalSans-Text-Bold.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'KLM Universal Sans Text';
+  src: url('./assets/fonts/KLM UniversalSans-Text-ExtraBold.woff2') format('woff2');
+  font-weight: 800; font-style: normal; font-display: swap;
+}
+
+/* --- Core colour tokens --------------------- */
+
+:root {
+  --neutral-0: #FFFFFF;
+  --neutral-1000: #000000;
+
+  --blue-50: #EAF4FB;
+  --blue-100: #D0E7F6;
+  --blue-200: #A5D5EF;
+  --blue-300: #5EBFE7;
+  --blue-400: #009FD9;
+  --blue-500: #0077CD;
+  --blue-600: #005496;
+  --blue-700: #003D6D;
+  --blue-800: #002746;
+  --blue-900: #001527;
+
+  --warm-grey-50: #F5F1ED;
+  --warm-grey-100: #EBE2DB;
+  --warm-grey-200: #D4CCC6;
+  --warm-grey-300: #BAB3AD;
+  --warm-grey-400: #9A948F;
+  --warm-grey-500: #797471;
+  --warm-grey-600: #565250;
+  --warm-grey-700: #3E3B3A;
+  --warm-grey-800: #272524;
+  --warm-grey-900: #151413;
+
+  --green-50: #DAFADA;
+  --green-100: #B7F1BA;
+  --green-200: #99DEA6;
+  --green-300: #73C58B;
+  --green-400: #40A469;
+  --green-500: #287D52;
+  --green-600: #1C5D47;
+  --green-700: #0F433A;
+  --green-800: #0A2B26;
+  --green-900: #051714;
+
+  --red-50: #FFEEF6;
+  --red-100: #FFD9E3;
+  --red-200: #FEBEC6;
+  --red-300: #FD989E;
+  --red-400: #FC6063;
+  --red-500: #D42A1E;
+  --red-600: #A02118;
+  --red-700: #751811;
+  --red-800: #4C100B;
+  --red-900: #2A0906;
+
+  --yellow-50: #FFF3BA;
+  --yellow-100: #FEE35D;
+  --yellow-200: #E8CE4B;
+  --yellow-300: #CCB43D;
+  --yellow-400: #A9942F;
+  --yellow-500: #857424;
+  --yellow-600: #5E5319;
+  --yellow-700: #443C13;
+  --yellow-800: #2B260C;
+  --yellow-900: #171407;
+
+  --orange-50: #FEEFD9;
+  --orange-100: #FCE0B3;
+  --orange-200: #FAC571;
+  --orange-300: #F6A21A;
+  --orange-400: #D1830A;
+  --orange-500: #A96500;
+  --orange-600: #784800;
+  --orange-700: #573400;
+  --orange-800: #382100;
+  --orange-900: #1D1200;
+
+  --blue-purple-50: #ECF3FD;
+  --blue-purple-100: #D7E4FC;
+  --blue-purple-200: #BDCEFC;
+  --blue-purple-300: #9BB1FD;
+  --blue-purple-400: #728EFD;
+  --blue-purple-500: #4465FE;
+  --blue-purple-600: #3048B6;
+  --blue-purple-700: #233484;
+  --blue-purple-800: #162154;
+  --blue-purple-900: #0C122E;
+
+  --purple-50: #F5EFFF;
+  --purple-100: #EADDFE;
+  --purple-200: #DBC4FB;
+  --purple-300: #C9A4F8;
+  --purple-400: #B07BF4;
+  --purple-500: #954CEE;
+  --purple-600: #6B35AC;
+  --purple-700: #4E267E;
+  --purple-800: #331753;
+  --purple-900: #1C0C2E;
+
+  /* --- Semantic tokens ---------------------- */
+
+  --surface-default: var(--neutral-0);
+  --surface-selected: var(--blue-800);
+  --surface-contrast: var(--blue-800);
+  --surface-highlight: var(--blue-50);
+  --surface-highlight-emphasis: var(--blue-100);
+  --surface-icon-container: var(--blue-200);
+  --surface-system-informative: var(--blue-200);
+  --surface-system-success: var(--green-100);
+  --surface-system-warning: var(--orange-100);
+  --surface-system-critical: var(--red-100);
+
+  --bg-default: var(--warm-grey-50);
+  --bg-alternative: var(--neutral-0);
+  --bg-scrim: var(--blue-900);
+
+  --colour-brand: var(--blue-400);
+  --colour-active: var(--blue-500);
+  --colour-active-contrast: var(--neutral-0);
+  --colour-icon-default: var(--blue-800);
+  --colour-icon-contrast: var(--blue-100);
+
+  --text-default: var(--blue-800);
+  --text-alternative: var(--warm-grey-700);
+  --text-contrast: var(--neutral-0);
+  --text-success: var(--green-500);
+  --text-critical: var(--red-500);
+  --highlighted-title: var(--blue-200);
+
+  --divider-light: var(--warm-grey-100);
+  --divider-dark: var(--warm-grey-200);
+  --border-subtle: var(--warm-grey-100);
+  --border-default: var(--warm-grey-200);
+  --border-active: var(--blue-500);
+
+  /* --- Typography --------------------------- */
+
+  --font-display: 'KLM Universal Sans Display', 'Helvetica Neue', Arial, sans-serif;
+  --font-text: 'KLM Universal Sans Text', 'Helvetica Neue', Arial, sans-serif;
+
+  /* Display sizes — mobile defaults */
+  --display-xl-size: 104px; --display-xl-lh: 106px;
+  --display-l-size: 72px;   --display-l-lh: 74px;
+  --display-m-size: 56px;   --display-m-lh: 64px;
+  --display-s-size: 48px;   --display-s-lh: 52px;
+  --display-xs-size: 40px;  --display-xs-lh: 44px;
+
+  /* Headline sizes — mobile defaults */
+  --headline-xl-size: 36px; --headline-xl-lh: 40px;
+  --headline-l-size: 28px;  --headline-l-lh: 34px;
+  --headline-m-size: 24px;  --headline-m-lh: 32px;
+  --headline-s-size: 20px;  --headline-s-lh: 28px;
+  --headline-xs-size: 18px; --headline-xs-lh: 26px;
+
+  /* Body — same desktop & mobile */
+  --body-xl-size: 20px; --body-xl-lh: 28px;
+  --body-l-size: 18px;  --body-l-lh: 26px;
+  --body-m-size: 16px;  --body-m-lh: 24px;
+  --body-s-size: 14px;  --body-s-lh: 22px;
+
+  /* Label */
+  --label-m-size: 12px; --label-m-lh: 18px;
+  --label-s-size: 10px; --label-s-lh: 16px;
+
+  /* --- Fixed spacing ------------------------ */
+
+  --space-4: 4px;
+  --space-8: 8px;
+  --space-12: 12px;
+  --space-16: 16px;
+  --space-24: 24px;
+  --space-32: 32px;
+  --space-40: 40px;
+  --space-48: 48px;
+  --space-56: 56px;
+  --space-64: 64px;
+  --space-80: 80px;
+
+  /* Dynamic spacing — mobile */
+  --space-sm: 16px;
+  --space-md: 24px;
+  --space-lg: 48px;
+  --space-xl-section: 80px;
+
+  /* --- Corner radius ------------------------ */
+
+  --radius-8: 8px;
+  --radius-12: 12px;
+  --radius-16: 16px;
+  --radius-24: 24px;
+  --radius-32: 32px;
+  --radius-pill: 999px;
+  --radius-xl: 56px; /* expressive — mobile; bottom-right only */
+}
+
+/* --- Desktop overrides (≥720px) ------------ */
+
+@media (min-width: 720px) {
+  :root {
+    --display-xl-size: 200px; --display-xl-lh: 178px;
+    --display-l-size: 144px;  --display-l-lh: 132px;
+    --display-m-size: 96px;   --display-m-lh: 98px;
+    --display-s-size: 72px;   --display-s-lh: 74px;
+    --display-xs-size: 56px;  --display-xs-lh: 64px;
+
+    --headline-xl-size: 48px; --headline-xl-lh: 52px;
+    --headline-l-size: 36px;  --headline-l-lh: 40px;
+    --headline-m-size: 24px;  --headline-m-lh: 32px;
+    --headline-s-size: 20px;  --headline-s-lh: 28px;
+    --headline-xs-size: 18px; --headline-xs-lh: 26px;
+
+    --space-sm: 24px;
+    --space-md: 32px;
+    --space-lg: 64px;
+    --space-xl-section: 120px;
+
+    --radius-xl: 40px;
+  }
+}
+
+/* --- Typography utility classes ------------ */
+
+.display-xl  { font-family: var(--font-display); font-weight: 500; font-size: var(--display-xl-size);  line-height: var(--display-xl-lh); }
+.display-l   { font-family: var(--font-display); font-weight: 500; font-size: var(--display-l-size);   line-height: var(--display-l-lh); }
+.display-m   { font-family: var(--font-display); font-weight: 500; font-size: var(--display-m-size);   line-height: var(--display-m-lh); }
+.display-s   { font-family: var(--font-display); font-weight: 500; font-size: var(--display-s-size);   line-height: var(--display-s-lh); }
+.display-xs  { font-family: var(--font-display); font-weight: 500; font-size: var(--display-xs-size);  line-height: var(--display-xs-lh); }
+
+.headline-xl  { font-family: var(--font-display); font-weight: 500; font-size: var(--headline-xl-size);  line-height: var(--headline-xl-lh); }
+.headline-l   { font-family: var(--font-display); font-weight: 500; font-size: var(--headline-l-size);   line-height: var(--headline-l-lh); }
+.headline-m   { font-family: var(--font-display); font-weight: 500; font-size: var(--headline-m-size);   line-height: var(--headline-m-lh); }
+.headline-s   { font-family: var(--font-display); font-weight: 500; font-size: var(--headline-s-size);   line-height: var(--headline-s-lh); }
+.headline-xs  { font-family: var(--font-display); font-weight: 500; font-size: var(--headline-xs-size);  line-height: var(--headline-xs-lh); }
+
+.body-xl-regular          { font-family: var(--font-text); font-weight: 400; font-size: var(--body-xl-size); line-height: var(--body-xl-lh); }
+.body-xl-medium           { font-family: var(--font-text); font-weight: 500; font-size: var(--body-xl-size); line-height: var(--body-xl-lh); }
+.body-xl-bold             { font-family: var(--font-text); font-weight: 700; font-size: var(--body-xl-size); line-height: var(--body-xl-lh); }
+.body-xl-regular-underline{ font-family: var(--font-text); font-weight: 400; font-size: var(--body-xl-size); line-height: var(--body-xl-lh); text-decoration: underline; }
+
+.body-l-regular           { font-family: var(--font-text); font-weight: 400; font-size: var(--body-l-size); line-height: var(--body-l-lh); }
+.body-l-medium            { font-family: var(--font-text); font-weight: 500; font-size: var(--body-l-size); line-height: var(--body-l-lh); }
+.body-l-bold              { font-family: var(--font-text); font-weight: 700; font-size: var(--body-l-size); line-height: var(--body-l-lh); }
+.body-l-regular-underline { font-family: var(--font-text); font-weight: 400; font-size: var(--body-l-size); line-height: var(--body-l-lh); text-decoration: underline; }
+
+.body-m-regular           { font-family: var(--font-text); font-weight: 400; font-size: var(--body-m-size); line-height: var(--body-m-lh); }
+.body-m-medium            { font-family: var(--font-text); font-weight: 500; font-size: var(--body-m-size); line-height: var(--body-m-lh); }
+.body-m-bold              { font-family: var(--font-text); font-weight: 700; font-size: var(--body-m-size); line-height: var(--body-m-lh); }
+.body-m-regular-underline { font-family: var(--font-text); font-weight: 400; font-size: var(--body-m-size); line-height: var(--body-m-lh); text-decoration: underline; }
+
+.body-s-regular           { font-family: var(--font-text); font-weight: 400; font-size: var(--body-s-size); line-height: var(--body-s-lh); }
+.body-s-medium            { font-family: var(--font-text); font-weight: 500; font-size: var(--body-s-size); line-height: var(--body-s-lh); }
+.body-s-bold              { font-family: var(--font-text); font-weight: 700; font-size: var(--body-s-size); line-height: var(--body-s-lh); }
+.body-s-regular-underline { font-family: var(--font-text); font-weight: 400; font-size: var(--body-s-size); line-height: var(--body-s-lh); text-decoration: underline; }
+
+.label-m-regular { font-family: var(--font-text); font-weight: 400; font-size: var(--label-m-size); line-height: var(--label-m-lh); }
+.label-m-medium  { font-family: var(--font-text); font-weight: 500; font-size: var(--label-m-size); line-height: var(--label-m-lh); }
+.label-m-bold    { font-family: var(--font-text); font-weight: 700; font-size: var(--label-m-size); line-height: var(--label-m-lh); }
+.label-s-regular { font-family: var(--font-text); font-weight: 400; font-size: var(--label-s-size); line-height: var(--label-s-lh); }
+.label-s-medium  { font-family: var(--font-text); font-weight: 500; font-size: var(--label-s-size); line-height: var(--label-s-lh); }
+.label-s-bold    { font-family: var(--font-text); font-weight: 700; font-size: var(--label-s-size); line-height: var(--label-s-lh); }

@@ -1,0 +1,1149 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>KLM Royal Dutch Airlines — Official Site</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo/logo-full.svg" />
+  <link rel="stylesheet" href="brand.css" />
+  <style>
+
+    /* ─── Reset & base ──────────────────────────────── */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: auto; }
+
+    body {
+      font-family: var(--font-text);
+      background: var(--bg-default);
+      color: var(--text-default);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      opacity: 0;
+      animation: body-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+    }
+
+    @keyframes body-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    img { display: block; max-width: 100%; }
+    a   { color: inherit; text-decoration: none; }
+    button { cursor: pointer; font-family: inherit; border: none; background: none; }
+    ul { list-style: none; }
+
+    /* ─── Motion tokens ────────────────────────────── */
+
+    :root {
+      --ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-swift:  cubic-bezier(0.32, 0.72, 0, 1);
+      /* Tokens not yet in brand.css cache */
+      --radius-8: 8px;
+      --surface-selected: var(--blue-800);
+      --highlighted-title: var(--blue-200); /* brand.css cached stale value */
+    }
+
+    /* ─── Global corner shape ──────────────────────── */
+    *, *::before, *::after {
+      corner-shape: squircle;
+    }
+
+    /* ─── Sky gradient ─────────────────────────────── */
+
+    body {
+      position: relative;
+    }
+
+    .sky-gradient {
+      background: radial-gradient(
+        93.34% 152.28% at 32.08% -46.12%,
+        #009FDA 0%,
+        #009FDAdb 61.01%,
+        #009FDA00 100%
+      );
+      -webkit-filter: blur(32px);
+      filter: blur(32px);
+      height: 289px;
+      left: 40%;
+      position: absolute;
+      top: -60px;
+      transform: translateX(-50%);
+      width: 120vw;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @media (max-width: 767px) {
+      .sky-gradient {
+        background: radial-gradient(
+          94.13% 153.12% at 32.72% -46.96%,
+          #009FDA 0%,
+          #009FDAdb 61.01%,
+          #009FDA00 100%
+        );
+        left: -12vw;
+        top: -98px;
+        width: 130vw;
+        transform: none;
+      }
+    }
+
+    /* ─── Navigation ───────────────────────────────── */
+
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: var(--space-16);
+      pointer-events: none;
+      transition: padding 0.5s var(--ease-expo);
+    }
+
+    .nav__pill {
+      display: flex;
+      align-items: stretch;
+      background: var(--neutral-0);
+      border-radius: var(--radius-16);
+      padding: 0 var(--space-24);
+      height: 64px;
+      width: 100%;
+      pointer-events: all;
+      transition:
+        border-radius  0.5s var(--ease-expo),
+        padding        0.5s var(--ease-expo);
+      transform: translateY(-8px);
+      opacity: 0;
+      animation: nav-in 1.15s var(--ease-expo) 0.2s forwards;
+    }
+
+    @keyframes nav-in {
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .nav--scrolled { padding: 0; }
+
+    .nav--scrolled .nav__pill {
+      border-radius: 0;
+    }
+
+    .nav__logo {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      margin-right: var(--space-32);
+    }
+
+    .nav__logo img { height: 32px; width: auto; }
+
+    .nav__links {
+      display: flex;
+      align-items: stretch;
+      flex: 1;
+      height: 100%;
+    }
+
+    @media (min-width: 1280px) {
+      .nav__pill {
+        position: relative;
+      }
+      .nav__links {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        flex: unset;
+        height: 100%;
+      }
+    }
+
+    .nav__links > li {
+      display: flex;
+      align-items: stretch;
+    }
+
+    .nav__link {
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      color: var(--text-default);
+      font-family: var(--font-text);
+      font-weight: 400;
+      position: relative;
+      white-space: nowrap;
+      transition: color 0.15s;
+    }
+
+    .nav__link:hover { color: color-mix(in srgb, var(--text-default) 65%, transparent); }
+    .nav__link--active:hover { opacity: 1; cursor: default; }
+
+    .nav__link--active { font-weight: 700; }
+
+    .nav__link--active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 14px;
+      right: 14px;
+      height: 3px;
+      background: var(--text-default);
+      border-radius: var(--radius-12) var(--radius-12) 0 0;
+    }
+
+    .nav__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .nav__meta,
+    .nav__cta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      color: var(--text-default);
+      border-radius: var(--radius-12);
+      transition: background 0.15s;
+      white-space: nowrap;
+      font-family: var(--font-text);
+    }
+
+    .nav__meta:hover { background: var(--surface-highlight); }
+    .nav__cta { cursor: pointer; border: none; background: none; }
+    .nav__cta:hover,
+    .nav__account.is-open .nav__cta { background: var(--surface-highlight); }
+
+    .nav__icon-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      color: var(--text-default);
+      border-radius: var(--radius-12);
+      border: none;
+      background: none;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+
+    .nav__icon-btn:hover { background: var(--surface-highlight); }
+
+    .nav__icon-btn img,
+    .nav__meta img,
+    .nav__cta img { width: 20px; height: 20px; flex-shrink: 0; }
+
+    /* ─── Account dropdown ──────────────────────────── */
+
+    .nav__account { position: relative; }
+
+    .nav__account-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 280px;
+      background: var(--neutral-0);
+      border-radius: var(--radius-16);
+      box-shadow:
+        0 4px 6px -1px color-mix(in srgb, var(--blue-800) 8%, transparent),
+        0 12px 40px -4px color-mix(in srgb, var(--blue-800) 12%, transparent),
+        0 0 0 1px color-mix(in srgb, var(--blue-800) 8%, transparent);
+      z-index: 200;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(-6px) scale(0.97);
+      transform-origin: top right;
+      pointer-events: none;
+      transition: opacity 0.2s ease-out, transform 0.32s var(--ease-expo);
+    }
+
+    .nav__account.is-open .nav__account-dropdown {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .nav__account-list {
+      list-style: none;
+      padding: var(--space-8) 0;
+      margin: 0;
+    }
+
+    .nav__account-link {
+      display: block;
+      padding: 11px var(--space-24);
+      color: var(--text-default);
+      text-decoration: none;
+      font-family: var(--font-text);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.22s ease-out, transform 0.32s var(--ease-expo), color 0.15s, background 0.15s;
+    }
+
+    .nav__account-link:hover {
+      color: var(--colour-active);
+      background: var(--surface-highlight);
+    }
+
+    .nav__account.is-open .nav__account-list li:nth-child(1) .nav__account-link { opacity: 1; transform: none; transition-delay: 0.04s; }
+    .nav__account.is-open .nav__account-list li:nth-child(2) .nav__account-link { opacity: 1; transform: none; transition-delay: 0.07s; }
+    .nav__account.is-open .nav__account-list li:nth-child(3) .nav__account-link { opacity: 1; transform: none; transition-delay: 0.10s; }
+    .nav__account.is-open .nav__account-list li:nth-child(4) .nav__account-link { opacity: 1; transform: none; transition-delay: 0.13s; }
+
+    .nav__account-actions {
+      padding: var(--space-16) var(--space-24) var(--space-24);
+      border-top: 1px solid var(--divider-light);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-12);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.22s ease-out 0.16s, transform 0.32s var(--ease-expo) 0.16s;
+    }
+
+    .nav__account.is-open .nav__account-actions {
+      opacity: 1;
+      transform: none;
+    }
+
+    .nav__account-actions .btn--primary { width: 100%; justify-content: center; }
+
+    .nav__account-signup {
+      color: var(--text-alternative);
+      text-align: center;
+      font-family: var(--font-text);
+    }
+
+    .nav__account-signup-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--colour-active);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: opacity 0.15s;
+    }
+
+    .nav__account-signup-link:hover { opacity: 0.7; }
+
+    /* ─── Hamburger & mobile menu ──────────────────── */
+
+    .nav__hamburger {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-12);
+      padding: 0;
+      flex-shrink: 0;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-left: 4px;
+    }
+
+    .nav__hamburger:hover { background: var(--surface-highlight); }
+
+    .nav__hamburger-line {
+      display: block;
+      width: 18px;
+      height: 1.5px;
+      background: var(--text-default);
+      border-radius: 1px;
+      transform-origin: center;
+      transition: transform 0.35s var(--ease-expo), opacity 0.2s;
+    }
+
+    .nav__hamburger.is-open .nav__hamburger-line:first-child {
+      transform: translateY(3.25px) rotate(45deg);
+    }
+    .nav__hamburger.is-open .nav__hamburger-line:last-child {
+      transform: translateY(-3.25px) rotate(-45deg);
+    }
+
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: linear-gradient(155deg, var(--blue-700) 0%, var(--blue-900) 80%);
+      padding: 72px var(--space-24) var(--space-40);
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+      transition: opacity 0.3s var(--ease-expo), transform 0.3s var(--ease-expo);
+    }
+
+    .mobile-menu.is-open {
+      opacity: 1;
+      transform: translateY(0);
+      pointer-events: all;
+    }
+
+    .mobile-menu__links {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .mobile-menu__link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+      border-bottom: 1px solid color-mix(in srgb, var(--neutral-0) 10%, transparent);
+      color: var(--text-contrast);
+      font-family: var(--font-display);
+      font-size: var(--headline-m-size);
+      line-height: var(--headline-m-lh);
+      font-weight: 500;
+      opacity: 0;
+      transform: translateY(12px);
+      transition:
+        opacity 0.4s var(--ease-expo),
+        transform 0.4s var(--ease-expo),
+        color 0.15s;
+      transition-delay: var(--d, 0s);
+    }
+
+    .mobile-menu__link svg { width: 20px; height: 20px; color: var(--neutral-0); flex-shrink: 0; }
+
+    .mobile-menu.is-open .mobile-menu__link {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .mobile-menu__link:hover { color: color-mix(in srgb, var(--neutral-0) 70%, transparent); }
+
+    .mobile-menu__footer {
+      display: flex;
+      align-items: center;
+      padding-top: var(--space-24);
+      border-top: 1px solid color-mix(in srgb, var(--neutral-0) 10%, transparent);
+      opacity: 0;
+      transition: opacity 0.35s var(--ease-expo) 0.32s;
+    }
+
+    .mobile-menu.is-open .mobile-menu__footer { opacity: 1; }
+
+    .mobile-menu__lang {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-contrast);
+      font-family: var(--font-text);
+      font-size: var(--body-m-size);
+      line-height: var(--body-m-lh);
+      font-weight: 500;
+    }
+
+    @media (max-width: 959px) {
+      .nav { padding: 0; }
+      .nav__pill {
+        border-radius: 0;
+        box-shadow: none;
+        padding: 0 8px 0 16px;
+      }
+      .nav__links { display: none; }
+      .nav__hamburger { display: flex; }
+      .nav__meta { display: none; }
+      .nav__cta span { display: none; }
+      .nav__cta { padding: 8px; gap: 0; }
+      .nav__actions { gap: 4px; }
+      .nav__hamburger { margin-left: 0; }
+    }
+
+    /* ─── Nav: two-row layout (960–1279px) ────────── */
+
+    @media (min-width: 960px) and (max-width: 1279px) {
+      .nav__pill {
+        flex-wrap: wrap;
+        height: auto;
+        padding: var(--space-8) var(--space-24) 0;
+        row-gap: 0;
+      }
+      .nav__logo { order: 1; height: 48px; }
+      .nav__actions { order: 2; height: 48px; }
+      .nav__links {
+        order: 3;
+        flex-basis: 100%;
+        height: 56px;
+      }
+      .nav__link { padding: var(--space-8) 16px; }
+    }
+
+    /* ─── Scroll reveal system ──────────────────────── */
+
+    .reveal {
+      transition:
+        opacity  0.9s var(--ease-expo),
+        transform 0.9s var(--ease-expo),
+        filter   0.6s var(--ease-expo);
+      transition-delay: var(--d, 0s);
+      will-change: transform, opacity;
+    }
+
+    .reveal.is-visible {
+      opacity: 1;
+      transform: translateY(0);
+      filter: blur(0);
+    }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal:not(.is-visible) {
+        opacity: 0;
+        transform: translateY(32px);
+        filter: blur(4px);
+      }
+    }
+
+    /* ─── Search hero section ───────────────────────── */
+    /* Nav is 64px tall + 16px top padding = 80px to bottom of pill.
+       Desktop: 56px gap below nav → total offset = 136px.
+       Mobile:  nav has no padding (full-width, flush), so just 64px.        */
+
+    .search-hero {
+      padding-top: 136px;   /* nav bottom (80px) + 56px gap */
+      padding-bottom: 0;
+      padding-left: 48px;
+      padding-right: 48px;
+    }
+
+    .search-hero__inner {
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 960px) and (max-width: 1319px) {
+      .search-hero {
+        padding-left: var(--space-16);
+        padding-right: var(--space-16);
+      }
+    }
+
+    @media (max-width: 959px) {
+      .search-hero {
+        padding-top: 64px;  /* flush below mobile nav */
+        padding-bottom: 0;
+        padding-left: 0;
+        padding-right: 0;
+      }
+    }
+
+    /* ─── Search widget ─────────────────────────────── */
+
+    .search {
+      background: var(--neutral-0);
+      border-radius: var(--radius-32);
+      padding: var(--space-32) var(--space-32) var(--space-32);
+      width: 100%;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: search-in 0.8s var(--ease-expo) 0.3s forwards;
+    }
+
+    @keyframes search-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .search__heading {
+      color: var(--text-default);
+      letter-spacing: -0.02em;
+      margin-bottom: var(--space-24);
+    }
+
+    @media (max-width: 959px) {
+      .search {
+        border-radius: 0;
+        padding: var(--space-24) var(--space-16);
+      }
+      .search__heading {
+        font-size: var(--headline-l-size);
+        line-height: var(--headline-l-lh);
+      }
+    }
+
+    /* ── Pill tabs ───────────────────────────────── */
+
+    .search__tabs {
+      display: flex;
+      gap: var(--space-4);
+      margin-bottom: var(--space-24);
+      background: var(--bg-default);
+      border-radius: var(--radius-16);
+      padding: 4px;
+      width: fit-content;
+    }
+
+    .search__tab {
+      display: inline-flex;
+      align-items: center;
+      padding: 6px 18px;
+      border-radius: var(--radius-12);
+      font-family: var(--font-text);
+      font-size: var(--body-s-size);
+      line-height: var(--body-s-lh);
+      font-weight: 500;
+      color: var(--text-alternative);
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s var(--ease-expo), color 0.2s var(--ease-expo);
+      white-space: nowrap;
+    }
+
+    .search__tab--active {
+      background: var(--surface-selected);
+      color: var(--text-contrast);
+    }
+
+    .search__tab:not(.search__tab--active):hover {
+      background: var(--border-subtle);
+      color: var(--text-default);
+    }
+
+    /* ── Fields row ──────────────────────────────── */
+
+    .search__fields {
+      display: grid;
+      /* From | swap | To | Departure | Return | Button */
+      grid-template-columns: 1fr auto 1fr 1fr 1fr auto;
+      gap: var(--space-16);
+      align-items: stretch;
+    }
+
+    .search__field {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 4px;
+      padding: 10px var(--space-16);
+      border: 1.5px solid var(--border-subtle);
+      border-radius: var(--radius-16);
+      cursor: pointer;
+      transition: border-color 0.2s var(--ease-expo);
+    }
+
+    .search__field:hover {
+      border-color: var(--border-default);
+    }
+
+    .search__field:focus-within,
+    .search__field:focus {
+      outline: none;
+      border-color: var(--border-active);
+    }
+
+    .search__label {
+      color: var(--text-alternative);
+      font-family: var(--font-text);
+      font-size: var(--label-m-size);
+      line-height: var(--label-m-lh);
+      font-weight: 500;
+    }
+
+    .search__value {
+      color: var(--text-default);
+      font-family: var(--font-text);
+      font-size: var(--body-m-size);
+      line-height: var(--body-m-lh);
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    /* Swap button — rounded */
+    .search__swap {
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-pill);
+      background: var(--surface-highlight);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      align-self: center;
+      transition: background 0.2s;
+    }
+
+    .search__swap:hover { background: var(--surface-highlight-emphasis); }
+
+    .search__swap svg {
+      width: 16px;
+      height: 16px;
+      color: var(--colour-active);
+      transition: transform 0.7s cubic-bezier(0.33, 1, 0.68, 1);
+    }
+
+    .search__swap:hover svg { transform: rotate(180deg); }
+
+    /* ── Search button ───────────────────────────── */
+
+    .btn--search-klm {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: var(--space-8);
+      padding: 0 var(--space-28, 28px);
+      height: 100%;
+      background: var(--colour-active);
+      color: var(--neutral-0);
+      border-radius: var(--radius-16);
+      font-family: var(--font-text);
+      font-size: var(--body-m-size);
+      line-height: var(--body-m-lh);
+      font-weight: 700;
+      border: none;
+      cursor: pointer;
+      white-space: nowrap;
+      align-self: stretch;
+      flex-shrink: 0;
+      transition: background 0.2s var(--ease-expo), transform 0.15s;
+    }
+
+    .btn--search-klm:hover {
+      background: var(--blue-600);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .btn--search-klm:active { transform: scale(0.98); }
+    }
+
+    /* ─── Responsive: search ────────────────────────── */
+    /* Below 720px — single column, all fields stacked vertically.
+       Above 720px — single row (all fields + button in one line).
+       No intermediate two-row layout. Same pattern as Air France.            */
+
+    @media (max-width: 719px) {
+      .search__fields {
+        grid-template-columns: 1fr;
+      }
+
+      /* Swap button makes no sense in a stacked layout */
+      .search__swap { display: none; }
+
+      /* Button fills the full card width when stacked */
+      .btn--search-klm {
+        min-height: 52px;
+        width: 100%;
+      }
+    }
+
+    /* ─── Image block ───────────────────────────────── */
+
+    .image-block {
+      padding: 0 48px var(--space-56);
+      margin-top: var(--space-24);
+      opacity: 0;
+      animation: search-in 0.8s var(--ease-expo) 0.55s forwards;
+    }
+
+    .image-block__inner {
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+
+    /* 960–1319px: match nav/search edge spacing */
+    @media (min-width: 960px) and (max-width: 1319px) {
+      .image-block {
+        padding-left: var(--space-16);
+        padding-right: var(--space-16);
+      }
+    }
+
+    /* Mobile */
+    @media (max-width: 959px) {
+      .image-block {
+        padding: 0 var(--space-16) var(--space-32);
+      }
+    }
+
+    .image-block__card {
+      position: relative;
+      border-radius: var(--radius-32);
+      overflow: hidden;
+    }
+
+    @media (max-width: 959px) {
+      .image-block__card {
+        border-radius: 0;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    .image-block__img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+    }
+
+    @media (max-width: 959px) {
+      .image-block__img {
+        border-radius: var(--radius-32);
+        aspect-ratio: 16 / 9;
+      }
+    }
+
+    .image-block__content {
+      position: absolute;
+      bottom: var(--space-32);
+      left: var(--space-32);
+      background: var(--surface-contrast);
+      border-radius: var(--radius-24);
+      padding: var(--space-24);
+      padding-bottom: calc(var(--space-24) + 48px + var(--space-16));
+      max-width: 320px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+    }
+
+    @media (max-width: 959px) {
+      .image-block__content {
+        position: relative;
+        max-width: 100%;
+        border-radius: 0 0 var(--radius-32) var(--radius-32);
+        padding: var(--space-24) var(--space-16);
+        padding-bottom: calc(var(--space-24) + 48px + var(--space-16));
+      }
+    }
+
+    .image-block__label {
+      font-family: var(--font-text);
+      font-size: var(--label-m-size);
+      line-height: var(--label-m-lh);
+      font-weight: 500;
+      color: var(--text-contrast);
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      opacity: 0.7;
+    }
+
+    .image-block__title {
+      font-family: var(--font-display);
+      font-size: var(--headline-xl-size);
+      line-height: var(--headline-xl-lh);
+      font-weight: 500;
+      color: var(--highlighted-title);
+    }
+
+    .image-block__body {
+      font-family: var(--font-text);
+      font-size: var(--body-m-size);
+      line-height: var(--body-m-lh);
+      font-weight: 400;
+      color: var(--text-contrast);
+    }
+
+    .image-block__cta {
+      position: absolute;
+      bottom: var(--space-24);
+      right: var(--space-24);
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 9999px;
+      corner-shape: round;
+      background: var(--blue-200);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.2s var(--ease-expo), transform 0.2s var(--ease-expo);
+    }
+
+    .image-block__cta:active {
+      transform: scale(0.96);
+    }
+
+    .image-block__cta img {
+      width: 24px;
+      height: 24px;
+      display: block;
+    }
+
+    .image-block__cta:hover .image-block__cta-icon {
+      background: var(--text-contrast);
+    }
+
+    .image-block__cta:hover .image-block__cta-icon svg path {
+      stroke: var(--surface-contrast);
+    }
+
+  </style>
+</head>
+<body>
+
+  <!-- ── Sky gradient ─────────────────────────── -->
+  <div class="sky-gradient" aria-hidden="true"></div>
+
+  <!-- ── Navigation ────────────────────────────── -->
+
+  <nav class="nav" id="nav" aria-label="Main navigation">
+    <div class="nav__pill">
+
+      <a href="index.html" class="nav__logo" aria-label="KLM Royal Dutch Airlines home">
+        <img src="assets/logo/logo-full.svg" alt="KLM Royal Dutch Airlines" />
+      </a>
+
+      <ul class="nav__links" role="list">
+        <li><a href="index.html" class="nav__link nav__link--active body-m-bold">Book</a></li>
+        <li><a href="#" class="nav__link body-m-medium">My Trip</a></li>
+        <li><a href="#" class="nav__link body-m-medium">Check-in</a></li>
+        <li><a href="#" class="nav__link body-m-medium">Flying Blue</a></li>
+        <li><a href="#" class="nav__link body-m-medium">Travel information</a></li>
+      </ul>
+
+      <div class="nav__actions">
+
+        <a href="#" class="nav__meta body-m-medium" aria-label="Language and region">
+          <img src="assets/icons/icon-language.svg" width="20" height="20" aria-hidden="true" alt="" />
+          <span>NL / EN</span>
+        </a>
+
+        <div class="nav__account">
+          <button class="nav__cta body-m-medium" id="nav-account-btn" type="button" aria-haspopup="true" aria-expanded="false">
+            <img src="assets/icons/icon-profile.svg" width="20" height="20" aria-hidden="true" alt="" />
+            <span>Log in</span>
+          </button>
+          <div class="nav__account-dropdown" role="menu">
+            <ul class="nav__account-list">
+              <li><a href="#" class="nav__account-link body-m-medium" role="menuitem">My bookings</a></li>
+              <li><a href="#" class="nav__account-link body-m-medium" role="menuitem">My Flying Blue</a></li>
+              <li><a href="#" class="nav__account-link body-m-medium" role="menuitem">Personal details</a></li>
+              <li><a href="#" class="nav__account-link body-m-medium" role="menuitem">My travel documents</a></li>
+            </ul>
+            <div class="nav__account-actions">
+              <a href="#" class="btn--search-klm" style="border-radius: var(--radius-16); padding: 10px 24px; font-size: var(--body-m-size);">Log in</a>
+              <p class="nav__account-signup body-s-regular">No account yet?
+                <a href="#" class="nav__account-signup-link body-s-medium">Sign up
+                  <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" style="width:12px;height:12px"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <button class="nav__hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span class="nav__hamburger-line"></span>
+          <span class="nav__hamburger-line"></span>
+        </button>
+
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ── Mobile menu ───────────────────────────── -->
+
+  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Navigation menu" aria-hidden="true">
+    <nav class="mobile-menu__links">
+      <a href="index.html" class="mobile-menu__link" style="--d: 0.06s">Book <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a href="#" class="mobile-menu__link" style="--d: 0.10s">My Trip <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a href="#" class="mobile-menu__link" style="--d: 0.14s">Check-in <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a href="#" class="mobile-menu__link" style="--d: 0.18s">Flying Blue <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a href="#" class="mobile-menu__link" style="--d: 0.22s">Travel information <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    </nav>
+    <div class="mobile-menu__footer">
+      <a href="#" class="mobile-menu__lang" aria-label="Language">
+        <img src="assets/icons/icon-language.svg" width="20" height="20" style="filter: brightness(0) invert(1);" aria-hidden="true" alt="" />
+        <span>NL / EN</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Search hero ───────────────────────────── -->
+
+  <section class="search-hero" aria-label="Flight search">
+    <div class="search-hero__inner">
+
+      <div class="search" role="search" aria-label="Flight search">
+
+        <h1 class="search__heading headline-xl">Where do you want to go next?</h1>
+
+        <!-- Tabs -->
+        <div class="search__tabs" role="tablist" aria-label="Trip type">
+          <button class="search__tab search__tab--active" role="tab" aria-selected="true" data-tab="return">Return</button>
+          <button class="search__tab" role="tab" aria-selected="false" data-tab="oneway">One-way</button>
+          <button class="search__tab" role="tab" aria-selected="false" data-tab="multi">Multi-city</button>
+        </div>
+
+        <!-- Fields -->
+        <div class="search__fields">
+
+          <div class="search__field" tabindex="0" aria-label="Departure city">
+            <span class="search__label">From</span>
+            <span class="search__value">Amsterdam AMS</span>
+          </div>
+
+          <button class="search__swap" type="button" aria-label="Swap departure and destination">
+            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+              <path d="M11.5 2.5L14 5l-2.5 2.5M2 5h12M4.5 13.5L2 11l2.5-2.5M14 11H2"/>
+            </svg>
+          </button>
+
+          <div class="search__field" tabindex="0" aria-label="Destination city">
+            <span class="search__label">To</span>
+            <span class="search__value">Where to?</span>
+          </div>
+
+          <div class="search__field" tabindex="0" aria-label="Departure date">
+            <span class="search__label">Departure date</span>
+            <span class="search__value">Select date</span>
+          </div>
+
+          <div class="search__field" tabindex="0" aria-label="Return date">
+            <span class="search__label">Return date</span>
+            <span class="search__value">Select date</span>
+          </div>
+
+          <button class="btn--search-klm" type="button">
+            Search flights
+          </button>
+
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ── Image block ───────────────────────────── -->
+  <section class="image-block" aria-label="Featured destination">
+    <div class="image-block__inner">
+      <div class="image-block__card">
+        <img
+          class="image-block__img"
+          src="assets/images/hero-bg.jpg"
+          alt="A scenic view of a beautiful destination"
+          loading="lazy"
+        />
+        <div class="image-block__content">
+          <h2 class="image-block__title">The beauty of Cape Town</h2>
+          <p class="image-block__body">Europe, New York, or a European metropolis? Explore the world with KLM.</p>
+          <button class="image-block__cta" type="button" aria-label="Explore Cape Town">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/>
+            </svg>
+          </button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Main content ───────────────────────────── -->
+  <main id="main-content">
+    <!-- More sections will be added here -->
+  </main>
+
+  <!-- ── Scripts ───────────────────────────────── -->
+
+  <script>
+    'use strict';
+
+    /* ── Nav: scroll state ──────────────────────── */
+    const nav = document.getElementById('nav');
+    let ticking = false;
+
+    function updateNav() {
+      nav.classList.toggle('nav--scrolled', window.scrollY > 8);
+      ticking = false;
+    }
+
+    window.addEventListener('scroll', () => {
+      if (!ticking) { requestAnimationFrame(updateNav); ticking = true; }
+    }, { passive: true });
+
+    updateNav();
+
+    /* ── Nav: account dropdown ──────────────────── */
+    const accountBtn  = document.getElementById('nav-account-btn');
+    const accountWrap = accountBtn?.closest('.nav__account');
+
+    if (accountBtn && accountWrap) {
+      accountBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = accountWrap.classList.toggle('is-open');
+        accountBtn.setAttribute('aria-expanded', String(open));
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!accountWrap.contains(e.target)) {
+          accountWrap.classList.remove('is-open');
+          accountBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          accountWrap.classList.remove('is-open');
+          accountBtn.setAttribute('aria-expanded', 'false');
+          accountBtn.focus();
+        }
+      });
+    }
+
+    /* ── Nav: mobile menu ───────────────────────── */
+    const hamburger  = document.querySelector('.nav__hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+
+    if (hamburger && mobileMenu) {
+      hamburger.addEventListener('click', () => {
+        const open = hamburger.classList.toggle('is-open');
+        mobileMenu.classList.toggle('is-open', open);
+        mobileMenu.setAttribute('aria-hidden', String(!open));
+        hamburger.setAttribute('aria-expanded', String(open));
+        document.body.style.overflow = open ? 'hidden' : '';
+      });
+    }
+
+    /* ── Search: tab toggle ─────────────────────── */
+    document.querySelectorAll('.search__tab').forEach(tab => {
+      tab.addEventListener('click', () => {
+        document.querySelectorAll('.search__tab').forEach(t => {
+          t.classList.remove('search__tab--active');
+          t.setAttribute('aria-selected', 'false');
+        });
+        tab.classList.add('search__tab--active');
+        tab.setAttribute('aria-selected', 'true');
+      });
+    });
+
+    /* ── Reveal animations ──────────────────────── */
+    const observer = new IntersectionObserver(
+      (entries) => {
+        entries.forEach(entry => {
+          if (entry.isIntersecting) {
+            entry.target.classList.add('is-visible');
+            observer.unobserve(entry.target);
+          }
+        });
+      },
+      { threshold: 0.1 }
+    );
+
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+  </script>
+
+</body>
+</html>
