@@ -138,7 +138,7 @@
       margin-right: var(--space-32);
     }
 
-    .nav__logo img { height: 32px; width: auto; }
+    .nav__logo img { height: 36px; width: auto; }
 
     .nav__links {
       display: flex;
@@ -825,6 +825,7 @@
       display: flex;
       flex-direction: column;
       gap: var(--space-16);
+      cursor: pointer;
     }
 
     @media (max-width: 959px) {
@@ -843,13 +844,11 @@
     }
 
     .image-block__label {
-      font-family: var(--font-text);
-      font-size: var(--label-m-size);
-      line-height: var(--label-m-lh);
+      font-family: var(--font-display);
+      font-size: var(--headline-s-size);
+      line-height: var(--headline-s-lh);
       font-weight: 500;
       color: var(--text-contrast);
-      text-transform: uppercase;
-      letter-spacing: 0.06em;
       opacity: 0.7;
     }
 
@@ -885,6 +884,7 @@
       padding: 0;
       cursor: pointer;
       flex-shrink: 0;
+      overflow: hidden;
       transition: background 0.2s var(--ease-expo), transform 0.2s var(--ease-expo);
     }
 
@@ -892,18 +892,336 @@
       transform: scale(0.96);
     }
 
-    .image-block__cta img {
+    /* ─── Latest offering section ───────────────────── */
+
+    .offerings {
+      padding: var(--space-56) 48px;
+    }
+
+    .offerings__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    /* 960–1319px: match nav/search edge spacing */
+    @media (min-width: 960px) and (max-width: 1319px) {
+      .offerings { padding-left: var(--space-16); padding-right: var(--space-16); }
+    }
+
+    @media (max-width: 959px) {
+      .offerings { padding: var(--space-32) var(--space-16); }
+    }
+
+    .offerings__header {
+      text-align: center;
+      margin-bottom: var(--space-32);
+    }
+
+    .offerings__eyebrow {
+      display: block;
+      font-family: var(--font-display);
+      font-size: var(--headline-s-size);
+      line-height: var(--headline-s-lh);
+      font-weight: 500;
+      color: var(--text-subtle);
+      margin-bottom: var(--space-8);
+    }
+
+    .offerings__heading {
+      color: var(--text-default);
+    }
+
+    /* 2-col grid — both columns stretch to the same height (set by the 3:4 image card) */
+    .offerings__grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: var(--space-24);
+      align-items: stretch;
+    }
+
+    @media (max-width: 959px) {
+      .offerings__grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* Left: destination card */
+    .dest-card {
+      position: relative;
+      border-radius: var(--radius-32);
+      overflow: hidden;
+      aspect-ratio: 3 / 4;
+      cursor: pointer;
+    }
+
+    @media (max-width: 959px) {
+      .dest-card { aspect-ratio: 4 / 3; }
+    }
+
+    .dest-card__img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transform: scale(1);
+      transition: transform 0.75s var(--ease-expo);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .dest-card:hover .dest-card__img {
+        transform: scale(1.025);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .dest-card__img { transition: none; }
+    }
+
+    /* Gradient overlay — blue-900 at the bottom, transparent above */
+    .dest-card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(to top, var(--blue-900) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .dest-card:hover::after {
+        background: linear-gradient(to top, var(--blue-900) 2%, transparent 60%);
+      }
+    }
+
+    .dest-card__footer {
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      z-index: 1;
+      display: flex;
+      align-items: flex-end;
+      justify-content: space-between;
+      padding: var(--space-24);
+    }
+
+    .dest-card__label {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .dest-card__city {
+      font-family: var(--font-display);
+      font-size: var(--headline-l-size);
+      line-height: var(--headline-l-lh);
+      font-weight: 500; /* Medium — all display/headline styles use 500 */
+      color: var(--neutral-0);
+    }
+
+    .dest-card__country {
+      font-family: var(--font-text);
+      font-size: var(--body-s-size);
+      line-height: var(--body-s-lh);
+      color: rgba(255,255,255,0.72);
+    }
+
+    .dest-card__cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 9999px;
+      corner-shape: round;
+      background: var(--blue-200);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      flex-shrink: 0;
+      overflow: hidden;
+      transition: background 0.2s var(--ease-expo), transform 0.2s var(--ease-expo);
+    }
+
+    .dest-card__cta:active { transform: scale(0.96); }
+
+    /* Right: destination list */
+    .dest-list {
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+      background: var(--neutral-0);
+      border-radius: var(--radius-32);
+      padding: var(--space-16);
+    }
+
+    .dest-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex: 1;
+      padding: 0 var(--space-8);
+
+      border-bottom: 1.5px solid var(--border-subtle);
+      cursor: pointer;
+      transition: padding-left 0.15s var(--ease-expo);
+
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .dest-row:hover {
+        padding-left: var(--space-16);
+      }
+    }
+
+    @media (max-width: 959px) {
+      .dest-row { padding-top: 12px; padding-bottom: 12px; }
+    }
+
+    .dest-row__info {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .dest-row__city {
+      font-family: var(--font-display);
+      font-size: var(--headline-m-size);
+      line-height: var(--headline-m-lh);
+      font-weight: 500; /* Medium — all display/headline styles use 500 */
+      color: var(--text-default);
+    }
+
+    .dest-row__country {
+      font-family: var(--font-text);
+      font-size: var(--body-s-size);
+      line-height: var(--body-s-lh);
+      color: var(--text-alternative);
+    }
+
+    .dest-row__right {
+      display: flex;
+      align-items: center;
+      gap: var(--space-12, 12px);
+      flex-shrink: 0;
+    }
+
+    .dest-row__price-wrap {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-end;
+    }
+
+    .dest-row__from {
+      font-family: var(--font-text);
+      font-size: var(--body-s-size);
+      line-height: var(--body-s-lh);
+      font-weight: 400;
+      color: var(--text-alternative);
+    }
+
+    .dest-row__price {
+      font-family: var(--font-display);
+      font-size: var(--headline-s-size);
+      line-height: var(--headline-s-lh);
+      font-weight: 500;
+      color: var(--text-default);
+      white-space: nowrap;
+    }
+
+    .dest-row__arrow {
+      width: 20px;
+      height: 20px;
+      color: var(--text-subtle);
+      flex-shrink: 0;
+    }
+
+    .dest-list__footer {
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+      padding-top: var(--space-24);
+      gap: var(--space-12, 12px);
+      cursor: pointer;
+    }
+
+    .dest-list__explore {
+      font-family: var(--font-text);
+      font-size: var(--body-m-size);
+      line-height: var(--body-m-lh);
+      font-weight: 500;
+      color: var(--text-default);
+    }
+
+    .dest-list__cta {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      width: 48px;
+      height: 48px;
+      border-radius: 9999px;
+      corner-shape: round;
+      background: var(--colour-active);
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      flex-shrink: 0;
+      overflow: hidden;
+      transition: background 0.2s var(--ease-expo), transform 0.2s var(--ease-expo);
+    }
+
+    .dest-list__cta:active { transform: scale(0.96); }
+
+    /* ─── Icon button arrow animation ───────────────── */
+    /* Two arrows stacked; on hover the first exits right,
+       the second enters from left — orchestrated crossfade + translate */
+
+    .icon-btn-arrows {
+      position: relative;
       width: 24px;
       height: 24px;
-      display: block;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
 
-    .image-block__cta:hover .image-block__cta-icon {
-      background: var(--text-contrast);
+    .icon-btn-arrows svg {
+      position: absolute;
+      width: 24px;
+      height: 24px;
+      transition: transform 0.75s var(--ease-expo);
     }
 
-    .image-block__cta:hover .image-block__cta-icon svg path {
-      stroke: var(--surface-contrast);
+    /* Arrow that starts centred and exits right */
+    .icon-btn-arrows svg:first-child {
+      transform: translateX(0) scale(1);
+    }
+
+    /* Arrow that starts off-left and enters to centre */
+    .icon-btn-arrows svg:last-child {
+      transform: translateX(-48px) scale(0.7);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      /* Trigger on the parent card, not just the button itself */
+      .image-block__content:hover .icon-btn-arrows svg:first-child,
+      .dest-card:hover            .icon-btn-arrows svg:first-child {
+        transform: translateX(48px) scale(0.7);
+      }
+      .image-block__content:hover .icon-btn-arrows svg:last-child,
+      .dest-card:hover            .icon-btn-arrows svg:last-child {
+        transform: translateX(0) scale(1);
+      }
+      /* Explore all: trigger on the entire footer row */
+      .dest-list__footer:hover .icon-btn-arrows svg:first-child {
+        transform: translateX(48px) scale(0.7);
+      }
+      .dest-list__footer:hover .icon-btn-arrows svg:last-child {
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .icon-btn-arrows svg { transition: none; }
     }
 
   </style>
@@ -1057,9 +1375,10 @@
           <h2 class="image-block__title">The beauty of Cape Town</h2>
           <p class="image-block__body">Europe, New York, or a European metropolis? Explore the world with KLM.</p>
           <button class="image-block__cta" type="button" aria-label="Explore Cape Town">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-              <path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/>
-            </svg>
+            <div class="icon-btn-arrows" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+            </div>
           </button>
         </div>
       </div>
@@ -1068,7 +1387,143 @@
 
   <!-- ── Main content ───────────────────────────── -->
   <main id="main-content">
-    <!-- More sections will be added here -->
+
+    <!-- ── Latest offering ───────────────────── -->
+    <section class="offerings reveal" aria-label="Latest offering">
+      <div class="offerings__inner">
+
+        <header class="offerings__header">
+          <span class="offerings__eyebrow">Latest offering</span>
+          <h2 class="offerings__heading headline-l">Our latest offering</h2>
+        </header>
+
+        <div class="offerings__grid">
+
+          <!-- Left: featured destination card -->
+          <article class="dest-card">
+            <img
+              class="dest-card__img"
+              src="assets/images/offer-feature.jpg"
+              alt="New York City street with colourful mural"
+              loading="lazy"
+            />
+            <div class="dest-card__footer">
+              <div class="dest-card__label">
+                <span class="dest-card__city">New York</span>
+                <span class="dest-card__country">United States</span>
+              </div>
+              <button class="dest-card__cta" type="button" aria-label="Explore New York">
+                <div class="icon-btn-arrows" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+                </div>
+              </button>
+            </div>
+          </article>
+
+          <!-- Right: destination list -->
+          <div class="dest-list">
+
+            <div class="dest-row" role="listitem" tabindex="0">
+              <div class="dest-row__info">
+                <span class="dest-row__city">Hong Kong</span>
+                <span class="dest-row__country">China</span>
+              </div>
+              <div class="dest-row__right">
+                <div class="dest-row__price-wrap">
+                  <span class="dest-row__from">From</span>
+                  <span class="dest-row__price">EUR 782</span>
+                </div>
+                <svg class="dest-row__arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+
+            <div class="dest-row" role="listitem" tabindex="0">
+              <div class="dest-row__info">
+                <span class="dest-row__city">Nairobi</span>
+                <span class="dest-row__country">Kenya</span>
+              </div>
+              <div class="dest-row__right">
+                <div class="dest-row__price-wrap">
+                  <span class="dest-row__from">From</span>
+                  <span class="dest-row__price">EUR 782</span>
+                </div>
+                <svg class="dest-row__arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+
+            <div class="dest-row" role="listitem" tabindex="0">
+              <div class="dest-row__info">
+                <span class="dest-row__city">St. Martin</span>
+                <span class="dest-row__country">Saint Martin</span>
+              </div>
+              <div class="dest-row__right">
+                <div class="dest-row__price-wrap">
+                  <span class="dest-row__from">From</span>
+                  <span class="dest-row__price">EUR 782</span>
+                </div>
+                <svg class="dest-row__arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+
+            <div class="dest-row" role="listitem" tabindex="0">
+              <div class="dest-row__info">
+                <span class="dest-row__city">Amsterdam</span>
+                <span class="dest-row__country">Netherlands</span>
+              </div>
+              <div class="dest-row__right">
+                <div class="dest-row__price-wrap">
+                  <span class="dest-row__from">From</span>
+                  <span class="dest-row__price">EUR 782</span>
+                </div>
+                <svg class="dest-row__arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+
+            <div class="dest-row" role="listitem" tabindex="0">
+              <div class="dest-row__info">
+                <span class="dest-row__city">Madrid</span>
+                <span class="dest-row__country">Spain</span>
+              </div>
+              <div class="dest-row__right">
+                <div class="dest-row__price-wrap">
+                  <span class="dest-row__from">From</span>
+                  <span class="dest-row__price">EUR 782</span>
+                </div>
+                <svg class="dest-row__arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+
+            <div class="dest-row" role="listitem" tabindex="0">
+              <div class="dest-row__info">
+                <span class="dest-row__city">Rome</span>
+                <span class="dest-row__country">Italy</span>
+              </div>
+              <div class="dest-row__right">
+                <div class="dest-row__price-wrap">
+                  <span class="dest-row__from">From</span>
+                  <span class="dest-row__price">EUR 782</span>
+                </div>
+                <svg class="dest-row__arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+              </div>
+            </div>
+
+            <div class="dest-list__footer">
+              <span class="dest-list__explore">Explore all</span>
+              <button class="dest-list__cta" type="button" aria-label="Explore all destinations">
+                <div class="icon-btn-arrows" aria-hidden="true">
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--neutral-0)"/></svg>
+                  <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--neutral-0)"/></svg>
+                </div>
+              </button>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
   </main>
 
   <!-- ── Scripts ───────────────────────────────── -->

@@ -224,6 +224,8 @@ principles.mnd
 - **Display & Headline**: `KLM UniversalSans-Display-Medium` (weight 500)
 - **Body & Label**: `KLM UniversalSans-Text-*` — Regular (400), Medium (500), Bold (700)
 
+> **Rule:** All display and headline styles always use `font-weight: 500` (Medium). There is no `--headline-*-weight` token in brand.css — always hardcode `font-weight: 500` when setting display/headline type manually in CSS.
+
 ### Display — Universal Sans Display, Medium (desktop ≥720px / mobile <720px)
 | Token        | Desktop size / line-height | Mobile size / line-height |
 |--------------|---------------------------|--------------------------|
@@ -473,6 +475,31 @@ The gradient is implemented as an absolutely-positioned overlay with a heavy blu
 - Always render behind content via `z-index: -1` and `pointer-events: none`
 - The parent container must have `position: relative` and `overflow: hidden`
 - Do not add additional box-shadows or glows on top of this element
+
+---
+
+## Eyebrows
+
+Eyebrows (section labels above headings) always use **headline-s** — display font, Medium (500), no all-caps, no letter-spacing overrides.
+
+| Property | Value |
+|---|---|
+| Font | `--font-display` |
+| Size / line-height | `--headline-s-size` / `--headline-s-lh` |
+| Weight | `500` (Medium) |
+| Case | Sentence case — never `text-transform: uppercase` |
+| Colour | Context-dependent (`--text-subtle` on light bg, `--text-contrast` with reduced opacity on dark/image bg) |
+
+---
+
+## Borders & dividers
+
+All borders and dividers use **1.5px** stroke weight and the `--border-subtle` token. Never use `1px` or `--border-default` for separators.
+
+| Property | Value |
+|---|---|
+| Stroke width | `1.5px` |
+| Colour token | `--border-subtle` |
 
 ---
 
