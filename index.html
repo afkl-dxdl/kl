@@ -1389,6 +1389,221 @@
       .icon-btn-arrows svg { transition: none; }
     }
 
+    /* ─── Travel Guide mosaic ────────────────────── */
+
+    .guide {
+      background: var(--blue-900);
+      overflow: hidden;
+      position: relative;
+    }
+
+    /* Top & bottom fade */
+    .guide::before,
+    .guide::after {
+      content: '';
+      position: absolute;
+      left: 0; right: 0;
+      height: 160px;
+      z-index: 2;
+      pointer-events: none;
+    }
+
+    .guide::before {
+      top: 0;
+      background: linear-gradient(to bottom, var(--blue-900), transparent);
+    }
+
+    .guide::after {
+      bottom: 0;
+      background: linear-gradient(to top, var(--blue-900), transparent);
+    }
+
+    .guide__inner {
+      max-width: 1320px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 80px;
+      height: 720px;
+    }
+
+    /* ── Image columns ── */
+
+    .guide__photos {
+      position: relative;
+    }
+
+    .guide__col-wrap {
+      display: flex;
+      gap: 16px;
+      position: absolute;
+      top: 50%;
+      left: 0; right: 0;
+      transform: translateY(-50%);
+      align-items: flex-start;
+    }
+
+    /* Float wrappers — entrance + idle drift */
+
+    .guide__float-a,
+    .guide__float-b {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+    }
+
+    /* Entrance: left col slides up, right col slides down */
+    @keyframes guide-enter-up {
+      from { opacity: 0; transform: translateY(80px); }
+      to   { opacity: 1; transform: translateY(0);    }
+    }
+
+    @keyframes guide-enter-down {
+      from { opacity: 0; transform: translateY(-80px); }
+      to   { opacity: 1; transform: translateY(0);     }
+    }
+
+    /* Idle float — opposite directions, like AF phase offset */
+    @keyframes guide-float-down {
+      0%   { transform: translateY(0px);  }
+      43%  { transform: translateY(50px); animation-timing-function: linear; }
+      57%  { transform: translateY(50px); animation-timing-function: ease-in-out; }
+      100% { transform: translateY(0px);  }
+    }
+
+    @keyframes guide-float-up {
+      0%   { transform: translateY(0px);   }
+      43%  { transform: translateY(-50px); animation-timing-function: linear; }
+      57%  { transform: translateY(-50px); animation-timing-function: ease-in-out; }
+      100% { transform: translateY(0px);   }
+    }
+
+    /* Triggered by IntersectionObserver adding .guide--visible */
+    .guide--visible .guide__float-a {
+      animation:
+        guide-enter-up   1.2s var(--ease-expo) 0s    forwards,
+        guide-float-down 14s  ease-in-out      1.2s  infinite;
+    }
+
+    .guide--visible .guide__float-b {
+      animation:
+        guide-enter-down 1.2s var(--ease-expo) 0.15s forwards,
+        guide-float-up   14s  ease-in-out      1.35s infinite;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .guide__float-a,
+      .guide__float-b { opacity: 1; }
+      .guide--visible .guide__float-a,
+      .guide--visible .guide__float-b { animation: none; opacity: 1; }
+    }
+
+    .guide__col {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      flex: 1;
+    }
+
+    .guide__col--offset { margin-top: -80px; }
+
+    .guide__img {
+      position: relative;
+      flex-shrink: 0;
+      border-radius: var(--radius-32);
+      overflow: hidden;
+      background: var(--blue-800);
+      aspect-ratio: 3 / 4;
+    }
+
+    .guide__img img {
+      display: block;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+
+    /* ── Copy ── */
+
+    .guide__copy {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      padding: var(--space-xl-section) 48px var(--space-xl-section) var(--space-32);
+      position: relative;
+      z-index: 3;
+    }
+
+    .guide__eyebrow {
+      display: block;
+      font-family: var(--font-display);
+      font-size: var(--headline-s-size);
+      line-height: var(--headline-s-lh);
+      font-weight: 500;
+      color: var(--neutral-0);
+    }
+
+    .guide__title {
+      font-family: var(--font-display);
+      font-size: var(--headline-xl-size);
+      line-height: var(--headline-xl-lh);
+      font-weight: 500;
+      color: var(--highlighted-title);
+      margin-bottom: var(--space-24);
+    }
+
+    .guide__desc {
+      color: var(--neutral-0);
+      opacity: 0.85;
+      line-height: 1.6;
+      max-width: 380px;
+      margin-bottom: var(--space-40);
+    }
+
+    .btn--guide {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      height: 48px;
+      padding: 0 var(--space-24);
+      background: var(--colour-active);
+      color: var(--neutral-0);
+      border-radius: var(--radius-16);
+      font-family: var(--font-text);
+      font-size: var(--body-m-size);
+      line-height: var(--body-m-lh);
+      font-weight: 700;
+      white-space: nowrap;
+      align-self: flex-start;
+      cursor: pointer;
+      transition: background 0.2s var(--ease-expo), transform 0.15s;
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .btn--guide:hover { background: var(--blue-600); }
+      .btn--guide:active { transform: scale(0.98); }
+    }
+
+    /* Mobile */
+    @media (max-width: 959px) {
+      .guide__inner {
+        grid-template-columns: 1fr;
+        height: auto;
+      }
+      .guide__photos {
+        height: 400px;
+        overflow: hidden;
+      }
+      .guide__col-wrap {
+        padding: 0 16px;
+      }
+      .guide__copy {
+        padding: var(--space-xl-section) var(--space-16);
+      }
+    }
+
+
     /* ─── Travel Well section ────────────────────── */
 
     .travel-well {
@@ -1459,6 +1674,271 @@
       }
       .travel-well__image {
         order: -1;
+      }
+    }
+
+    /* ─── Newsletter ────────────────────────────── */
+
+    .newsletter {
+      padding: var(--space-xl-section) 48px;
+      background: var(--bg-alternative);
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .newsletter__heading {
+      font-family: var(--font-display);
+      font-size: clamp(2.5rem, 6vw, 4.5rem);
+      line-height: 1.05;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-default);
+      text-wrap: balance;
+      max-width: 840px;
+      margin-bottom: var(--space-40);
+    }
+
+    /* 16:9 image embedded inline in the heading */
+    .newsletter__inline-media {
+      display: inline-block;
+      vertical-align: middle;
+      /* Width drives the size; height is 9/16 of that */
+      width: clamp(80px, 10vw, 148px);
+      aspect-ratio: 16 / 9;
+      border-radius: var(--radius-16);
+      overflow: hidden;
+      position: relative;
+      margin: 0 0.15em;
+      transform: translateY(0.04em);
+    }
+
+    .newsletter__inline-media img,
+    .newsletter__inline-media video {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .newsletter__form {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-12);
+      width: 100%;
+      max-width: 480px;
+    }
+
+    /* Input — matches large button height via identical vertical padding */
+    .newsletter__input {
+      width: 100%;
+      padding: var(--space-16) var(--space-16);
+      border-radius: var(--radius-16);
+      border: 1.5px solid var(--border-subtle);
+      background: var(--bg-default);
+      font-family: var(--font-text);
+      font-size: var(--body-m-size);
+      line-height: var(--body-m-lh);
+      font-weight: 500;
+      color: var(--text-default);
+      outline: none;
+      transition: border-color 0.2s var(--ease-expo);
+      -webkit-appearance: none;
+    }
+
+    .newsletter__input::placeholder {
+      color: var(--text-alternative);
+      font-weight: 400;
+    }
+
+    .newsletter__input:hover { border-color: var(--border-default); }
+    .newsletter__input:focus { border-color: var(--border-active); }
+
+    /* Primary large button per brand.md */
+    .newsletter__btn {
+      width: 100%;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: var(--space-16) var(--space-24);
+      background: var(--colour-active);
+      color: var(--neutral-0);
+      border-radius: var(--radius-16);
+      font-family: var(--font-text);
+      font-size: var(--body-m-size);
+      line-height: var(--body-m-lh);
+      font-weight: 500;
+      cursor: pointer;
+      border: none;
+      transition: background 0.2s var(--ease-expo), transform 0.15s;
+    }
+
+    .newsletter__btn:hover  { background: var(--blue-700, #0072C6); }
+    .newsletter__btn:active { transform: scale(0.98); }
+
+    @media (max-width: 959px) {
+      .newsletter {
+        padding-left: var(--space-16);
+        padding-right: var(--space-16);
+      }
+    }
+
+    /* ─── Footer ─────────────────────────────────── */
+
+    .footer {
+      background: var(--bg-alternative);
+      padding: var(--space-64) var(--space-24);
+    }
+
+    .footer__inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      border-top: 1px solid var(--border-subtle);
+      padding-top: var(--space-64);
+    }
+
+    .footer__logo {
+      height: 48px;
+      width: auto;
+      display: block;
+      margin-bottom: var(--space-40);
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .footer__top {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-48);
+      margin-bottom: var(--space-64);
+    }
+
+    .footer__mid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: var(--space-48);
+      margin-bottom: var(--space-64);
+    }
+
+    .footer__app-stores {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-12);
+    }
+
+    .footer__app-store {
+      display: block;
+      line-height: 0;
+      align-self: flex-start;
+      transition: opacity 0.15s;
+    }
+
+    .footer__app-store:hover { opacity: 0.8; }
+
+    .footer__app-store img {
+      display: block;
+      width: 136px;
+      height: auto;
+    }
+
+    .footer__col-toggle {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: var(--space-16);
+      width: 100%;
+      background: none;
+      border: none;
+      padding: 0;
+      margin-bottom: var(--space-16);
+      color: var(--blue-900);
+      text-align: left;
+      cursor: default;
+    }
+
+    .footer__col-chevron {
+      display: none;
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      transition: transform 0.3s var(--ease-expo);
+    }
+
+    .footer__col ul { display: flex; flex-direction: column; gap: var(--space-12); }
+
+    .footer__col a {
+      color: var(--text-alternative);
+      opacity: 1;
+      transition: color 0.15s;
+    }
+
+    .footer__col a:hover { color: var(--text-default); }
+
+    .footer__col-panel { display: grid; grid-template-rows: 1fr; }
+    .footer__col-panel-inner { min-height: 0; }
+
+    .footer__bottom {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: var(--space-8);
+    }
+
+    .footer__legal-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: var(--space-24);
+    }
+
+    .footer__legal-links a {
+      color: var(--text-alternative);
+      opacity: 1;
+      transition: color 0.15s;
+    }
+
+    .footer__legal-links a:hover { color: var(--text-default); }
+
+    @media (max-width: 959px) {
+      .footer { padding-left: var(--space-16); padding-right: var(--space-16); }
+
+      .footer__inner { border-top: none; padding-top: 0; }
+
+      .footer__top,
+      .footer__mid {
+        grid-template-columns: 1fr;
+        gap: 0;
+        margin-bottom: 0;
+      }
+
+      .footer__bottom { flex-direction: column; gap: var(--space-16); align-items: flex-start; margin-top: var(--space-24); }
+
+      .footer__col { border-bottom: 1px solid var(--border-subtle); }
+      .footer__top .footer__col:first-child { border-top: 1px solid var(--border-subtle); }
+
+      .footer__col-toggle {
+        cursor: pointer;
+        padding: var(--space-20) 0;
+        margin-bottom: 0;
+      }
+
+      .footer__col-chevron { display: block; }
+      .footer__col.is-open .footer__col-chevron { transform: rotate(180deg); }
+
+      .footer__col-panel {
+        grid-template-rows: 0fr;
+        transition: grid-template-rows 0.4s var(--ease-expo);
+      }
+
+      .footer__col.is-open .footer__col-panel { grid-template-rows: 1fr; }
+
+      .footer__col-panel-inner { overflow: hidden; }
+
+      .footer__col-panel-inner ul,
+      .footer__col-panel-inner .footer__app-stores {
+        padding-bottom: var(--space-20);
       }
     }
 
@@ -1875,7 +2355,242 @@
       </div>
     </section>
 
+    <!-- Travel Guide -->
+    <section class="guide" aria-labelledby="guide-title">
+      <div class="guide__inner">
+
+        <!-- Photo columns -->
+        <div class="guide__photos" aria-hidden="true">
+          <div class="guide__col-wrap">
+
+            <div class="guide__float-a">
+              <div class="guide__col">
+                <div class="guide__img"><img src="assets/images/travel guide/Rectangle 2995.jpg"   alt="" loading="lazy" /></div>
+                <div class="guide__img"><img src="assets/images/travel guide/Rectangle 2995-2.jpg" alt="" loading="lazy" /></div>
+                <div class="guide__img"><img src="assets/images/travel guide/Rectangle 2995-4.jpg" alt="" loading="lazy" /></div>
+              </div>
+            </div>
+
+            <div class="guide__float-b">
+              <div class="guide__col guide__col--offset">
+                <div class="guide__img"><img src="assets/images/travel guide/Rectangle 2995-1.jpg" alt="" loading="lazy" /></div>
+                <div class="guide__img"><img src="assets/images/travel guide/Rectangle 2995-3.jpg" alt="" loading="lazy" /></div>
+                <div class="guide__img"><img src="assets/images/travel guide/Rectangle 2995-5.jpg" alt="" loading="lazy" /></div>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Copy -->
+        <div class="guide__copy">
+          <div class="section-heading" style="margin-bottom: var(--space-24)">
+            <span class="guide__eyebrow">KLM Travel Guide</span>
+            <h2 class="guide__title" id="guide-title">Create life-lasting memories</h2>
+          </div>
+          <p class="guide__desc">Ready to add some colour to your life? Start with discovering our beautiful destinations — it's the beginning of your next adventure.</p>
+          <a href="#" class="btn--guide">Discover our travel guide</a>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Newsletter ──────────────────────────────── -->
+    <section class="newsletter" aria-labelledby="newsletter-title">
+      <h2 class="newsletter__heading" id="newsletter-title">
+        More inspiration right in
+        <span class="newsletter__inline-media" aria-hidden="true">
+          <video src="assets/video/newsletter.webm" autoplay loop muted playsinline></video>
+        </span>
+        your inbox
+      </h2>
+      <form class="newsletter__form" action="#" method="post" novalidate>
+        <input
+          class="newsletter__input"
+          type="email"
+          name="email"
+          placeholder="Your e-mail address"
+          autocomplete="email"
+          required
+          aria-label="E-mail address"
+        />
+        <button class="newsletter__btn" type="submit">Subscribe</button>
+      </form>
+    </section>
+
   </main>
+
+  <!-- ── Footer ────────────────────────────────── -->
+  <footer class="footer" role="contentinfo">
+    <img src="assets/logo/logo-full.svg" alt="KLM Royal Dutch Airlines" class="footer__logo" />
+    <div class="footer__inner">
+
+      <div class="footer__top">
+
+        <div class="footer__col">
+          <button class="footer__col-toggle body-m-medium" type="button" aria-expanded="false">
+            <span>Book</span>
+            <svg class="footer__col-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+          </button>
+          <div class="footer__col-panel">
+            <div class="footer__col-panel-inner">
+              <ul>
+                <li><a href="#" class="body-s-regular">Flights</a></li>
+                <li><a href="#" class="body-s-regular">Hotels</a></li>
+                <li><a href="#" class="body-s-regular">Car rental</a></li>
+                <li><a href="#" class="body-s-regular">Holiday packages</a></li>
+                <li><a href="#" class="body-s-regular">Business travel</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer__col">
+          <button class="footer__col-toggle body-m-medium" type="button" aria-expanded="false">
+            <span>My trip</span>
+            <svg class="footer__col-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+          </button>
+          <div class="footer__col-panel">
+            <div class="footer__col-panel-inner">
+              <ul>
+                <li><a href="#" class="body-s-regular">Manage booking</a></li>
+                <li><a href="#" class="body-s-regular">Check in online</a></li>
+                <li><a href="#" class="body-s-regular">Flight status</a></li>
+                <li><a href="#" class="body-s-regular">Baggage</a></li>
+                <li><a href="#" class="body-s-regular">Seat selection</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer__col">
+          <button class="footer__col-toggle body-m-medium" type="button" aria-expanded="false">
+            <span>Help &amp; contact</span>
+            <svg class="footer__col-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+          </button>
+          <div class="footer__col-panel">
+            <div class="footer__col-panel-inner">
+              <ul>
+                <li><a href="#" class="body-s-regular">Contact us</a></li>
+                <li><a href="#" class="body-s-regular">Refund</a></li>
+                <li><a href="#" class="body-s-regular">Claims</a></li>
+                <li><a href="#" class="body-s-regular">Request a receipt</a></li>
+                <li><a href="#" class="body-s-regular">Passengers with disabilities</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer__col">
+          <button class="footer__col-toggle body-m-medium" type="button" aria-expanded="false">
+            <span>Company</span>
+            <svg class="footer__col-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+          </button>
+          <div class="footer__col-panel">
+            <div class="footer__col-panel-inner">
+              <ul>
+                <li><a href="#" class="body-s-regular">About KLM</a></li>
+                <li><a href="#" class="body-s-regular">Flying Blue</a></li>
+                <li><a href="#" class="body-s-regular">Careers</a></li>
+                <li><a href="#" class="body-s-regular">Press</a></li>
+                <li><a href="#" class="body-s-regular">Sustainability</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer__mid">
+
+        <div class="footer__col">
+          <button class="footer__col-toggle body-m-medium" type="button" aria-expanded="false">
+            <span>Fly from</span>
+            <svg class="footer__col-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+          </button>
+          <div class="footer__col-panel">
+            <div class="footer__col-panel-inner">
+              <ul>
+                <li><a href="#" class="body-s-regular">Amsterdam</a></li>
+                <li><a href="#" class="body-s-regular">London</a></li>
+                <li><a href="#" class="body-s-regular">New York</a></li>
+                <li><a href="#" class="body-s-regular">Toronto</a></li>
+                <li><a href="#" class="body-s-regular">Singapore</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer__col">
+          <button class="footer__col-toggle body-m-medium" type="button" aria-expanded="false">
+            <span>Fly to the Netherlands</span>
+            <svg class="footer__col-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+          </button>
+          <div class="footer__col-panel">
+            <div class="footer__col-panel-inner">
+              <ul>
+                <li><a href="#" class="body-s-regular">London - Amsterdam</a></li>
+                <li><a href="#" class="body-s-regular">New York - Amsterdam</a></li>
+                <li><a href="#" class="body-s-regular">Toronto - Amsterdam</a></li>
+                <li><a href="#" class="body-s-regular">Singapore - Amsterdam</a></li>
+                <li><a href="#" class="body-s-regular">Sydney - Amsterdam</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer__col">
+          <button class="footer__col-toggle body-m-medium" type="button" aria-expanded="false">
+            <span>Fly worldwide</span>
+            <svg class="footer__col-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+          </button>
+          <div class="footer__col-panel">
+            <div class="footer__col-panel-inner">
+              <ul>
+                <li><a href="#" class="body-s-regular">All flights</a></li>
+                <li><a href="#" class="body-s-regular">London - New York</a></li>
+                <li><a href="#" class="body-s-regular">Amsterdam - Tokyo</a></li>
+                <li><a href="#" class="body-s-regular">Amsterdam - Cape Town</a></li>
+                <li><a href="#" class="body-s-regular">Amsterdam - Dubai</a></li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+        <div class="footer__col">
+          <button class="footer__col-toggle body-m-medium" type="button" aria-expanded="false">
+            <span>KLM app</span>
+            <svg class="footer__col-chevron" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+          </button>
+          <div class="footer__col-panel">
+            <div class="footer__col-panel-inner">
+              <div class="footer__app-stores">
+                <a href="#" class="footer__app-store" aria-label="Download on the App Store">
+                  <img src="assets/images/app-store.svg" alt="Download on the App Store" width="136" height="40" />
+                </a>
+                <a href="#" class="footer__app-store" aria-label="Get it on Google Play">
+                  <img src="assets/images/google-play.svg" alt="Get it on Google Play" width="136" height="40" />
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="footer__bottom">
+        <nav class="footer__legal-links" aria-label="Legal links">
+          <a href="#" class="label-m-regular">Site Map</a>
+          <a href="#" class="label-m-regular">Legal information</a>
+          <a href="#" class="label-m-regular">Service address</a>
+          <a href="#" class="label-m-regular">Privacy policy</a>
+          <a href="#" class="label-m-regular">Accessibility statement</a>
+          <a href="#" class="label-m-regular">Cookie settings</a>
+        </nav>
+      </div>
+
+    </div>
+  </footer>
 
   <!-- ── Scripts ───────────────────────────────── -->
 
@@ -1964,6 +2679,39 @@
     );
 
     document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    /* ── Guide section: entrance + float animation ── */
+    const guideSection = document.querySelector('.guide');
+    if (guideSection) {
+      const guideObserver = new IntersectionObserver(
+        ([entry]) => {
+          if (entry.isIntersecting) {
+            guideSection.classList.add('guide--visible');
+            guideObserver.disconnect();
+          }
+        },
+        { threshold: 0.15 }
+      );
+      guideObserver.observe(guideSection);
+    }
+
+    /* ── Footer: mobile accordion ───────────────── */
+    (function () {
+      const toggles = document.querySelectorAll('.footer__col-toggle');
+      toggles.forEach(function (btn, i) {
+        const panel = btn.nextElementSibling;
+        if (!panel) return;
+        const id = 'footer-panel-' + i;
+        panel.id = id;
+        btn.setAttribute('aria-controls', id);
+        btn.addEventListener('click', function () {
+          if (window.matchMedia('(min-width: 960px)').matches) return;
+          const col = btn.closest('.footer__col');
+          const isOpen = col.classList.toggle('is-open');
+          btn.setAttribute('aria-expanded', String(isOpen));
+        });
+      });
+    })();
   </script>
 
 </body>
