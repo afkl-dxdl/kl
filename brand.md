@@ -157,6 +157,7 @@ principles.mnd
 |Background default             | warm-grey-50            |default background                                                        |
 |Background alternative         | neutral-0               |alternative (white) background for contrast                               |
 |Background scrim               | blue-900                |for contasting layers such as scrims and contrasting gradients            |
+|Background high contrast       | blue-900                |for backgrounds that should have very high contrast                       |
 |Highlighted title              | blue-200                |to highlight a title on surface contrast                                  |
 |Colour brand                   | blue-400                |only used for logo and sky gradient, never for text                       |
 |Colour active                  | blue-500                |interactive elements such as links and primaire button                    |
