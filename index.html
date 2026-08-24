@@ -2155,7 +2155,9 @@
     .search-v2__tab:first-child { border-radius: var(--radius-32) 0 0 0; }
     .search-v2__tab:last-child  { border-radius: 0 var(--radius-32) 0 0; }
 
-    .search-v2__tab--active {
+    .search-v2__tab--active,
+    .search-v2__tab--active:first-child,
+    .search-v2__tab--active:last-child {
       background: var(--neutral-0); /* pure white, same as card body */
       color: var(--text-default);
       font-weight: 700;
@@ -2189,17 +2191,24 @@
     }
 
     .search-v2__select-wrap {
-      position: relative;
-      display: flex;
+      display: inline-flex;
       align-items: center;
+      gap: var(--space-8);
+      border-radius: var(--radius-8);
+      transition: background 0.2s var(--ease-expo);
+      cursor: pointer;
     }
+    .search-v2__select-wrap:hover { background: var(--bg-alternative); }
+    .search-v2__select-wrap:focus-within { background: var(--bg-alternative); }
 
     .search-v2__select {
       appearance: none;
       -webkit-appearance: none;
       background: transparent;
       border: none;
-      padding: var(--space-8) var(--space-32) var(--space-8) var(--space-16);
+      width: auto;
+      transition: width 0.2s var(--ease-expo);
+      padding: var(--space-8) 0 var(--space-8) var(--space-16);
       font-family: var(--font-text);
       font-size: var(--body-m-size);
       line-height: var(--body-m-lh);
@@ -2207,18 +2216,13 @@
       color: var(--text-default);
       cursor: pointer;
       outline: none;
-      border-radius: var(--radius-8);
-      transition: background 0.2s var(--ease-expo);
     }
 
-    .search-v2__select:hover  { background: var(--bg-alternative); }
-    .search-v2__select:focus  { background: var(--bg-alternative); }
-
     .search-v2__select-icon {
-      position: absolute;
-      right: var(--space-8);
       width: 16px;
       height: 16px;
+      flex-shrink: 0;
+      margin-right: var(--space-8);
       color: var(--text-default);
       pointer-events: none;
     }
@@ -2453,7 +2457,7 @@
                     <option value="oneway">One-way</option>
                     <option value="multi">Multi-city</option>
                   </select>
-                  <svg class="search-v2__select-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+                  <img class="search-v2__select-icon" src="assets/icons/icon-chevron-down.svg" width="16" height="16" aria-hidden="true" alt="" />
                 </div>
 
                 <div class="search-v2__select-wrap">
@@ -2463,7 +2467,7 @@
                     <option value="business">Business Class</option>
                     <option value="first">First Class</option>
                   </select>
-                  <svg class="search-v2__select-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+                  <img class="search-v2__select-icon" src="assets/icons/icon-chevron-down.svg" width="16" height="16" aria-hidden="true" alt="" />
                 </div>
 
               </div>
@@ -3218,6 +3222,29 @@
           const isOpen = col.classList.toggle('is-open');
           btn.setAttribute('aria-expanded', String(isOpen));
         });
+      });
+    })();
+
+    /* ── Size v2 selects to their selected text ───────── */
+    (function () {
+      var mirror = document.createElement('span');
+      mirror.style.cssText = [
+        'position:absolute', 'visibility:hidden', 'white-space:pre',
+        'font-family:var(--font-text)', 'font-size:var(--body-m-size)',
+        'font-weight:500', 'pointer-events:none'
+      ].join(';');
+      document.body.appendChild(mirror);
+
+      function sizeSelect(sel) {
+        var opt = sel.options[sel.selectedIndex];
+        mirror.textContent = opt ? opt.text : '';
+        var pad = parseInt(getComputedStyle(sel).paddingLeft) || 0;
+        sel.style.width = (mirror.offsetWidth + pad) + 'px';
+      }
+
+      document.querySelectorAll('.search-v2__select').forEach(function (sel) {
+        sizeSelect(sel);
+        sel.addEventListener('change', function () { sizeSelect(sel); });
       });
     })();
   </script>
