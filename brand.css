@@ -181,8 +181,9 @@
 
   --divider-light: var(--warm-grey-100);
   --divider-dark: var(--warm-grey-200);
-  --border-subtle: var(--warm-grey-100);
-  --border-default: var(--warm-grey-200);
+  --border-subtle: var(--warm-grey-50);
+  --border-default: var(--warm-grey-100);
+  --border-contrast: var(--warm-grey-200);
   --border-active: var(--blue-500);
 
   /* --- Typography --------------------------- */
