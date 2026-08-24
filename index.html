@@ -637,9 +637,16 @@
 
     .search__fields {
       display: grid;
-      /* From | swap | To | Departure | Return | Button */
-      grid-template-columns: 1fr auto 1fr 1fr 1fr auto;
+      /* Route group | Travel class | Travel dates | Button */
+      grid-template-columns: 2fr 1fr 1fr auto;
       gap: var(--space-16);
+      align-items: stretch;
+    }
+
+    /* ── From / To route group ─────────────────────── */
+    .search__route {
+      position: relative;
+      display: flex;
       align-items: stretch;
     }
 
@@ -653,6 +660,36 @@
       border-radius: var(--radius-16);
       cursor: pointer;
       transition: border-color 0.2s var(--ease-expo);
+      flex: 1;
+      min-width: 0;
+    }
+
+    /* From field — radius on left only, no right border */
+    .search__field--from {
+      border-radius: var(--radius-16) 0 0 var(--radius-16);
+      border-right: none;
+      padding-right: 44px;
+    }
+
+    /* To field — radius on right only, no left border */
+    .search__field--to {
+      border-radius: 0 var(--radius-16) var(--radius-16) 0;
+      border-left: none;
+      padding-left: 44px;
+    }
+
+    /* Single divider between From and To */
+    .search__route::after {
+      content: '';
+      position: absolute;
+      left: 50%;
+      top: 10px;
+      bottom: 10px;
+      width: 1.5px;
+      background: var(--border-default);
+      transform: translateX(-50%);
+      pointer-events: none;
+      z-index: 1;
     }
 
     .search__field:hover {
@@ -663,6 +700,25 @@
     .search__field:focus {
       outline: none;
       border-color: var(--border-active);
+    }
+
+    /* is-active needs to beat :hover specificity (0,2,1) */
+    .search__fields .search__field.is-active {
+      outline: none;
+      border-color: var(--border-active);
+    }
+
+    /* Restore the hidden adjacent border when active, so all 4 sides turn blue */
+    .search__fields .search__field--from.is-active {
+      border-right: 1.5px solid var(--border-active);
+    }
+    .search__fields .search__field--to.is-active {
+      border-left: 1.5px solid var(--border-active);
+    }
+
+    /* Hide the single divider line while a field is active */
+    .search__route:has(.is-active)::after {
+      display: none;
     }
 
     .search__label {
@@ -685,26 +741,31 @@
       text-overflow: ellipsis;
     }
 
-    /* Swap button — rounded */
+    /* Swap button — absolutely centred at the From/To seam */
     .search__swap {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 2;
       width: 36px;
       height: 36px;
       border-radius: 9999px;
       corner-shape: round;
       background: var(--surface-highlight);
+      border: none;
       display: flex;
       align-items: center;
       justify-content: center;
       flex-shrink: 0;
-      align-self: center;
       transition: background 0.2s;
     }
 
     .search__swap:hover { background: var(--surface-highlight-emphasis); }
 
     .search__swap svg {
-      width: 16px;
-      height: 16px;
+      width: 14px;
+      height: 14px;
       color: var(--colour-active);
       transition: transform 0.7s cubic-bezier(0.33, 1, 0.68, 1);
     }
@@ -762,7 +823,24 @@
         grid-template-columns: 1fr;
       }
 
-      /* Swap button makes no sense in a stacked layout */
+      /* Route group stacks vertically with same gap as other fields */
+      .search__route {
+        flex-direction: column;
+        gap: var(--space-16);
+      }
+
+      /* Restore full radii, borders and normal padding on mobile */
+      .search__field--from,
+      .search__field--to {
+        border-radius: var(--radius-16);
+        border: 1.5px solid var(--border-default);
+        padding: 10px var(--space-16);
+      }
+
+      /* Hide the divider line on mobile */
+      .search__route::after { display: none; }
+
+      /* Hide swap on mobile */
       .search__swap { display: none; }
 
       /* Button fills the full card width when stacked */
@@ -2058,30 +2136,33 @@
         <!-- Fields -->
         <div class="search__fields">
 
-          <div class="search__field" tabindex="0" aria-label="Departure city">
-            <span class="search__label">From</span>
-            <span class="search__value">Amsterdam AMS</span>
+          <!-- From / To route group -->
+          <div class="search__route">
+            <div class="search__field search__field--from" tabindex="0" aria-label="Departure city">
+              <span class="search__label">From</span>
+              <span class="search__value">Amsterdam AMS</span>
+            </div>
+
+            <button class="search__swap" type="button" aria-label="Swap departure and destination">
+              <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                <path d="M11.5 2.5L14 5l-2.5 2.5M2 5h12M4.5 13.5L2 11l2.5-2.5M14 11H2"/>
+              </svg>
+            </button>
+
+            <div class="search__field search__field--to" tabindex="0" aria-label="Destination city">
+              <span class="search__label">To</span>
+              <span class="search__value">Where to?</span>
+            </div>
           </div>
 
-          <button class="search__swap" type="button" aria-label="Swap departure and destination">
-            <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
-              <path d="M11.5 2.5L14 5l-2.5 2.5M2 5h12M4.5 13.5L2 11l2.5-2.5M14 11H2"/>
-            </svg>
-          </button>
-
-          <div class="search__field" tabindex="0" aria-label="Destination city">
-            <span class="search__label">To</span>
-            <span class="search__value">Where to?</span>
+          <div class="search__field" tabindex="0" aria-label="Travel class">
+            <span class="search__label">Travel class</span>
+            <span class="search__value">Economy class</span>
           </div>
 
-          <div class="search__field" tabindex="0" aria-label="Departure date">
-            <span class="search__label">Departure date</span>
-            <span class="search__value">Select date</span>
-          </div>
-
-          <div class="search__field" tabindex="0" aria-label="Return date">
-            <span class="search__label">Return date</span>
-            <span class="search__value">Select date</span>
+          <div class="search__field" tabindex="0" aria-label="Travel dates">
+            <span class="search__label">Travel dates</span>
+            <span class="search__value">Select dates</span>
           </div>
 
           <button class="btn--search-klm" type="button">
@@ -2699,6 +2780,25 @@
           tab.setAttribute('aria-selected', 'true');
           moveIndicator(tab);
         });
+      });
+    })();
+
+    /* ── Search field active state ─────────────── */
+    (function () {
+      const fields = document.querySelectorAll('.search__field');
+      fields.forEach(function (field) {
+        field.addEventListener('mousedown', function () {
+          fields.forEach(function (f) { f.classList.remove('is-active'); });
+          field.classList.add('is-active');
+        });
+        field.addEventListener('blur', function () {
+          field.classList.remove('is-active');
+        });
+      });
+      document.addEventListener('mousedown', function (e) {
+        if (!e.target.closest('.search__field')) {
+          fields.forEach(function (f) { f.classList.remove('is-active'); });
+        }
       });
     })();
 
