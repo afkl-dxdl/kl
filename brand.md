@@ -170,8 +170,9 @@ principles.mnd
 |Text critical                  | red-500                 |critical or warning messages                                              |
 |Colour divider light           | warm-grey-100           |dividers on background alternative                                        |
 |Colour divider dark            | warm-grey-200           |dividers on background default                                            |
-|Border subtle                  | warm-grey-100           |subtle border on background alternative                                   |
-|Border default                 | warm-grey-200           |default border                                                            |
+|Border subtle                  | warm-grey-50            |subtle border on background alternative                                   |
+|Border default                 | warm-grey-100           |default border                                                            |
+|Border contrast                | warm-grey-200           |extra contrast                                                            |
 |Border active                  | blue-500                |when a border item becomes selectes or active                             |
 |Surface system informative     | blue-200                |surface for nformative notifications                                      |
 |Surface system success         | green-100               |surface for success notifications                                         |

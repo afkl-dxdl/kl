@@ -2119,6 +2119,127 @@
       }
     }
 
+    /* ── Search v2 card structure ───────────────── */
+
+    .search--v2 {
+      background: transparent;
+      padding: 0;
+      border-radius: var(--radius-24);
+      overflow: visible;
+    }
+
+    /* ── Search v2: tab bar (dark blue strip at top) ── */
+
+    .search-v2__tabbar {
+      display: flex;
+      background: var(--surface-contrast); /* dark blue */
+      border-radius: var(--radius-32) var(--radius-32) 0 0;
+      width: fit-content;
+    }
+
+    .search-v2__tab {
+      width: 160px;
+      padding: var(--space-12) var(--space-16);
+      font-family: var(--font-text);
+      font-size: var(--body-s-size, 14px);
+      line-height: var(--body-s-lh, 20px);
+      font-weight: 500;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s var(--ease-expo), color 0.2s var(--ease-expo);
+      color: var(--blue-200, #a5d5ef);
+      background: transparent;
+      border-radius: 0;
+    }
+
+    .search-v2__tab:first-child { border-radius: var(--radius-32) 0 0 0; }
+    .search-v2__tab:last-child  { border-radius: 0 var(--radius-32) 0 0; }
+
+    .search-v2__tab--active {
+      background: var(--neutral-0); /* pure white, same as card body */
+      color: var(--text-default);
+      font-weight: 700;
+      border-radius: var(--radius-32) var(--radius-32) 0 0;
+    }
+
+    /* ── Search v2: white body ───────────────────── */
+
+    .search-v2__body {
+      background: var(--neutral-0); /* pure white */
+      border-radius: 0 var(--radius-32) var(--radius-32) var(--radius-32);
+      padding: var(--space-32);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-24);
+    }
+
+    /* Controls: selects row (search__top) + fields stacked with 12px gap */
+    .search-v2__controls {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+
+    /* ── Search v2: select dropdowns ───────────── */
+
+    .search-v2__selects {
+      display: flex;
+      gap: var(--space-4);
+      align-items: center;
+    }
+
+    .search-v2__select-wrap {
+      position: relative;
+      display: flex;
+      align-items: center;
+    }
+
+    .search-v2__select {
+      appearance: none;
+      -webkit-appearance: none;
+      background: transparent;
+      border: none;
+      padding: var(--space-8) var(--space-32) var(--space-8) var(--space-16);
+      font-family: var(--font-text);
+      font-size: var(--body-m-size);
+      line-height: var(--body-m-lh);
+      font-weight: 500;
+      color: var(--text-default);
+      cursor: pointer;
+      outline: none;
+      border-radius: var(--radius-8);
+      transition: background 0.2s var(--ease-expo);
+    }
+
+    .search-v2__select:hover  { background: var(--bg-alternative); }
+    .search-v2__select:focus  { background: var(--bg-alternative); }
+
+    .search-v2__select-icon {
+      position: absolute;
+      right: var(--space-8);
+      width: 16px;
+      height: 16px;
+      color: var(--text-default);
+      pointer-events: none;
+    }
+
+    /* v2 fields: 2fr 1fr auto (no travel class column) */
+    .search-v2__fields {
+      grid-template-columns: 2fr 1fr 1fr auto !important;
+    }
+
+    /* v2: no margin-bottom on search__top since gap handles spacing */
+    .search--v2 .search__top { margin-bottom: 0; }
+    .search--v2 .search__heading { margin-bottom: 0; }
+
+    @media (max-width: 959px) {
+      .search-v2__tabbar { width: 100%; }
+      .search-v2__tab    { flex: 1; }
+      .search-v2__body   { border-radius: 0 0 var(--radius-32) var(--radius-32); padding: var(--space-24); }
+      .search-v2__fields { grid-template-columns: 1fr !important; }
+      .search-v2__selects { flex-wrap: wrap; }
+    }
+
   </style>
 </head>
 <body>
@@ -2203,6 +2324,8 @@
 
   <!-- ── Search hero ───────────────────────────── -->
 
+  <!-- ── Search hero v1 (hidden) ──────────────────────── -->
+  <template>
   <section class="search-hero" aria-label="Flight search">
     <div class="search-hero__inner">
 
@@ -2214,7 +2337,7 @@
         <div class="search__top">
           <div class="search__tabs" role="tablist" aria-label="Trip type">
             <span class="search__tabs-indicator" aria-hidden="true"></span>
-            <button class="search__tab search__tab--active" role="tab" aria-selected="true" data-tab="return">Return</button>
+            <button class="search__tab search__tab--active" role="tab" aria-selected="true" data-tab="return">Round trip</button>
             <button class="search__tab" role="tab" aria-selected="false" data-tab="oneway">One-way</button>
             <button class="search__tab" role="tab" aria-selected="false" data-tab="multi">Multi-city</button>
           </div>
@@ -2292,6 +2415,131 @@
             Book with Bluebiz
           </label>
         </div>
+
+      </div>
+
+    </div>
+  </section>
+  </template>
+
+  <!-- ── Search hero v2 ──────────────────────── -->
+
+  <section class="search-hero search-hero--v2" aria-label="Flight search v2">
+    <div class="search-hero__inner">
+
+      <div class="search search--v2" role="search" aria-label="Flight search">
+
+        <!-- Tab bar: dark blue strip, flush at top of card -->
+        <div class="search-v2__tabbar" role="tablist" aria-label="Booking type">
+          <button class="search-v2__tab search-v2__tab--active" role="tab" aria-selected="true">Flight</button>
+          <button class="search-v2__tab" role="tab" aria-selected="false">KLM Holiday</button>
+        </div>
+
+        <!-- White card body -->
+        <div class="search-v2__body">
+
+          <h2 class="search__heading headline-l">Where do you want to go next?</h2>
+
+          <!-- Controls: selects + checkboxes, then fields 12px below -->
+          <div class="search-v2__controls">
+
+            <!-- Selects row + checkboxes -->
+            <div class="search__top">
+              <div class="search-v2__selects">
+
+                <div class="search-v2__select-wrap">
+                  <select class="search-v2__select" aria-label="Trip type">
+                    <option value="return" selected>Round trip</option>
+                    <option value="oneway">One-way</option>
+                    <option value="multi">Multi-city</option>
+                  </select>
+                  <svg class="search-v2__select-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+                </div>
+
+                <div class="search-v2__select-wrap">
+                  <select class="search-v2__select" aria-label="Travel class">
+                    <option value="economy" selected>Economy Class</option>
+                    <option value="premium">Premium Comfort</option>
+                    <option value="business">Business Class</option>
+                    <option value="first">First Class</option>
+                  </select>
+                  <svg class="search-v2__select-icon" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M4 6l4 4 4-4"/></svg>
+                </div>
+
+              </div>
+
+              <div class="search__options" aria-label="Booking options">
+                <label class="search__checkbox-label">
+                  <span class="search__checkbox-wrap">
+                    <input class="search__checkbox" type="checkbox" name="book-miles-v2" />
+                    <span class="search__checkbox-box" aria-hidden="true"></span>
+                  </span>
+                  Book with Miles
+                </label>
+                <label class="search__checkbox-label">
+                  <span class="search__checkbox-wrap">
+                    <input class="search__checkbox" type="checkbox" name="book-bluebiz-v2" />
+                    <span class="search__checkbox-box" aria-hidden="true"></span>
+                  </span>
+                  Book with Bluebiz
+                </label>
+              </div>
+            </div>
+
+            <!-- Fields: From/To | Travel dates | Search button -->
+            <div class="search__fields search-v2__fields">
+
+              <div class="search__route">
+                <div class="search__field search__field--from" tabindex="0" aria-label="Departure city">
+                  <span class="search__label">From</span>
+                  <span class="search__value">Amsterdam AMS</span>
+                </div>
+                <button class="search__swap" type="button" aria-label="Swap departure and destination">
+                  <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true">
+                    <path d="M11.5 2.5L14 5l-2.5 2.5M2 5h12M4.5 13.5L2 11l2.5-2.5M14 11H2"/>
+                  </svg>
+                </button>
+                <div class="search__field search__field--to" tabindex="0" aria-label="Destination city">
+                  <span class="search__label">To</span>
+                  <span class="search__value">Where to?</span>
+                </div>
+              </div>
+
+              <div class="search__field" tabindex="0" aria-label="Travel dates">
+                <span class="search__label">Travel dates</span>
+                <span class="search__value">Select dates</span>
+              </div>
+
+              <div class="search__field" tabindex="0" aria-label="Passengers">
+                <span class="search__label">Passengers</span>
+                <span class="search__value">1 adult</span>
+              </div>
+
+              <button class="btn--search-klm" type="button">Search flights</button>
+
+            </div>
+
+          </div>
+
+          <!-- Checkboxes: mobile only -->
+          <div class="search__options search__options--mobile" aria-label="Booking options">
+            <label class="search__checkbox-label">
+              <span class="search__checkbox-wrap">
+                <input class="search__checkbox" type="checkbox" name="book-miles-v2-m" />
+                <span class="search__checkbox-box" aria-hidden="true"></span>
+              </span>
+              Book with Miles
+            </label>
+            <label class="search__checkbox-label">
+              <span class="search__checkbox-wrap">
+                <input class="search__checkbox" type="checkbox" name="book-bluebiz-v2-m" />
+                <span class="search__checkbox-box" aria-hidden="true"></span>
+              </span>
+              Book with Bluebiz
+            </label>
+          </div>
+
+        </div><!-- /.search-v2__body -->
 
       </div>
 
