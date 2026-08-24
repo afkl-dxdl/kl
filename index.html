@@ -539,10 +539,10 @@
 
     @media (max-width: 959px) {
       .search-hero {
-        padding-top: 64px;  /* flush below mobile nav */
+        padding-top: calc(64px + var(--space-16));  /* mobile nav height + 16px gap */
         padding-bottom: 0;
-        padding-left: 0;
-        padding-right: 0;
+        padding-left: var(--space-16);
+        padding-right: var(--space-16);
       }
     }
 
@@ -2138,7 +2138,7 @@
     }
 
     .search-v2__tab {
-      width: 160px;
+      width: 200px;
       padding: var(--space-12) var(--space-16);
       font-family: var(--font-text);
       font-size: var(--body-s-size, 14px);
