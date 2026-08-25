@@ -252,10 +252,8 @@
       width: 280px;
       background: var(--neutral-0);
       border-radius: var(--radius-16);
-      box-shadow:
-        0 4px 6px -1px color-mix(in srgb, var(--blue-800) 8%, transparent),
-        0 12px 40px -4px color-mix(in srgb, var(--blue-800) 12%, transparent),
-        0 0 0 1px color-mix(in srgb, var(--blue-800) 8%, transparent);
+      border: 1.5px solid color-mix(in srgb, var(--blue-900) 8%, transparent);
+      box-shadow: none;
       z-index: 200;
       overflow: hidden;
       opacity: 0;
@@ -685,7 +683,7 @@
     .search__tab {
       display: inline-flex;
       align-items: center;
-      padding: 6px 18px;
+      padding: var(--space-12) var(--space-16);
       border-radius: var(--radius-12);
       font-family: var(--font-text);
       font-size: var(--body-s-size);
@@ -1119,6 +1117,107 @@
     .offerings__header {
       text-align: center;
       margin-bottom: var(--space-32);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: var(--space-24);
+    }
+
+    .offerings__tabs {
+      background: var(--warm-grey-100);
+    }
+
+    /* ── Inline city custom select in offerings heading ── */
+    .city-select {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      position: relative;
+      cursor: pointer;
+      white-space: nowrap;
+      color: var(--text-default);
+      border-radius: var(--radius-8);
+      transition: color 0.15s;
+    }
+
+    .city-select__label {
+      font-family: var(--font-display);
+      font-size: var(--headline-l-size);
+      line-height: var(--headline-l-lh);
+      font-weight: 500;
+      text-decoration: underline;
+      text-decoration-style: solid;
+      text-decoration-thickness: 1.5px;
+      text-underline-offset: 4px;
+    }
+
+    .city-select__chevron {
+      flex-shrink: 0;
+      opacity: 0.7;
+      transition: transform 0.25s var(--ease-expo), opacity 0.15s;
+    }
+
+    .city-select:hover { color: var(--text-default); }
+    .city-select:hover .city-select__chevron { opacity: 1; }
+
+    .city-select[aria-expanded="true"] .city-select__chevron {
+      transform: rotate(180deg);
+    }
+
+    /* Dropdown menu */
+    .city-select__menu {
+      display: none;
+      position: absolute;
+      top: calc(100% + 8px);
+      left: 0;
+      min-width: 180px;
+      background: var(--neutral-0);
+      border: 1.5px solid color-mix(in srgb, var(--blue-900) 8%, transparent);
+      border-radius: var(--radius-16);
+      padding: var(--space-8);
+      list-style: none;
+      box-shadow: none;
+      z-index: 100;
+      transform-origin: top left;
+    }
+
+    .city-select[aria-expanded="true"] .city-select__menu {
+      display: block;
+      animation: city-menu-in 0.2s var(--ease-expo) both;
+    }
+
+    @keyframes city-menu-in {
+      from { opacity: 0; transform: scale(0.95) translateY(-4px); }
+      to   { opacity: 1; transform: scale(1) translateY(0); }
+    }
+
+    .city-select__menu { text-align: left; }
+
+    .city-select__option {
+      font-family: var(--font-text);
+      font-size: var(--body-m-size);
+      line-height: var(--body-m-lh);
+      font-weight: 400;
+      color: var(--text-default);
+      padding: var(--space-8) var(--space-12);
+      border-radius: var(--radius-8);
+      cursor: pointer;
+      transition: background 0.12s;
+    }
+
+    .city-select__option:hover {
+      background: var(--bg-alternative);
+    }
+
+    .city-select__option--selected {
+      font-weight: 500;
+      color: var(--colour-active);
+    }
+    .offerings__tabs .search__tabs-indicator {
+      background: var(--neutral-0);
+    }
+    .offerings__tabs .search__tab--active {
+      color: var(--text-default);
     }
 
     /* Shared eyebrow + title group */
@@ -2668,7 +2767,13 @@
         <header class="offerings__header">
           <div class="section-heading">
             <span class="offerings__eyebrow">Our best deals</span>
-            <h2 class="offerings__heading headline-l">The world is yours to explore</h2>
+            <h2 class="offerings__heading headline-l">Discover our deals from <span class="city-select" role="combobox" aria-haspopup="listbox" aria-expanded="false" aria-label="Departure city" tabindex="0"><span class="city-select__label">Amsterdam</span><img class="city-select__chevron" src="assets/icons/icon-chevron-down.svg" width="20" height="20" aria-hidden="true" alt="" /><ul class="city-select__menu" role="listbox" aria-label="Departure city"><li class="city-select__option city-select__option--selected" role="option" aria-selected="true" data-value="amsterdam">Amsterdam</li><li class="city-select__option" role="option" aria-selected="false" data-value="london">London</li><li class="city-select__option" role="option" aria-selected="false" data-value="paris">Paris</li><li class="city-select__option" role="option" aria-selected="false" data-value="brussels">Brussels</li><li class="city-select__option" role="option" aria-selected="false" data-value="frankfurt">Frankfurt</li><li class="city-select__option" role="option" aria-selected="false" data-value="barcelona">Barcelona</li><li class="city-select__option" role="option" aria-selected="false" data-value="rome">Rome</li></ul></span></h2>
+          </div>
+          <div class="search__tabs offerings__tabs" role="tablist" aria-label="Deal type">
+            <span class="search__tabs-indicator" aria-hidden="true"></span>
+            <button class="search__tab search__tab--active" role="tab" aria-selected="true">Flights</button>
+            <button class="search__tab" role="tab" aria-selected="false">KLM Holidays</button>
+            <button class="search__tab" role="tab" aria-selected="false">Promo rewards</button>
           </div>
         </header>
 
@@ -3210,11 +3315,11 @@
       });
     }
 
-    /* ── Search: sliding tab indicator ─────────── */
-    (function () {
-      const tabsWrap  = document.querySelector('.search__tabs');
-      const indicator = tabsWrap && tabsWrap.querySelector('.search__tabs-indicator');
-      const tabs      = tabsWrap ? Array.from(tabsWrap.querySelectorAll('.search__tab')) : [];
+    /* ── Sliding tab indicator (reusable) ──────── */
+    function initSlidingTabs(tabsWrap) {
+      if (!tabsWrap) return;
+      const indicator = tabsWrap.querySelector('.search__tabs-indicator');
+      const tabs      = Array.from(tabsWrap.querySelectorAll('.search__tab'));
 
       function moveIndicator(tab) {
         if (!indicator) return;
@@ -3222,12 +3327,10 @@
         indicator.style.transform = 'translateX(' + tab.offsetLeft + 'px)';
       }
 
-      // Set initial position without transition
       const activeTab = tabs.find(t => t.classList.contains('search__tab--active'));
       if (activeTab && indicator) {
         indicator.style.transition = 'none';
         moveIndicator(activeTab);
-        // Re-enable transition on next frame
         requestAnimationFrame(() => { indicator.style.transition = ''; });
       }
 
@@ -3242,7 +3345,9 @@
           moveIndicator(tab);
         });
       });
-    })();
+    }
+
+    document.querySelectorAll('.search__tabs').forEach(initSlidingTabs);
 
     /* ── Search field active state ─────────────── */
     (function () {
@@ -3339,6 +3444,41 @@
             doSwitch();
           }
         });
+      });
+    })();
+
+    /* ── Inline city custom select ─────────────────────── */
+    (function () {
+      var wrap    = document.querySelector('.city-select');
+      if (!wrap) return;
+      var label   = wrap.querySelector('.city-select__label');
+      var options = Array.from(wrap.querySelectorAll('.city-select__option'));
+
+      function open()  { wrap.setAttribute('aria-expanded', 'true'); }
+      function close() { wrap.setAttribute('aria-expanded', 'false'); }
+      function toggle(){ wrap.getAttribute('aria-expanded') === 'true' ? close() : open(); }
+
+      wrap.addEventListener('click', function (e) {
+        var opt = e.target.closest('.city-select__option');
+        if (opt) {
+          label.textContent = opt.textContent;
+          options.forEach(function (o) {
+            o.classList.toggle('city-select__option--selected', o === opt);
+            o.setAttribute('aria-selected', String(o === opt));
+          });
+          close();
+          return;
+        }
+        toggle();
+      });
+
+      wrap.addEventListener('keydown', function (e) {
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggle(); }
+        if (e.key === 'Escape') close();
+      });
+
+      document.addEventListener('mousedown', function (e) {
+        if (!wrap.contains(e.target)) close();
       });
     })();
 
