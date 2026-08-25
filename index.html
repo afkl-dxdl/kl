@@ -759,13 +759,19 @@
       content: '';
       position: absolute;
       left: 50%;
-      top: 10px;
-      bottom: 10px;
+      top: 0;
+      bottom: 0;
       width: 1.5px;
       background: var(--border-default);
       transform: translateX(-50%);
       pointer-events: none;
       z-index: 1;
+      transition: background 0.15s var(--ease-expo);
+    }
+
+    /* Divider follows hover border colour */
+    .search__route:has(.search__field:hover)::after {
+      background: var(--border-contrast);
     }
 
     .search__field:hover {
@@ -1457,6 +1463,7 @@
       height: 160px;
       display: block;
       object-fit: contain;
+      border-radius: 12px;
     }
 
     .service-card__body {
@@ -2236,6 +2243,55 @@
     .search--v2 .search__top { margin-bottom: 0; }
     .search--v2 .search__heading { margin-bottom: 0; }
 
+    /* ── Tab panels ── */
+    .search-v2__panel { display: flex; flex-direction: column; gap: var(--space-24); }
+    .search-v2__panel--hidden { display: none; }
+
+    /* View transition: soften the page reflow when switching tabs */
+    ::view-transition-old(root),
+    ::view-transition-new(root) {
+      animation-duration: 0.35s;
+      animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    /* ── Holiday panel layout ── */
+    .search-v2__holiday {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      gap: var(--space-32);
+    }
+    .search-v2__holiday .btn--search-klm {
+      margin-left: auto;
+    }
+    .search-v2__holiday-copy {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-8);
+    }
+    .search-v2__holiday-ill {
+      border-radius: 12px;
+      flex-shrink: 0;
+    }
+    .search-v2__holiday-text {
+      color: var(--text-alternative);
+    }
+    .search-v2__holiday .btn--search-klm {
+      height: auto;
+      padding: var(--space-16) var(--space-28, 28px);
+      align-self: center;
+      flex-shrink: 0;
+    }
+    @media (max-width: 959px) {
+      .search-v2__holiday {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+      .search-v2__holiday .btn--search-klm {
+        width: 100%;
+      }
+    }
+
     @media (max-width: 959px) {
       .search-v2__tabbar { width: 100%; }
       .search-v2__tab    { flex: 1; }
@@ -2435,12 +2491,15 @@
 
         <!-- Tab bar: dark blue strip, flush at top of card -->
         <div class="search-v2__tabbar" role="tablist" aria-label="Booking type">
-          <button class="search-v2__tab search-v2__tab--active" role="tab" aria-selected="true">Flight</button>
-          <button class="search-v2__tab" role="tab" aria-selected="false">KLM Holiday</button>
+          <button class="search-v2__tab search-v2__tab--active" role="tab" aria-selected="true" data-panel="flight">Flight</button>
+          <button class="search-v2__tab" role="tab" aria-selected="false" data-panel="holiday">KLM Holiday</button>
         </div>
 
         <!-- White card body -->
         <div class="search-v2__body">
+
+          <!-- ── Flight panel ── -->
+          <div class="search-v2__panel" data-panel="flight">
 
           <h2 class="search__heading headline-l">Where do you want to go next?</h2>
 
@@ -2542,6 +2601,20 @@
               Book with Bluebiz
             </label>
           </div>
+
+          </div><!-- /.search-v2__panel[flight] -->
+
+          <!-- ── KLM Holiday panel ── -->
+          <div class="search-v2__panel search-v2__panel--hidden" data-panel="holiday">
+            <div class="search-v2__holiday">
+              <img class="search-v2__holiday-ill" src="assets/illustrations/ill-suitcase.svg" width="120" height="120" aria-hidden="true" alt="" />
+              <div class="search-v2__holiday-copy">
+                <h2 class="search__heading headline-l">KLM Holidays package trips</h2>
+                <p class="body-m-regular search-v2__holiday-text">Your flight, hotel and rental car: the complete package for the perfect holiday.</p>
+              </div>
+              <button class="btn--search-klm" type="button">Show deals</button>
+            </div>
+          </div><!-- /.search-v2__panel[holiday] -->
 
         </div><!-- /.search-v2__body -->
 
@@ -2711,6 +2784,8 @@
 
           </div>
         </div>
+
+        <p class="label-m-regular" style="color: var(--warm-grey-500); margin-top: var(--space-24); max-width: 720px;">The displayed prices are for one adult. All amounts are in EUR. Taxes, surcharges and booking fee are included. Prices shown may vary depending on fare availability. Your fare is guaranteed as soon as you receive your reservation reference number.</p>
 
       </div>
     </section>
@@ -3225,6 +3300,37 @@
       });
     })();
 
+    /* ── Search v2 tab switching ──────────────────────── */
+    (function () {
+      var tabs   = document.querySelectorAll('.search-v2__tab');
+      var panels = document.querySelectorAll('.search-v2__panel');
+
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          var target = tab.dataset.panel;
+
+          // Update tab states
+          tabs.forEach(function (t) {
+            t.classList.toggle('search-v2__tab--active', t === tab);
+            t.setAttribute('aria-selected', String(t === tab));
+          });
+
+          // Switch panels — wrapped in View Transition for smooth page reflow
+          var doSwitch = function () {
+            panels.forEach(function (p) {
+              p.classList.toggle('search-v2__panel--hidden', p.dataset.panel !== target);
+            });
+          };
+
+          if (document.startViewTransition) {
+            document.startViewTransition(doSwitch);
+          } else {
+            doSwitch();
+          }
+        });
+      });
+    })();
+
     /* ── Size v2 selects to their selected text ───────── */
     (function () {
       var mirror = document.createElement('span');
@@ -3239,7 +3345,7 @@
         var opt = sel.options[sel.selectedIndex];
         mirror.textContent = opt ? opt.text : '';
         var pad = parseInt(getComputedStyle(sel).paddingLeft) || 0;
-        sel.style.width = (mirror.offsetWidth + pad) + 'px';
+        sel.style.width = (mirror.offsetWidth + pad + 2) + 'px';
       }
 
       document.querySelectorAll('.search-v2__select').forEach(function (sel) {
