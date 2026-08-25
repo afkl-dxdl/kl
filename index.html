@@ -2085,6 +2085,7 @@
     .footer {
       background: var(--bg-alternative);
       padding: var(--space-64) var(--space-24);
+      border-bottom: 8px solid var(--blue-400);
     }
 
     .footer__inner {
@@ -3486,7 +3487,7 @@
     (function () {
       var mirror = document.createElement('span');
       mirror.style.cssText = [
-        'position:absolute', 'visibility:hidden', 'white-space:pre',
+        'position:absolute', 'top:0', 'left:-9999px', 'visibility:hidden', 'white-space:pre',
         'font-family:var(--font-text)', 'font-size:var(--body-m-size)',
         'font-weight:500', 'pointer-events:none'
       ].join(';');
