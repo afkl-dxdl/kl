@@ -985,11 +985,22 @@
       }
     }
 
+    @keyframes img-breathe {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.04); }
+    }
+
     .image-block__img {
       display: block;
       width: 100%;
       aspect-ratio: 16 / 9;
       object-fit: cover;
+      animation: img-breathe 12s ease-in-out infinite;
+      transform-origin: center center;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .image-block__img { animation: none; }
     }
 
     @media (max-width: 959px) {
