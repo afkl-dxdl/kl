@@ -1,0 +1,1860 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>My Trip — KLM Royal Dutch Airlines</title>
+  <link rel="icon" type="image/svg+xml" href="assets/logo/logo-full.svg" />
+  <link rel="stylesheet" href="brand.css" />
+  <style>
+
+    /* ─── Reset & base ──────────────────────────────── */
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { scroll-behavior: auto; }
+
+    body {
+      font-family: var(--font-text);
+      background: var(--bg-default);
+      color: var(--text-default);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+      opacity: 0;
+      animation: body-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.1s forwards;
+    }
+
+    @keyframes body-in {
+      from { opacity: 0; }
+      to   { opacity: 1; }
+    }
+
+    img { display: block; max-width: 100%; }
+    a   { color: inherit; text-decoration: none; }
+    button { cursor: pointer; font-family: inherit; border: none; background: none; }
+    ul { list-style: none; }
+
+    /* ─── Motion tokens ────────────────────────────── */
+
+    :root {
+      --ease-expo:   cubic-bezier(0.16, 1, 0.3, 1);
+      --ease-spring: cubic-bezier(0.34, 1.56, 0.64, 1);
+      --ease-swift:  cubic-bezier(0.32, 0.72, 0, 1);
+      --radius-8: 8px;
+      --surface-selected: var(--blue-800);
+      --highlighted-title: var(--blue-200);
+      --surface-action-alternative: var(--blue-100);
+    }
+
+    *, *::before, *::after {
+      corner-shape: squircle;
+    }
+
+    /* ─── Sky gradient ─────────────────────────────── */
+
+    body { position: relative; }
+
+    .sky-gradient {
+      background: radial-gradient(
+        93.34% 152.28% at 32.08% -46.12%,
+        #009FDA 0%,
+        #009FDAdb 61.01%,
+        #009FDA00 100%
+      );
+      -webkit-filter: blur(32px);
+      filter: blur(32px);
+      height: 289px;
+      left: 40%;
+      position: absolute;
+      top: -60px;
+      transform: translateX(-50%);
+      width: 120vw;
+      z-index: 0;
+      pointer-events: none;
+    }
+
+    @media (max-width: 767px) {
+      .sky-gradient {
+        background: radial-gradient(
+          94.13% 153.12% at 32.72% -46.96%,
+          #009FDA 0%,
+          #009FDAdb 61.01%,
+          #009FDA00 100%
+        );
+        left: -12vw;
+        top: -98px;
+        width: 130vw;
+        transform: none;
+      }
+    }
+
+    /* ─── Navigation ───────────────────────────────── */
+
+    .nav {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      z-index: 100;
+      padding: var(--space-16);
+      pointer-events: none;
+      transition: padding 0.5s var(--ease-expo);
+    }
+
+    .nav__pill {
+      display: flex;
+      align-items: stretch;
+      background: var(--neutral-0);
+      border-radius: var(--radius-16);
+      padding: 0 var(--space-24);
+      height: 64px;
+      width: 100%;
+      pointer-events: all;
+      transition:
+        border-radius  0.5s var(--ease-expo),
+        padding        0.5s var(--ease-expo);
+      transform: translateY(-8px);
+      opacity: 0;
+      animation: nav-in 1.15s var(--ease-expo) 0.2s forwards;
+    }
+
+    @keyframes nav-in {
+      to { transform: translateY(0); opacity: 1; }
+    }
+
+    .nav--scrolled { padding: 0; }
+    .nav--scrolled .nav__pill { border-radius: 0; }
+
+    .nav__logo {
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      margin-right: var(--space-32);
+    }
+
+    .nav__logo img { height: 36px; width: auto; }
+
+    .nav__links {
+      display: flex;
+      align-items: stretch;
+      flex: 1;
+      height: 100%;
+    }
+
+    @media (min-width: 1280px) {
+      .nav__pill { position: relative; }
+      .nav__links {
+        position: absolute;
+        left: 50%;
+        transform: translateX(-50%);
+        flex: unset;
+        height: 100%;
+      }
+    }
+
+    .nav__links > li { display: flex; align-items: stretch; }
+
+    .nav__link {
+      display: flex;
+      align-items: center;
+      padding: 0 16px;
+      color: var(--text-default);
+      font-family: var(--font-text);
+      font-weight: 400;
+      position: relative;
+      white-space: nowrap;
+      transition: color 0.15s;
+    }
+
+    .nav__link:hover { color: color-mix(in srgb, var(--text-default) 65%, transparent); }
+    .nav__link--active:hover { opacity: 1; cursor: default; }
+    .nav__link--active { font-weight: 700; }
+
+    .nav__link--active::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 14px;
+      right: 14px;
+      height: 3px;
+      background: var(--text-default);
+      border-radius: var(--radius-12) var(--radius-12) 0 0;
+    }
+
+    .nav__actions {
+      display: flex;
+      align-items: center;
+      gap: var(--space-4);
+      margin-left: auto;
+      flex-shrink: 0;
+    }
+
+    .nav__meta,
+    .nav__cta {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      padding: 8px 10px;
+      color: var(--text-default);
+      border-radius: var(--radius-12);
+      transition: background 0.15s;
+      white-space: nowrap;
+      font-family: var(--font-text);
+    }
+
+    .nav__meta:hover { background: var(--surface-highlight); }
+    .nav__cta { cursor: pointer; border: none; background: none; }
+    .nav__cta:hover,
+    .nav__account.is-open .nav__cta { background: var(--surface-highlight); }
+
+    .nav__icon-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 40px;
+      height: 40px;
+      color: var(--text-default);
+      border-radius: var(--radius-12);
+      border: none;
+      background: none;
+      cursor: pointer;
+      flex-shrink: 0;
+      transition: background 0.15s;
+    }
+
+    .nav__icon-btn:hover { background: var(--surface-highlight); }
+    .nav__icon-btn img,
+    .nav__meta img,
+    .nav__cta img { width: 20px; height: 20px; flex-shrink: 0; }
+
+    /* ─── Account dropdown ──────────────────────────── */
+
+    .nav__account { position: relative; }
+
+    .nav__account-dropdown {
+      position: absolute;
+      top: calc(100% + 8px);
+      right: 0;
+      width: 280px;
+      background: var(--neutral-0);
+      border-radius: var(--radius-16);
+      border: 1.5px solid color-mix(in srgb, var(--blue-900) 8%, transparent);
+      box-shadow: none;
+      z-index: 200;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(-6px) scale(0.97);
+      transform-origin: top right;
+      pointer-events: none;
+      transition: opacity 0.2s ease-out, transform 0.32s var(--ease-expo);
+    }
+
+    .nav__account.is-open .nav__account-dropdown {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: auto;
+    }
+
+    .nav__account-list { list-style: none; padding: var(--space-8) 0; margin: 0; }
+
+    .nav__account-link {
+      display: block;
+      padding: 11px var(--space-24);
+      color: var(--text-default);
+      text-decoration: none;
+      font-family: var(--font-text);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.22s ease-out, transform 0.32s var(--ease-expo), color 0.15s, background 0.15s;
+    }
+
+    .nav__account-link:hover { color: var(--colour-active); background: var(--surface-highlight); }
+
+    .nav__account.is-open .nav__account-list li:nth-child(1) .nav__account-link { opacity: 1; transform: none; transition-delay: 0.04s; }
+    .nav__account.is-open .nav__account-list li:nth-child(2) .nav__account-link { opacity: 1; transform: none; transition-delay: 0.07s; }
+    .nav__account.is-open .nav__account-list li:nth-child(3) .nav__account-link { opacity: 1; transform: none; transition-delay: 0.10s; }
+    .nav__account.is-open .nav__account-list li:nth-child(4) .nav__account-link { opacity: 1; transform: none; transition-delay: 0.13s; }
+
+    .nav__account-actions {
+      padding: var(--space-16) var(--space-24) var(--space-24);
+      border-top: 1.5px solid var(--divider-light);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-12);
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.22s ease-out 0.16s, transform 0.32s var(--ease-expo) 0.16s;
+    }
+
+    .nav__account.is-open .nav__account-actions { opacity: 1; transform: none; }
+    .nav__account-actions .btn--primary { width: 100%; justify-content: center; }
+
+    .nav__account-signup {
+      color: var(--text-alternative);
+      text-align: center;
+      font-family: var(--font-text);
+    }
+
+    .nav__account-signup-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      color: var(--colour-active);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      transition: opacity 0.15s;
+    }
+
+    .nav__account-signup-link:hover { opacity: 0.7; }
+
+    /* ─── Hamburger & mobile menu ──────────────────── */
+
+    .nav__hamburger {
+      display: none;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 5px;
+      width: 36px;
+      height: 36px;
+      border-radius: var(--radius-12);
+      padding: 0;
+      flex-shrink: 0;
+      background: transparent;
+      border: none;
+      cursor: pointer;
+      transition: background 0.2s;
+      margin-left: 4px;
+    }
+
+    .nav__hamburger:hover { background: var(--surface-highlight); }
+
+    .nav__hamburger-line {
+      display: block;
+      width: 18px;
+      height: 1.5px;
+      background: var(--text-default);
+      border-radius: 1px;
+      transform-origin: center;
+      transition: transform 0.35s var(--ease-expo), opacity 0.2s;
+    }
+
+    .nav__hamburger.is-open .nav__hamburger-line:first-child { transform: translateY(3.25px) rotate(45deg); }
+    .nav__hamburger.is-open .nav__hamburger-line:last-child  { transform: translateY(-3.25px) rotate(-45deg); }
+
+    .mobile-menu {
+      position: fixed;
+      inset: 0;
+      z-index: 99;
+      background: linear-gradient(155deg, var(--blue-700) 0%, var(--blue-900) 80%);
+      padding: 72px var(--space-24) var(--space-40);
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      transform: translateY(-8px);
+      pointer-events: none;
+      transition: opacity 0.3s var(--ease-expo), transform 0.3s var(--ease-expo);
+    }
+
+    .mobile-menu.is-open { opacity: 1; transform: translateY(0); pointer-events: all; }
+
+    .mobile-menu__links {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      gap: 0;
+    }
+
+    .mobile-menu__link {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 0;
+      border-bottom: 1.5px solid color-mix(in srgb, var(--neutral-0) 10%, transparent);
+      color: var(--text-contrast);
+      font-family: var(--font-display);
+      font-size: var(--headline-m-size);
+      line-height: var(--headline-m-lh);
+      font-weight: 500;
+      opacity: 0;
+      transform: translateY(12px);
+      transition:
+        opacity 0.4s var(--ease-expo),
+        transform 0.4s var(--ease-expo),
+        color 0.15s;
+      transition-delay: var(--d, 0s);
+    }
+
+    .mobile-menu__link svg { width: 20px; height: 20px; color: var(--neutral-0); flex-shrink: 0; }
+    .mobile-menu.is-open .mobile-menu__link { opacity: 1; transform: translateY(0); }
+    .mobile-menu__link:hover { color: color-mix(in srgb, var(--neutral-0) 70%, transparent); }
+
+    .mobile-menu__footer {
+      display: flex;
+      align-items: center;
+      padding-top: var(--space-24);
+      border-top: 1.5px solid color-mix(in srgb, var(--neutral-0) 10%, transparent);
+      opacity: 0;
+      transition: opacity 0.35s var(--ease-expo) 0.32s;
+    }
+
+    .mobile-menu.is-open .mobile-menu__footer { opacity: 1; }
+
+    .mobile-menu__lang {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-contrast);
+      font-family: var(--font-text);
+      font-size: var(--body-m-size);
+      line-height: var(--body-m-lh);
+      font-weight: 500;
+    }
+
+    @media (max-width: 959px) {
+      .nav { padding: 0; }
+      .nav__pill { border-radius: 0; box-shadow: none; padding: 0 8px 0 16px; }
+      .nav__links { display: none; }
+      .nav__hamburger { display: flex; }
+      .nav__meta { display: none; }
+      .nav__cta span { display: none; }
+      .nav__cta { padding: 8px; gap: 0; }
+      .nav__actions { gap: 4px; }
+      .nav__hamburger { margin-left: 0; }
+    }
+
+    @media (min-width: 960px) and (max-width: 1279px) {
+      .nav__pill { flex-wrap: wrap; height: auto; padding: var(--space-8) var(--space-24) 0; row-gap: 0; }
+      .nav__logo { order: 1; height: 48px; }
+      .nav__actions { order: 2; height: 48px; }
+      .nav__links { order: 3; flex-basis: 100%; height: 56px; }
+      .nav__link { padding: var(--space-8) 16px; }
+    }
+
+    /* ─── Scroll reveal ────────────────────────────── */
+
+    .reveal {
+      transition: opacity 0.9s var(--ease-expo), transform 0.9s var(--ease-expo), filter 0.6s var(--ease-expo);
+      transition-delay: var(--d, 0s);
+      will-change: transform, opacity;
+    }
+
+    .reveal.is-visible { opacity: 1; transform: translateY(0); filter: blur(0); }
+
+    @media (prefers-reduced-motion: no-preference) {
+      .reveal:not(.is-visible) { opacity: 0; transform: translateY(32px); filter: blur(4px); }
+    }
+
+    /* ─── Search hero ───────────────────────────────── */
+
+    .search-hero {
+      padding-top: 136px;
+      padding-bottom: 0;
+      padding-left: 48px;
+      padding-right: 48px;
+    }
+
+    .search-hero__inner { max-width: 1320px; margin: 0 auto; }
+
+    @media (min-width: 960px) and (max-width: 1279px) {
+      .search-hero { padding-top: 160px; padding-left: var(--space-16); padding-right: var(--space-16); }
+    }
+
+    @media (max-width: 959px) {
+      .search-hero { padding-top: calc(64px + var(--space-16)); padding-bottom: 0; padding-left: var(--space-16); padding-right: var(--space-16); }
+    }
+
+    /* ─── Search widget ─────────────────────────────── */
+
+    .search {
+      background: var(--neutral-0);
+      border-radius: var(--radius-32);
+      padding: var(--space-32);
+      width: 100%;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: search-in 0.8s var(--ease-expo) 0.3s forwards;
+    }
+
+    @keyframes search-in {
+      from { opacity: 0; transform: translateY(10px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .search__heading { color: var(--text-default); letter-spacing: -0.02em; margin-bottom: var(--space-24); }
+
+    @media (max-width: 959px) {
+      .search { border-radius: 0; padding: var(--space-24) var(--space-16); }
+      .search__heading { font-size: var(--headline-l-size); line-height: var(--headline-l-lh); }
+    }
+
+    /* ── Search top row ── */
+    .search__top { display: flex; align-items: center; justify-content: space-between; margin-bottom: var(--space-24); }
+    .search__options { display: flex; align-items: center; gap: var(--space-24); }
+    .search__options--mobile { display: none; }
+
+    .search__checkbox-label {
+      display: flex; align-items: center; gap: var(--space-8); cursor: pointer;
+      font-family: var(--font-text); font-size: var(--body-m-size); line-height: var(--body-m-lh);
+      font-weight: 400; color: var(--text-default); user-select: none; white-space: nowrap;
+    }
+
+    .search__checkbox-wrap { position: relative; display: flex; align-items: center; justify-content: center; width: 20px; height: 20px; flex-shrink: 0; }
+    .search__checkbox { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; margin: 0; z-index: 1; }
+    .search__checkbox-box { display: block; width: 20px; height: 20px; border-radius: 4px; border: 1.5px solid var(--border-default); background: transparent; transition: border-color 0.15s var(--ease-expo), background 0.15s var(--ease-expo); pointer-events: none; }
+    .search__checkbox:hover + .search__checkbox-box { border-color: var(--border-contrast); }
+    .search__checkbox:checked + .search__checkbox-box { background: var(--colour-active); border-color: var(--colour-active); background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 12 10' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 5l3.5 3.5L11 1' stroke='white' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: center; background-size: 12px 10px; }
+
+    /* ── Pill tabs ── */
+    .search__tabs { display: flex; gap: var(--space-4); background: var(--bg-default); border-radius: var(--radius-16); padding: 4px; width: fit-content; position: relative; }
+    .search__tabs-indicator { position: absolute; top: 4px; left: 0; height: calc(100% - 8px); border-radius: var(--radius-12); background: var(--surface-selected); pointer-events: none; transition: transform 0.35s var(--ease-expo), width 0.35s var(--ease-expo); will-change: transform, width; }
+
+    .search__tab {
+      display: inline-flex; align-items: center; padding: var(--space-12) var(--space-16);
+      border-radius: var(--radius-12); font-family: var(--font-text); font-size: var(--body-s-size);
+      line-height: var(--body-s-lh); font-weight: 500; color: var(--text-alternative);
+      background: transparent; border: none; cursor: pointer; position: relative; z-index: 1;
+      transition: color 0.25s var(--ease-expo); white-space: nowrap;
+    }
+
+    .search__tab--active { color: var(--text-contrast); }
+    .search__tab:not(.search__tab--active):hover { color: var(--text-default); }
+
+    /* ── Fields row ── */
+    .search__fields { display: grid; grid-template-columns: 2fr 1fr 1fr auto; gap: var(--space-16); align-items: stretch; }
+    .search__route { position: relative; display: flex; align-items: stretch; }
+
+    .search__field {
+      display: flex; flex-direction: column; justify-content: center; gap: 4px;
+      padding: 10px var(--space-16); border: 1.5px solid var(--border-default);
+      border-radius: var(--radius-16); cursor: pointer;
+      transition: border-color 0.2s var(--ease-expo); flex: 1; min-width: 0;
+    }
+
+    .search__field--from { border-radius: var(--radius-16) 0 0 var(--radius-16); border-right: none; padding-right: 44px; }
+    .search__field--to   { border-radius: 0 var(--radius-16) var(--radius-16) 0; border-left: none; padding-left: 44px; }
+
+    .search__route::after { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 1.5px; background: var(--border-default); transform: translateX(-50%); pointer-events: none; z-index: 1; transition: background 0.15s var(--ease-expo); }
+    .search__route:has(.search__field:hover)::after { background: var(--border-contrast); }
+    .search__field:hover { border-color: var(--border-contrast); }
+    .search__field:focus-within, .search__field:focus { outline: none; border-color: var(--border-active); }
+    .search__fields .search__field.is-active { outline: none; border-color: var(--border-active); }
+    .search__fields .search__field--from.is-active { border-right: 1.5px solid var(--border-active); }
+    .search__fields .search__field--to.is-active   { border-left: 1.5px solid var(--border-active); }
+    .search__route:has(.is-active)::after { display: none; }
+
+    .search__label { color: var(--text-alternative); font-family: var(--font-text); font-size: var(--label-m-size); line-height: var(--label-m-lh); font-weight: 500; }
+    .search__value { color: var(--text-default); font-family: var(--font-text); font-size: var(--body-m-size); line-height: var(--body-m-lh); font-weight: 500; letter-spacing: -0.01em; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+
+    .search__swap { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); z-index: 2; width: 36px; height: 36px; border-radius: 9999px; corner-shape: round; background: var(--surface-highlight); border: none; display: flex; align-items: center; justify-content: center; flex-shrink: 0; transition: background 0.2s; }
+    .search__swap:hover { background: var(--surface-highlight-emphasis); }
+    .search__swap svg { width: 14px; height: 14px; color: var(--colour-active); transition: transform 0.7s cubic-bezier(0.33, 1, 0.68, 1); }
+    .search__swap:hover svg { transform: rotate(180deg); }
+
+    /* ── Search button ── */
+    .btn--search-klm {
+      display: inline-flex; align-items: center; justify-content: center; gap: var(--space-8);
+      padding: 0 var(--space-28, 28px); height: 100%; background: var(--colour-active);
+      color: var(--neutral-0); border-radius: var(--radius-16); font-family: var(--font-text);
+      font-size: var(--body-m-size); line-height: var(--body-m-lh); font-weight: 500;
+      border: none; cursor: pointer; white-space: nowrap; align-self: stretch; flex-shrink: 0;
+      transition: background 0.2s var(--ease-expo), transform 0.15s;
+    }
+
+    .btn--search-klm:hover { background: var(--blue-600); }
+
+    .btn--alternative {
+      background: var(--surface-action-alternative);
+      color: var(--text-default);
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .btn--search-klm:active { transform: scale(0.98); }
+      .btn--alternative:hover { background: var(--surface-action-alternative); filter: brightness(0.95); }
+    }
+
+    /* ── Responsive: search ── */
+    @media (max-width: 959px) {
+      .search__fields { grid-template-columns: 1fr; }
+      .search__route { flex-direction: column; gap: var(--space-16); }
+      .search__field--from, .search__field--to { border-radius: var(--radius-16); border: 1.5px solid var(--border-default); padding: 10px var(--space-16); }
+      .search__route::after { display: none; }
+      .search__swap { display: none; }
+      .btn--search-klm { min-height: 52px; width: 100%; }
+      .search__top .search__options { display: none; }
+      .search__options--mobile { display: flex; flex-wrap: wrap; gap: var(--space-16) var(--space-24); padding-top: var(--space-16); }
+    }
+
+    /* ─── Image block ───────────────────────────────── */
+
+    .my-trip-hero-section {
+      padding: 0;
+      margin-top: calc(-1 * var(--space-64));
+      opacity: 0;
+      animation: search-in 0.8s var(--ease-expo) 0.55s forwards;
+    }
+
+    .my-trip-hero {
+      position: relative;
+      border-radius: 0;
+      overflow: hidden;
+      background: var(--surface-contrast);
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+      padding: 240px var(--space-32) var(--space-32);
+    }
+
+    @media (min-width: 1280px) {
+      .my-trip-hero { border-radius: 0 0 72px 0; }
+    }
+
+    @media (max-width: 959px) {
+      .image-block__card { border-radius: var(--radius-32); overflow: visible; display: flex; flex-direction: column; }
+    }
+
+    @keyframes img-breathe {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.04); }
+    }
+
+    .image-block__img { display: block; width: 100%; aspect-ratio: 16 / 9; object-fit: cover; animation: img-breathe 12s ease-in-out infinite; transform-origin: center center; }
+
+    @media (prefers-reduced-motion: reduce) { .image-block__img { animation: none; } }
+
+    @media (max-width: 959px) { .image-block__img { border-radius: var(--radius-32); flex-shrink: 0; aspect-ratio: 4 / 3; } }
+    @media (min-width: 720px) and (max-width: 959px) { .image-block__img { aspect-ratio: 16 / 9; } }
+
+    .image-block__content {
+      position: relative;
+      background: transparent; border-radius: var(--radius-24);
+      padding: var(--space-32);
+      max-width: 872px; display: flex; flex-direction: column; gap: var(--space-16); cursor: pointer;
+      text-align: center; align-items: center; margin: 0 auto;
+    }
+
+    @media (max-width: 959px) {
+      .image-block__content { max-width: none; padding: var(--space-24); }
+    }
+
+    .image-block__label { font-family: var(--font-display); font-size: var(--headline-s-size); line-height: var(--headline-s-lh); font-weight: 500; color: var(--text-contrast); opacity: 0.7; }
+    .image-block__title { color: var(--highlighted-title); }
+    .image-block__body  { font-family: var(--font-text); font-size: var(--body-m-size); line-height: var(--body-m-lh); font-weight: 400; color: var(--text-contrast); }
+
+    .image-block__cta {
+      position: absolute; bottom: var(--space-24); right: var(--space-24);
+      display: inline-flex; align-items: center; justify-content: center;
+      width: 48px; height: 48px; border-radius: 9999px; corner-shape: round;
+      background: var(--blue-200); border: none; padding: 0; cursor: pointer;
+      flex-shrink: 0; overflow: hidden;
+      transition: background 0.2s var(--ease-expo), transform 0.2s var(--ease-expo);
+    }
+
+    .image-block__cta:active { transform: scale(0.96); }
+
+    /* ─── Icon button arrow animation ───────────────── */
+    .icon-btn-arrows { position: relative; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
+    .icon-btn-arrows svg { position: absolute; width: 24px; height: 24px; transition: transform 0.75s var(--ease-expo); }
+    .icon-btn-arrows svg:first-child { transform: translateX(0) scale(1); }
+    .icon-btn-arrows svg:last-child  { transform: translateX(-48px) scale(0.7); }
+
+    @media (hover: hover) and (pointer: fine) {
+      .image-block__content:hover .icon-btn-arrows svg:first-child { transform: translateX(48px) scale(0.7); }
+      .image-block__content:hover .icon-btn-arrows svg:last-child  { transform: translateX(0) scale(1); }
+    }
+
+    @media (prefers-reduced-motion: reduce) { .icon-btn-arrows svg { transition: none; } }
+
+    /* ─── Search v2 ───────────────────────────────── */
+
+    .search--v2 { background: transparent; padding: 0; border-radius: var(--radius-24); overflow: visible; }
+
+    .search-v2__tabbar { display: flex; background: var(--surface-contrast); border-radius: var(--radius-24) var(--radius-24) 0 0; width: fit-content; }
+
+    .search-v2__tab {
+      width: 200px; padding: var(--space-12) var(--space-16);
+      font-family: var(--font-text); font-size: var(--body-s-size, 14px); line-height: var(--body-s-lh, 20px);
+      font-weight: 500; border: none; cursor: pointer;
+      transition: background 0.2s var(--ease-expo), color 0.2s var(--ease-expo);
+      color: var(--blue-200, #a5d5ef); background: transparent; border-radius: 0;
+    }
+
+    .search-v2__tab:first-child { border-radius: var(--radius-24) 0 0 0; }
+    .search-v2__tab:last-child  { border-radius: 0 var(--radius-24) 0 0; }
+
+    .search-v2__tab--active,
+    .search-v2__tab--active:first-child,
+    .search-v2__tab--active:last-child {
+      background: var(--neutral-0); color: var(--text-default); font-weight: 700;
+      border-radius: var(--radius-24) var(--radius-24) 0 0;
+    }
+
+    .search-v2__body { background: var(--neutral-0); border-radius: 0 var(--radius-32) var(--radius-32) var(--radius-32); padding: var(--space-32); display: flex; flex-direction: column; gap: var(--space-24); }
+    .search-v2__controls { display: flex; flex-direction: column; gap: 12px; }
+    .search-v2__selects { display: flex; gap: var(--space-4); align-items: center; }
+    .search-v2__select-wrap { display: inline-flex; align-items: center; gap: var(--space-8); border-radius: var(--radius-8); transition: background 0.2s var(--ease-expo); cursor: pointer; }
+    .search-v2__select-wrap:hover, .search-v2__select-wrap:focus-within { background: var(--bg-alternative); }
+
+    .search-v2__select {
+      appearance: none; -webkit-appearance: none; background: transparent; border: none; width: auto;
+      transition: width 0.2s var(--ease-expo); padding: var(--space-8) 0 var(--space-8) var(--space-16);
+      font-family: var(--font-text); font-size: var(--body-m-size); line-height: var(--body-m-lh);
+      font-weight: 500; color: var(--text-default); cursor: pointer; outline: none;
+    }
+
+    .search-v2__select-icon { width: 16px; height: 16px; flex-shrink: 0; margin-right: var(--space-8); color: var(--text-default); pointer-events: none; }
+    .search-v2__fields { grid-template-columns: 2fr 1fr 1fr auto !important; }
+    .search--v2 .search__top { margin-bottom: 0; }
+    .search--v2 .search__heading { margin-bottom: 0; }
+    .search-v2__panel { display: flex; flex-direction: column; gap: var(--space-24); }
+    .search-v2__panel--hidden { display: none; }
+
+    ::view-transition-old(root),
+    ::view-transition-new(root) { animation-duration: 0.35s; animation-timing-function: cubic-bezier(0.16, 1, 0.3, 1); }
+
+    .search-v2__holiday { display: flex; align-items: center; justify-content: flex-start; gap: var(--space-32); }
+    .search-v2__holiday .btn--search-klm { margin-left: auto; }
+    .search-v2__holiday-copy { display: flex; flex-direction: column; gap: var(--space-8); }
+    .search-v2__holiday-ill { border-radius: 12px; flex-shrink: 0; }
+    .search-v2__holiday-text { color: var(--text-alternative); }
+    .search-v2__holiday .btn--search-klm { height: auto; padding: var(--space-16) var(--space-28, 28px); align-self: center; flex-shrink: 0; }
+
+    @media (max-width: 959px) {
+      .search-v2__holiday { flex-direction: column; align-items: flex-start; }
+      .search-v2__holiday .btn--search-klm { width: 100%; }
+      .search-v2__tabbar { width: 100%; }
+      .search-v2__tab    { flex: 1; }
+      .search-v2__body   { border-radius: 0 0 var(--radius-32) var(--radius-32); padding: var(--space-24); }
+      .search-v2__fields { grid-template-columns: 1fr !important; }
+      .search-v2__selects { flex-wrap: wrap; }
+    }
+
+    /* ─── Footer ─────────────────────────────────── */
+
+    .footer { background: var(--bg-alternative); padding: var(--space-64) var(--space-24); border-bottom: 12px solid var(--blue-400); }
+    .footer__inner { max-width: 1280px; margin: 0 auto; border-top: 1.5px solid var(--border-default); padding-top: var(--space-64); }
+    .footer__logo { height: 48px; width: auto; display: block; margin-bottom: var(--space-40); margin-left: auto; margin-right: auto; }
+
+    .footer__top { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-48); margin-bottom: var(--space-64); }
+    .footer__mid { display: grid; grid-template-columns: repeat(4, 1fr); gap: var(--space-48); margin-bottom: var(--space-64); }
+
+    .footer__app-stores { display: flex; flex-direction: column; gap: var(--space-12); }
+    .footer__app-store { display: block; line-height: 0; align-self: flex-start; transition: opacity 0.15s; }
+    .footer__app-store:hover { opacity: 0.8; }
+    .footer__app-store img { display: block; width: 136px; height: auto; }
+
+    .footer__col-toggle { display: flex; align-items: center; justify-content: space-between; gap: var(--space-16); width: 100%; background: none; border: none; padding: 0; margin-bottom: var(--space-16); color: var(--blue-900); text-align: left; cursor: default; }
+    .footer__col-chevron { display: none; width: 16px; height: 16px; flex-shrink: 0; transition: transform 0.3s var(--ease-expo); }
+    .footer__col ul { display: flex; flex-direction: column; gap: var(--space-12); }
+    .footer__col a { color: var(--text-alternative); opacity: 1; transition: color 0.15s; }
+    .footer__col a:hover { color: var(--text-default); }
+    .footer__col-panel { display: grid; grid-template-rows: 1fr; }
+    .footer__col-panel-inner { min-height: 0; }
+
+    .footer__bottom { display: flex; flex-direction: column; align-items: flex-start; gap: var(--space-8); }
+    .footer__legal-links { display: flex; flex-wrap: wrap; gap: var(--space-24); }
+    .footer__legal-links a { color: var(--text-alternative); opacity: 1; transition: color 0.15s; }
+    .footer__legal-links a:hover { color: var(--text-default); }
+
+    @media (max-width: 959px) {
+      .footer { padding-left: var(--space-16); padding-right: var(--space-16); }
+      .footer__inner { border-top: none; padding-top: 0; }
+      .footer__top, .footer__mid { grid-template-columns: 1fr; gap: 0; margin-bottom: 0; }
+      .footer__bottom { flex-direction: column; gap: var(--space-16); align-items: flex-start; margin-top: var(--space-24); }
+      .footer__col { border-bottom: 1px solid var(--border-subtle); }
+      .footer__top .footer__col:first-child { border-top: 1px solid var(--border-subtle); }
+      .footer__col-toggle { cursor: pointer; padding: var(--space-20) 0; margin-bottom: 0; }
+      .footer__col-chevron { display: block; }
+      .footer__col.is-open .footer__col-chevron { transform: rotate(180deg); }
+      .footer__col-panel { grid-template-rows: 0fr; transition: grid-template-rows 0.4s var(--ease-expo); }
+      .footer__col.is-open .footer__col-panel { grid-template-rows: 1fr; }
+      .footer__col-panel-inner { overflow: hidden; }
+      .footer__col-panel-inner ul,
+      .footer__col-panel-inner .footer__app-stores { padding-bottom: var(--space-20); }
+    }
+
+    /* ─── Main content placeholder ─────────────────── */
+
+    /* ─── Page content wrapper ──────────────────── */
+
+    .page-content {
+      max-width: 872px;
+      margin: 0 auto;
+      padding: var(--space-64) 0;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-64);
+    }
+
+    @media (max-width: 959px) {
+      .page-content { padding-left: var(--space-16); padding-right: var(--space-16); }
+    }
+
+    /* ─── Destination image block ────────────────── */
+
+    .trip-image-block {
+      position: relative;
+      border-radius: var(--radius-32);
+      overflow: hidden;
+    }
+
+    @media (max-width: 959px) {
+      .trip-image-block {
+        border-radius: var(--radius-32);
+        overflow: visible;
+        display: flex;
+        flex-direction: column;
+      }
+    }
+
+    @keyframes img-breathe {
+      0%, 100% { transform: scale(1); }
+      50%       { transform: scale(1.04); }
+    }
+
+    .trip-image-block__img {
+      display: block;
+      width: 100%;
+      aspect-ratio: 16 / 9;
+      object-fit: cover;
+      animation: img-breathe 12s ease-in-out infinite;
+      transform-origin: center center;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      .trip-image-block__img { animation: none; }
+    }
+
+    @media (max-width: 959px) {
+      .trip-image-block__img {
+        border-radius: var(--radius-32);
+        flex-shrink: 0;
+        aspect-ratio: 4 / 3;
+      }
+    }
+
+    @media (min-width: 720px) and (max-width: 959px) {
+      .trip-image-block__img {
+        aspect-ratio: 16 / 9;
+      }
+    }
+
+    .trip-image-block__content {
+      position: absolute;
+      bottom: var(--space-24);
+      left: var(--space-24);
+      background: var(--surface-contrast);
+      border-radius: var(--radius-24);
+      padding: var(--space-24);
+      padding-bottom: calc(var(--space-24) + 48px + var(--space-24));
+      max-width: 280px;
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+      cursor: pointer;
+    }
+
+    @media (max-width: 959px) {
+      .trip-image-block__content {
+        position: relative;
+        left: auto;
+        right: auto;
+        bottom: auto;
+        max-width: none;
+        border-radius: var(--radius-24);
+        margin-top: -96px;
+        margin-left: var(--space-16);
+        margin-right: var(--space-16);
+        z-index: 1;
+      }
+    }
+
+    @media (hover: hover) and (pointer: fine) {
+      .trip-image-block__content:hover .icon-btn-arrows svg:first-child {
+        transform: translateX(48px) scale(0.7);
+      }
+      .trip-image-block__content:hover .icon-btn-arrows svg:last-child {
+        transform: translateX(0) scale(1);
+      }
+    }
+
+    /* ─── Footer overrides ───────────────────────── */
+
+    .footer__bottom { align-items: center; }
+    .footer__legal-links { justify-content: center; }
+
+    /* ─── Extra options card ─────────────────────── */
+
+    .extra-options__title {
+      color: var(--text-default);
+      margin-bottom: var(--space-24);
+    }
+
+    .extra-options__card {
+      background: var(--neutral-0);
+      border-radius: var(--radius-32);
+      corner-shape: squircle;
+      overflow: hidden;
+    }
+
+    @media (max-width: 959px) {
+      .extra-options__card { border-radius: var(--radius-24); }
+    }
+
+    /* ─── Trip options list ──────────────────────── */
+
+    /* ── Segmented tabs ── */
+    .search__tabs {
+      display: flex;
+      gap: var(--space-4);
+      background: var(--bg-default);
+      border-radius: var(--radius-16);
+      padding: 4px;
+      width: fit-content;
+      position: relative;
+      margin: var(--space-24);
+      margin-bottom: 0;
+    }
+    .search__tabs-indicator {
+      position: absolute;
+      top: 4px; left: 0;
+      height: calc(100% - 8px);
+      border-radius: var(--radius-12);
+      background: var(--neutral-0);
+      pointer-events: none;
+      transition: transform 0.35s var(--ease-expo), width 0.35s var(--ease-expo);
+      will-change: transform, width;
+    }
+    .search__tab {
+      display: inline-flex; align-items: center;
+      padding: var(--space-12) var(--space-16);
+      border-radius: var(--radius-12);
+      font-family: var(--font-text);
+      font-size: var(--body-m-size); line-height: var(--body-m-lh);
+      font-weight: 500; color: var(--text-alternative);
+      background: transparent; border: none;
+      cursor: pointer; position: relative; z-index: 1;
+      transition: color 0.25s var(--ease-expo); white-space: nowrap;
+    }
+    .search__tab--active { color: var(--text-active); }
+    .search__tab:not(.search__tab--active):hover { color: var(--text-default); }
+
+    .trip-options {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .trip-option {
+      display: flex;
+      align-items: center;
+      gap: var(--space-16);
+      padding: var(--space-24);
+      border-radius: var(--radius-24);
+      corner-shape: squircle;
+      cursor: pointer;
+      transition: background 0.15s var(--ease-expo);
+    }
+
+    .trip-option:not(:last-child) {
+      border-bottom: 1.5px solid var(--divider-light);
+      border-radius: 0;
+    }
+
+    .trip-option:hover { background: color-mix(in srgb, var(--warm-grey-900) 2%, transparent); }
+    .trip-option:first-child { border-radius: var(--radius-24) var(--radius-24) 0 0; }
+    .trip-option:last-child  { border-radius: 0 0 var(--radius-24) var(--radius-24); }
+
+    .trip-option__icon-wrap {
+      width: 56px;
+      height: 56px;
+      flex-shrink: 0;
+      background: var(--surface-highlight);
+      border-radius: var(--radius-16);
+      corner-shape: squircle;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .trip-option__copy {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+      flex: 1;
+      min-width: 0;
+    }
+
+    .trip-option__title { color: var(--text-default); }
+    .trip-option__desc  { color: var(--text-default); }
+
+    .trip-option__cta {
+      width: 48px;
+      height: 48px;
+      flex-shrink: 0;
+      border-radius: 9999px;
+      corner-shape: round;
+      background: transparent;
+      border: 1.5px solid var(--border-default);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+      transition: border-color 0.2s var(--ease-expo);
+    }
+
+    .trip-option__cta:hover { border-color: var(--border-contrast); }
+
+    @media (hover: hover) and (pointer: fine) {
+      .trip-option:hover .icon-btn-arrows svg:first-child { transform: translateX(48px) scale(0.7); }
+      .trip-option:hover .icon-btn-arrows svg:last-child  { transform: translateX(0) scale(1); }
+    }
+
+    /* ─── Enhance your trip ──────────────────────── */
+
+    .enhance {
+      padding: var(--space-24);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+    }
+
+    .enhance__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .enhance__title { color: var(--text-default); }
+    .enhance__nav { display: flex; gap: var(--space-12); }
+    .enhance__nav-btn {
+      width: 40px; height: 40px; flex-shrink: 0;
+      border-radius: 9999px;
+      corner-shape: round;
+      border: 1.5px solid var(--border-active);
+      background: transparent;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      transition: background 0.15s var(--ease-expo);
+    }
+    .enhance__nav-btn:hover { background: color-mix(in srgb, var(--blue-500) 8%, transparent); }
+    .enhance__nav-btn { color: var(--text-active); }
+    .enhance__nav-btn svg { width: 24px; height: 24px; flex-shrink: 0; display: block; }
+
+    .enhance__grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: var(--space-16);
+    }
+
+    .enhance__card {
+      background: var(--surface-highlight);
+      border-radius: 24px;
+      corner-shape: squircle;
+      padding: var(--space-24);
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-16);
+      cursor: pointer;
+      transition: background 0.15s var(--ease-expo);
+    }
+
+
+    .enhance__ill-wrap {
+      width: 96px; height: 96px; flex-shrink: 0;
+      background: var(--blue-200); border-radius: 16px;
+      corner-shape: squircle;
+      display: flex; align-items: center; justify-content: center;
+      overflow: hidden;
+    }
+    .enhance__ill-wrap img { width: 96px; height: 96px; display: block; }
+
+    .enhance__copy {
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .enhance__card-title { color: var(--text-default); }
+    .enhance__card-desc  { color: var(--text-alternative); }
+
+    /* ── Flight segment ── */
+    .flight-segment {
+      padding: var(--space-24);
+      display: flex;
+      align-items: center;
+      gap: var(--space-16);
+    }
+    .flight-segment__end {
+      display: flex;
+      flex-direction: column;
+      gap: var(--space-4);
+      flex-shrink: 0;
+    }
+    .flight-segment__end--arrival {
+      align-items: flex-end;
+      text-align: right;
+    }
+    .flight-segment__date {
+      font-family: var(--font-text);
+      font-size: var(--body-m-size);
+      line-height: var(--body-m-lh);
+      font-weight: 400;
+      color: var(--text-alternative);
+    }
+    .flight-segment__code {
+      font-family: var(--font-display);
+      font-size: var(--headline-l-size);
+      line-height: var(--headline-l-lh);
+      font-weight: 500;
+      color: var(--text-default);
+    }
+    .flight-segment__time {
+      font-family: var(--font-text);
+      font-size: var(--body-m-size);
+      line-height: var(--body-m-lh);
+      font-weight: 400;
+      color: var(--text-alternative);
+    }
+    .flight-segment__status {
+      display: inline-flex;
+      align-items: center;
+      gap: var(--space-4);
+      background: var(--green-200);
+      border-radius: var(--radius-12);
+      corner-shape: squircle;
+      padding: 4px 12px;
+    }
+    .flight-segment__status-label {
+      font-family: var(--font-text);
+      font-size: var(--body-s-size);
+      line-height: var(--body-s-lh);
+      font-weight: 500;
+      color: var(--green-800);
+    }
+    .flight-segment__route {
+      flex: 1;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      gap: var(--space-8);
+      min-width: 0;
+    }
+    .flight-segment__logo {
+      height: 20px;
+      width: auto;
+      display: block;
+      flex-shrink: 0;
+    }
+    .flight-segment__duration {
+      font-family: var(--font-text);
+      font-size: var(--label-m-size);
+      line-height: var(--label-m-lh);
+      color: var(--text-default);
+      white-space: nowrap;
+    }
+    .flight-segment__line {
+      width: 100%;
+      height: 2px;
+      background-image: radial-gradient(circle, var(--border-default) 1.5px, transparent 1.5px);
+      background-size: 8px 2px;
+      background-repeat: repeat-x;
+      background-position: center;
+    }
+
+    @media (max-width: 959px) {
+      .enhance__grid { grid-template-columns: 1fr; }
+      .enhance__card {
+        flex-direction: row;
+        align-items: center;
+        gap: var(--space-16);
+      }
+      .enhance__ill-wrap {
+        width: 80px; height: 80px; flex-shrink: 0;
+      }
+      .enhance__ill-wrap img { width: 80px; height: 80px; }
+    }
+
+
+  </style>
+</head>
+<body>
+
+  <!-- ── Sky gradient ─────────────────────────── -->
+  <div class="sky-gradient" aria-hidden="true"></div>
+
+  <!-- ── Navigation ────────────────────────────── -->
+
+  <nav class="nav" id="nav" aria-label="Main navigation">
+    <div class="nav__pill">
+
+      <a href="index.html" class="nav__logo" aria-label="KLM Royal Dutch Airlines home">
+        <img src="assets/logo/logo-full.svg" alt="KLM Royal Dutch Airlines" />
+      </a>
+
+      <ul class="nav__links" role="list">
+        <li><a href="index.html" class="nav__link body-m-medium">Book</a></li>
+        <li><a href="my-trip.html" class="nav__link nav__link--active body-m-bold">My Trip</a></li>
+        <li><a href="#" class="nav__link body-m-medium">Check-in</a></li>
+        <li><a href="#" class="nav__link body-m-medium">Flying Blue</a></li>
+        <li><a href="#" class="nav__link body-m-medium">Travel information</a></li>
+      </ul>
+
+      <div class="nav__actions">
+
+        <a href="#" class="nav__meta body-m-medium" aria-label="Language and region">
+          <img src="assets/icons/icon-language.svg" width="20" height="20" aria-hidden="true" alt="" />
+          <span>NL / EN</span>
+        </a>
+
+        <div class="nav__account">
+          <button class="nav__cta body-m-medium" id="nav-account-btn" type="button" aria-haspopup="true" aria-expanded="false">
+            <img src="assets/icons/icon-profile.svg" width="20" height="20" aria-hidden="true" alt="" />
+            <span>Log in</span>
+          </button>
+          <div class="nav__account-dropdown" role="menu">
+            <ul class="nav__account-list">
+              <li><a href="#" class="nav__account-link body-m-medium" role="menuitem">My bookings</a></li>
+              <li><a href="#" class="nav__account-link body-m-medium" role="menuitem">My Flying Blue</a></li>
+              <li><a href="#" class="nav__account-link body-m-medium" role="menuitem">Personal details</a></li>
+              <li><a href="#" class="nav__account-link body-m-medium" role="menuitem">My travel documents</a></li>
+            </ul>
+            <div class="nav__account-actions">
+              <a href="#" class="btn--search-klm" style="border-radius: var(--radius-16); padding: 10px 24px; font-size: var(--body-m-size);">Log in</a>
+              <p class="nav__account-signup body-s-regular">No account yet?
+                <a href="#" class="nav__account-signup-link body-s-medium">Sign up
+                  <svg viewBox="0 0 14 14" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true" style="width:12px;height:12px"><path d="M2 7h10M8 3l4 4-4 4"/></svg>
+                </a>
+              </p>
+            </div>
+          </div>
+        </div>
+
+        <button class="nav__hamburger" aria-label="Open navigation menu" aria-expanded="false" aria-controls="mobile-menu">
+          <span class="nav__hamburger-line"></span>
+          <span class="nav__hamburger-line"></span>
+        </button>
+
+      </div>
+
+    </div>
+  </nav>
+
+  <!-- ── Mobile menu ───────────────────────────── -->
+
+  <div class="mobile-menu" id="mobile-menu" role="dialog" aria-label="Navigation menu" aria-hidden="true">
+    <nav class="mobile-menu__links">
+      <a href="index.html" class="mobile-menu__link" style="--d: 0.06s">Book <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a href="my-trip.html" class="mobile-menu__link" style="--d: 0.10s">My Trip <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a href="#" class="mobile-menu__link" style="--d: 0.14s">Check-in <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a href="#" class="mobile-menu__link" style="--d: 0.18s">Flying Blue <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+      <a href="#" class="mobile-menu__link" style="--d: 0.22s">Travel information <svg viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 8h10M9 4l4 4-4 4"/></svg></a>
+    </nav>
+    <div class="mobile-menu__footer">
+      <a href="#" class="mobile-menu__lang" aria-label="Language">
+        <img src="assets/icons/icon-language.svg" width="20" height="20" style="filter: brightness(0) invert(1);" aria-hidden="true" alt="" />
+        <span>NL / EN</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- ── Image block ───────────────────────────── -->
+  <section class="my-trip-hero-section" aria-label="Featured destination">
+    <div class="my-trip-hero">
+        <div style="width: 100%; max-width: 872px; margin: 0 auto; display: flex; flex-direction: column; align-items: flex-start; gap: 40px; text-align: left;">
+          <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 24px;">
+            <div style="display: flex; flex-direction: column; align-items: flex-start; gap: 8px;">
+              <h2 class="display-xs image-block__title"><span style="color:var(--neutral-0);">Welcome back, </span><span style="color:var(--highlighted-title);">Angela</span></h2>
+              <p class="image-block__body">Prepare for your trip to Dubai.</p>
+            </div>
+            <div style="display:inline-flex; align-items:center; gap:6px; background:var(--surface-system-success); border-radius:12px; padding:6px 12px;">
+              <span class="body-s-regular" style="color:var(--text-default);">Booking code:</span>
+              <span class="body-s-bold" style="color:var(--text-default);">RGA4OE</span>
+            </div>
+          </div>
+          <a href="#" style="
+            display: flex;
+            align-items: center;
+            gap: var(--space-16);
+            background: var(--blue-500);
+            border-radius: 24px;
+            corner-shape: squircle;
+            padding: 16px 24px;
+            text-decoration: none;
+            cursor: pointer;
+            width: 100%;
+            transition: background 0.2s var(--ease-expo);
+          " onmouseover="this.style.background='var(--blue-600)'" onmouseout="this.style.background='var(--blue-500)'">
+            <img src="assets/icons/icon-checkin-32.svg" width="32" height="32" aria-hidden="true" alt="" style="flex-shrink:0; filter: brightness(0) invert(1);" />
+            <div style="display:flex; flex-direction:column; gap:2px; flex:1; text-align:left;">
+              <span class="headline-xs" style="color:var(--neutral-0);">Check in is open</span>
+              <span class="body-m-regular" style="color:var(--neutral-0); opacity:0.8;">You can now check in for your flight</span>
+            </div>
+            <img src="assets/icons/icon-arrow-right.svg" aria-hidden="true" alt="" style="flex-shrink:0; filter: brightness(0) invert(1);" />
+          </a>
+        </div>
+    </div>
+  </section>
+
+  <!-- ── Page content ──────────────────────────── -->
+  <main id="main-content" class="page-content">
+
+    <!-- ── Extra options ──────────────────────────── -->
+    <section aria-label="Extra options for your trip">
+      <h2 class="headline-l extra-options__title">Extra options for your trip</h2>
+      <div class="extra-options__card">
+        <div class="search__tabs" role="tablist" aria-label="Flight leg">
+          <span class="search__tabs-indicator" aria-hidden="true"></span>
+          <button class="search__tab search__tab--active" role="tab" aria-selected="true">Amsterdam to Dubai</button>
+          <button class="search__tab" role="tab" aria-selected="false">Dubai to Amsterdam</button>
+        </div>
+        <ul class="trip-options">
+
+          <li class="trip-option">
+            <div class="trip-option__icon-wrap">
+              <img src="assets/icons/icon-seat-32.svg" width="32" height="32" aria-hidden="true" alt="" />
+            </div>
+            <div class="trip-option__copy">
+              <span class="body-s-bold trip-option__title">Seat</span>
+              <span class="body-m-regular trip-option__desc">Economy Class</span>
+            </div>
+            <button class="trip-option__cta" type="button" aria-label="Change seat">
+              <div class="icon-btn-arrows" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+              </div>
+            </button>
+          </li>
+
+          <li class="trip-option">
+            <div class="trip-option__icon-wrap">
+              <img src="assets/icons/icon-baggage-32.svg" width="32" height="32" aria-hidden="true" alt="" />
+            </div>
+            <div class="trip-option__copy">
+              <span class="body-s-bold trip-option__title">Baggage</span>
+              <span class="body-m-regular trip-option__desc">1x Accessory<br>1x Hand baggage<br>1x Checked baggage</span>
+            </div>
+            <button class="trip-option__cta" type="button" aria-label="Change baggage">
+              <div class="icon-btn-arrows" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+              </div>
+            </button>
+          </li>
+
+          <li class="trip-option">
+            <div class="trip-option__icon-wrap">
+              <img src="assets/icons/icon-meal-32.svg" width="32" height="32" aria-hidden="true" alt="" />
+            </div>
+            <div class="trip-option__copy">
+              <span class="body-s-bold trip-option__title">Meal</span>
+              <span class="body-m-regular trip-option__desc">Standard meal</span>
+            </div>
+            <button class="trip-option__cta" type="button" aria-label="Change meal">
+              <div class="icon-btn-arrows" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+              </div>
+            </button>
+          </li>
+
+        </ul>
+
+        <!-- ── Enhance your trip ── -->
+        <div class="enhance">
+          <div class="enhance__header">
+            <h3 class="headline-m enhance__title">Enhance your trip</h3>
+            <div class="enhance__nav" aria-label="Browse enhance cards">
+              <button class="enhance__nav-btn enhance__nav-btn--prev" aria-label="Previous">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M6.35156 9.70312C5.67188 10.3828 5.22656 10.8516 4.92188 11.2266L21 11.25V12.75H4.92188C5.22656 13.1484 5.67188 13.6172 6.35156 14.2969L9.09375 17.0391L8.01562 18.0938L5.29688 15.3516C4.64062 14.6953 4.10156 14.1562 3.72656 13.6875C3.35156 13.1719 3.07031 12.6328 3.07031 12C3.07031 11.3672 3.35156 10.8281 3.72656 10.3125C4.10156 9.84375 4.64062 9.30469 5.29688 8.64844L8.01562 5.90625L9.09375 6.96094L6.35156 9.70312Z" fill="currentColor"/></svg>
+              </button>
+              <button class="enhance__nav-btn enhance__nav-btn--next" aria-label="Next">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="currentColor"/></svg>
+              </button>
+            </div>
+          </div>
+          <div class="enhance__grid">
+
+            <div class="enhance__card">
+              <div class="enhance__ill-wrap">
+                <img src="assets/illustrations/ill-upgrade.svg" alt="" aria-hidden="true" />
+              </div>
+              <div class="enhance__copy">
+                <span class="headline-xs enhance__card-title">Upgrade</span>
+                <span class="body-m-regular enhance__card-desc">Treat yourself to a more comfortable travel class</span>
+              </div>
+            </div>
+
+            <div class="enhance__card">
+              <div class="enhance__ill-wrap">
+                <img src="assets/illustrations/ill-saf.svg" alt="" aria-hidden="true" />
+              </div>
+              <div class="enhance__copy">
+                <span class="headline-xs enhance__card-title">Alternative Aviation Fuel (SAF)</span>
+                <span class="body-m-regular enhance__card-desc">from € 7,00</span>
+              </div>
+            </div>
+
+            <div class="enhance__card">
+              <div class="enhance__ill-wrap">
+                <img src="assets/illustrations/ill-lounge.svg" alt="" aria-hidden="true" />
+              </div>
+              <div class="enhance__copy">
+                <span class="headline-xs enhance__card-title">Lounge access</span>
+                <span class="body-m-regular enhance__card-desc">Treat yourself to a more comfortable travel class</span>
+              </div>
+            </div>
+
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ── Destination image block ──────────────────── -->
+    <section aria-label="Featured destination">
+      <div class="trip-image-block">
+        <img
+          class="trip-image-block__img"
+          src="assets/images/my-trip-destination.jpg"
+          alt="A scenic view of Dubai"
+          loading="lazy"
+        />
+        <div class="trip-image-block__content">
+          <h2 class="headline-l image-block__title">Upgrade your Dubai journey</h2>
+          <p class="image-block__body">More comfortable seats, a delightful meal and SkyPriority access</p>
+          <button class="image-block__cta" type="button" aria-label="Explore Cape Town">
+            <div class="icon-btn-arrows" aria-hidden="true">
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+              <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+            </div>
+          </button>
+        </div>
+      </div>
+    </section>
+
+    <section aria-label="Flight details">
+      <h2 class="headline-l extra-options__title">Flight details</h2>
+      <div class="extra-options__card">
+        <div class="search__tabs" role="tablist" aria-label="Flight leg">
+          <span class="search__tabs-indicator" aria-hidden="true"></span>
+          <button class="search__tab search__tab--active" role="tab" aria-selected="true">Amsterdam to Dubai</button>
+          <button class="search__tab" role="tab" aria-selected="false">Dubai to Amsterdam</button>
+        </div>
+
+        <div class="flight-segment">
+          <!-- Departure -->
+          <div class="flight-segment__end">
+            <span class="flight-segment__date">Mon 15 Nov</span>
+            <span class="flight-segment__code">AMS</span>
+            <span class="flight-segment__time">18:40</span>
+            <div class="flight-segment__status">
+              <svg width="6" height="6" viewBox="0 0 6 6" aria-hidden="true"><circle cx="3" cy="3" r="3" fill="var(--green-800)"/></svg>
+              <span class="flight-segment__status-label">On Time</span>
+            </div>
+          </div>
+
+          <!-- Route -->
+          <div class="flight-segment__route">
+            <div class="flight-segment__line" aria-hidden="true"></div>
+            <div style="display:flex; flex-direction:column; align-items:center; gap:4px;">
+              <img src="assets/logo/logo-minimal.svg" alt="KLM" class="flight-segment__logo" />
+              <span class="flight-segment__duration">7h 05m</span>
+            </div>
+            <div class="flight-segment__line" aria-hidden="true"></div>
+          </div>
+
+          <!-- Arrival -->
+          <div class="flight-segment__end flight-segment__end--arrival">
+            <span class="flight-segment__date">Mon 15 Nov</span>
+            <span class="flight-segment__code">DXB</span>
+            <span class="flight-segment__time">23:45</span>
+            <div class="flight-segment__status">
+              <svg width="6" height="6" viewBox="0 0 6 6" aria-hidden="true"><circle cx="3" cy="3" r="3" fill="var(--green-800)"/></svg>
+              <span class="flight-segment__status-label">On Time</span>
+            </div>
+          </div>
+        </div>
+
+        <div style="padding: 0 var(--space-24) var(--space-24);">
+          <a href="#" style="
+            display: flex;
+            align-items: center;
+            gap: var(--space-16);
+            background: transparent;
+            border: 1.5px solid var(--border-default);
+            border-radius: 24px;
+            corner-shape: squircle;
+            padding: 16px 24px;
+            text-decoration: none;
+            cursor: pointer;
+            width: 100%;
+            box-sizing: border-box;
+          ">
+            <svg width="32" height="32" viewBox="0 0 32 32" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0; color:var(--text-default);"><path d="M21.5164 18.8174V21.184H19.8164V18.8174H21.5164Z" fill="currentColor"/><path d="M21.5164 17.184V14.8174H19.8164V17.184H21.5164Z" fill="currentColor"/><path d="M21.5164 10.8174V13.184H19.8164V10.8174H21.5164Z" fill="currentColor"/><path d="M11.6888 11.5336L13.0909 14.9346H15.6803C16.2702 14.9346 16.7484 15.4128 16.7484 16.0027C16.7484 16.5926 16.2702 17.0709 15.6803 17.0709H13.0909L11.689 20.4667C11.4855 20.9597 11.0152 21.2903 10.4824 21.315L9.47701 21.3615L10.3433 17.0709H7.66027L7.16678 18.2693C7.08198 18.4753 6.88128 18.6097 6.65855 18.6097H5.51074L6.08813 16.0051L5.51074 13.3958H6.65855C6.88128 13.3958 7.08198 13.5302 7.16678 13.7361L7.66027 14.9346H10.3433L9.47701 10.6382L10.482 10.6847C11.0149 10.7093 11.4855 11.0403 11.6888 11.5336Z" fill="currentColor"/><path fill-rule="evenodd" clip-rule="evenodd" d="M1.81641 8.66706C1.81641 6.72486 3.39087 5.15039 5.33307 5.15039H19.0229L19.2241 6.41819C19.4139 7.1455 20.0713 7.65512 20.8256 7.65513C21.5704 7.65514 22.2208 7.15816 22.4197 6.44529L22.5292 5.15039H26.6664C28.6086 5.15039 30.1831 6.72486 30.1831 8.66706V23.3337C30.1831 25.2759 28.6086 26.8504 26.6664 26.8504H22.6456L22.4283 25.5874C22.2401 24.8575 21.5814 24.3457 20.8256 24.3457C20.0648 24.3457 19.4026 24.8641 19.2193 25.6015L18.9553 26.8504H5.33307C3.39087 26.8504 1.81641 25.2759 1.81641 23.3337V8.66706ZM5.33307 6.85039C4.32976 6.85039 3.51641 7.66374 3.51641 8.66706V23.3337C3.51641 24.337 4.32976 25.1504 5.33307 25.1504H17.58C17.9656 23.6775 19.2976 22.6457 20.8255 22.6457C22.3535 22.6456 23.6855 23.6774 24.0712 25.1504H26.6664C27.6697 25.1504 28.4831 24.337 28.4831 23.3337V8.66706C28.4831 7.66374 27.6697 6.85039 26.6664 6.85039H24.0712C23.6856 8.32336 22.3535 9.35516 20.8255 9.35513C19.2976 9.3551 17.9656 8.3233 17.58 6.85039H5.33307Z" fill="currentColor"/></svg>
+            <div style="display:flex; flex-direction:column; gap:2px; flex:1; text-align:left;">
+              <span class="headline-xs" style="color:var(--text-default);">Check in is open</span>
+              <span class="body-m-regular" style="color:var(--text-default);">You can now check in for your flight</span>
+            </div>
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true" style="flex-shrink:0; color:var(--text-default);"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="currentColor"/></svg>
+          </a>
+        </div>
+
+        <div style="padding: 0 var(--space-24) var(--space-24);">
+          <a href="#" class="btn--search-klm btn--alternative" style="display: inline-flex; width: auto; min-height: 48px; border-radius: var(--radius-16); padding: 0 var(--space-16);">Show all flight details</a>
+        </div>
+
+      </div>
+    </section>
+
+    <section aria-label="Passengers">
+      <h2 class="headline-l extra-options__title">Passengers</h2>
+      <div class="extra-options__card">
+        <ul class="trip-options">
+
+          <li class="trip-option">
+            <div class="trip-option__icon-wrap" style="display:flex; align-items:center; justify-content:center;">
+              <span class="headline-s" style="color:var(--text-default); line-height:1;">CB</span>
+            </div>
+            <div class="trip-option__copy">
+              <div style="display:flex; align-items:center; gap:var(--space-8);">
+                <span class="body-m-medium trip-option__title">Chuck Bartowski</span>
+                <img src="assets/images/flying-blue-status.svg" width="79" height="20" alt="Flying Blue" aria-hidden="true" />
+              </div>
+              <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Ticket: 0742107844680</span>
+            </div>
+            <button class="trip-option__cta" type="button" aria-label="View Chuck Bartowski">
+              <div class="icon-btn-arrows" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+              </div>
+            </button>
+          </li>
+
+          <li class="trip-option">
+            <div class="trip-option__icon-wrap" style="display:flex; align-items:center; justify-content:center;">
+              <span class="headline-s" style="color:var(--text-default); line-height:1;">JS</span>
+            </div>
+            <div class="trip-option__copy">
+              <div style="display:flex; align-items:center; gap:var(--space-8);">
+                <span class="body-m-medium trip-option__title">John Smith</span>
+                <img src="assets/images/flying-blue-status.svg" width="79" height="20" alt="Flying Blue" aria-hidden="true" />
+              </div>
+              <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Ticket: 0742107844526</span>
+            </div>
+            <button class="trip-option__cta" type="button" aria-label="View John Smith">
+              <div class="icon-btn-arrows" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+              </div>
+            </button>
+          </li>
+
+          <li class="trip-option">
+            <div class="trip-option__icon-wrap" style="display:flex; align-items:center; justify-content:center;">
+              <span class="headline-s" style="color:var(--text-default); line-height:1;">DY</span>
+            </div>
+            <div class="trip-option__copy">
+              <div style="display:flex; align-items:center; gap:var(--space-8);">
+                <span class="body-m-medium trip-option__title">Daniel Young</span>
+                <img src="assets/images/flying-blue-status.svg" width="79" height="20" alt="Flying Blue" aria-hidden="true" />
+              </div>
+              <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Ticket: 0742107844621</span>
+            </div>
+            <button class="trip-option__cta" type="button" aria-label="View Daniel Young">
+              <div class="icon-btn-arrows" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+              </div>
+            </button>
+          </li>
+
+        </ul>
+      </div>
+    </section>
+
+    <section aria-label="Manage booking">
+      <h2 class="headline-l extra-options__title">Manage booking</h2>
+      <div class="extra-options__card">
+        <ul class="trip-options">
+
+          <li class="trip-option">
+            <img src="assets/icons/icon-label.svg" aria-hidden="true" alt="" />
+            <div class="trip-option__copy">
+              <span class="body-m-medium trip-option__title">View price details</span>
+              <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Overview of all price specifications</span>
+            </div>
+            <button class="trip-option__cta" type="button" aria-label="View price details">
+              <div class="icon-btn-arrows" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+              </div>
+            </button>
+          </li>
+
+          <li class="trip-option">
+            <img src="assets/icons/icon-ticket.svg" aria-hidden="true" alt="" />
+            <div class="trip-option__copy">
+              <span class="body-m-medium trip-option__title">View ticket conditions</span>
+              <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Conditions and terms for your tickets</span>
+            </div>
+            <button class="trip-option__cta" type="button" aria-label="View ticket conditions">
+              <div class="icon-btn-arrows" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+              </div>
+            </button>
+          </li>
+
+          <li class="trip-option">
+            <img src="assets/icons/icon-invoice.svg" aria-hidden="true" alt="" />
+            <div class="trip-option__copy">
+              <span class="body-m-medium trip-option__title">Request an invoice</span>
+              <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Request and download an invoice</span>
+            </div>
+            <button class="trip-option__cta" type="button" aria-label="Request an invoice">
+              <div class="icon-btn-arrows" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+              </div>
+            </button>
+          </li>
+
+          <li class="trip-option">
+            <img src="assets/icons/icon-refresh.svg" aria-hidden="true" alt="" />
+            <div class="trip-option__copy">
+              <span class="body-m-medium trip-option__title">Change my flight</span>
+              <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Check if you're eligible for a flight change</span>
+            </div>
+            <button class="trip-option__cta" type="button" aria-label="Change my flight">
+              <div class="icon-btn-arrows" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+              </div>
+            </button>
+          </li>
+
+          <li class="trip-option">
+            <img src="assets/icons/icon-voucher.svg" aria-hidden="true" alt="" />
+            <div class="trip-option__copy">
+              <span class="body-m-medium trip-option__title">Request refund</span>
+              <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Refunds are possible depending on your ticket conditions</span>
+            </div>
+            <button class="trip-option__cta" type="button" aria-label="Request refund">
+              <div class="icon-btn-arrows" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+              </div>
+            </button>
+          </li>
+
+          <li class="trip-option">
+            <img src="assets/icons/icon-checklist.svg" aria-hidden="true" alt="" />
+            <div class="trip-option__copy">
+              <span class="body-m-medium trip-option__title">Request reimbursement</span>
+              <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Would you like to file a claim for your trip?</span>
+            </div>
+            <button class="trip-option__cta" type="button" aria-label="Request reimbursement">
+              <div class="icon-btn-arrows" aria-hidden="true">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
+              </div>
+            </button>
+          </li>
+
+        </ul>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ── Footer ────────────────────────────────── -->
+  <footer class="footer" role="contentinfo">
+    <img src="assets/logo/logo-full.svg" alt="KLM Royal Dutch Airlines" class="footer__logo" />
+    <div class="footer__inner">
+
+      <div class="footer__bottom">
+        <nav class="footer__legal-links" aria-label="Legal links">
+          <a href="#" class="label-m-regular">Site Map</a>
+          <a href="#" class="label-m-regular">Legal information</a>
+          <a href="#" class="label-m-regular">Service address</a>
+          <a href="#" class="label-m-regular">Privacy policy</a>
+          <a href="#" class="label-m-regular">Accessibility statement</a>
+          <a href="#" class="label-m-regular">Cookie settings</a>
+        </nav>
+      </div>
+
+    </div>
+  </footer>
+
+  <!-- ── Scripts ───────────────────────────────── -->
+
+  <script>
+    'use strict';
+
+    /* ── Nav: scroll state ── */
+    const nav = document.getElementById('nav');
+    let ticking = false;
+    function updateNav() { nav.classList.toggle('nav--scrolled', window.scrollY > 8); ticking = false; }
+    window.addEventListener('scroll', () => { if (!ticking) { requestAnimationFrame(updateNav); ticking = true; } }, { passive: true });
+    updateNav();
+
+    /* ── Nav: account dropdown ── */
+    const accountBtn  = document.getElementById('nav-account-btn');
+    const accountWrap = accountBtn?.closest('.nav__account');
+    if (accountBtn && accountWrap) {
+      accountBtn.addEventListener('click', (e) => {
+        e.stopPropagation();
+        const open = accountWrap.classList.toggle('is-open');
+        accountBtn.setAttribute('aria-expanded', String(open));
+      });
+      document.addEventListener('click', (e) => {
+        if (!accountWrap.contains(e.target)) {
+          accountWrap.classList.remove('is-open');
+          accountBtn.setAttribute('aria-expanded', 'false');
+        }
+      });
+      document.addEventListener('keydown', (e) => {
+        if (e.key === 'Escape') {
+          accountWrap.classList.remove('is-open');
+          accountBtn.setAttribute('aria-expanded', 'false');
+          accountBtn.focus();
+        }
+      });
+    }
+
+    /* ── Nav: mobile menu ── */
+    const hamburger  = document.querySelector('.nav__hamburger');
+    const mobileMenu = document.getElementById('mobile-menu');
+    if (hamburger && mobileMenu) {
+      hamburger.addEventListener('click', () => {
+        const open = hamburger.classList.toggle('is-open');
+        mobileMenu.classList.toggle('is-open', open);
+        mobileMenu.setAttribute('aria-hidden', String(!open));
+        hamburger.setAttribute('aria-expanded', String(open));
+        document.body.style.overflow = open ? 'hidden' : '';
+      });
+    }
+
+    /* ── Search v2 tab switching ── */
+    (function () {
+      var tabs   = document.querySelectorAll('.search-v2__tab');
+      var panels = document.querySelectorAll('.search-v2__panel');
+      tabs.forEach(function (tab) {
+        tab.addEventListener('click', function () {
+          var target = tab.dataset.panel;
+          tabs.forEach(function (t) {
+            t.classList.toggle('search-v2__tab--active', t === tab);
+            t.setAttribute('aria-selected', String(t === tab));
+          });
+          var doSwitch = function () {
+            panels.forEach(function (p) {
+              p.classList.toggle('search-v2__panel--hidden', p.dataset.panel !== target);
+            });
+          };
+          if (document.startViewTransition) {
+            document.startViewTransition(doSwitch);
+          } else {
+            doSwitch();
+          }
+        });
+      });
+    })();
+
+    /* ── Search field active state ── */
+    (function () {
+      const fields = document.querySelectorAll('.search__field');
+      fields.forEach(function (field) {
+        field.addEventListener('mousedown', function () {
+          fields.forEach(function (f) { f.classList.remove('is-active'); });
+          field.classList.add('is-active');
+        });
+        field.addEventListener('blur', function () { field.classList.remove('is-active'); });
+      });
+      document.addEventListener('mousedown', function (e) {
+        if (!e.target.closest('.search__field')) {
+          fields.forEach(function (f) { f.classList.remove('is-active'); });
+        }
+      });
+    })();
+
+    /* ── Size v2 selects ── */
+    (function () {
+      var mirror = document.createElement('span');
+      mirror.style.cssText = [
+        'position:absolute', 'top:0', 'left:-9999px', 'visibility:hidden', 'white-space:pre',
+        'font-family:var(--font-text)', 'font-size:var(--body-m-size)',
+        'font-weight:500', 'pointer-events:none'
+      ].join(';');
+      document.body.appendChild(mirror);
+      function sizeSelect(sel) {
+        var opt = sel.options[sel.selectedIndex];
+        mirror.textContent = opt ? opt.text : '';
+        var pad = parseInt(getComputedStyle(sel).paddingLeft) || 0;
+        sel.style.width = (mirror.offsetWidth + pad + 2) + 'px';
+      }
+      document.querySelectorAll('.search-v2__select').forEach(function (sel) {
+        sizeSelect(sel);
+        sel.addEventListener('change', function () { sizeSelect(sel); });
+      });
+    })();
+
+    /* ── Footer: mobile accordion ── */
+    (function () {
+      const toggles = document.querySelectorAll('.footer__col-toggle');
+      toggles.forEach(function (btn, i) {
+        const panel = btn.nextElementSibling;
+        if (!panel) return;
+        const id = 'footer-panel-' + i;
+        panel.id = id;
+        btn.setAttribute('aria-controls', id);
+        btn.addEventListener('click', function () {
+          if (window.matchMedia('(min-width: 960px)').matches) return;
+          const col = btn.closest('.footer__col');
+          const isOpen = col.classList.toggle('is-open');
+          btn.setAttribute('aria-expanded', String(isOpen));
+        });
+      });
+    })();
+
+    /* ── Reveal animations ── */
+    const observer = new IntersectionObserver(
+      (entries) => { entries.forEach(entry => { if (entry.isIntersecting) { entry.target.classList.add('is-visible'); observer.unobserve(entry.target); } }); },
+      { threshold: 0.1 }
+    );
+    document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
+
+    /* ── Sliding tab indicator ── */
+    function initSlidingTabs(tabsWrap) {
+      if (!tabsWrap) return;
+      const indicator = tabsWrap.querySelector('.search__tabs-indicator');
+      const tabs = Array.from(tabsWrap.querySelectorAll('.search__tab'));
+      function moveIndicator(tab) {
+        if (!indicator) return;
+        indicator.style.width = tab.offsetWidth + 'px';
+        indicator.style.transform = 'translateX(' + tab.offsetLeft + 'px)';
+      }
+      const activeTab = tabs.find(t => t.classList.contains('search__tab--active'));
+      if (activeTab && indicator) {
+        indicator.style.transition = 'none';
+        moveIndicator(activeTab);
+        requestAnimationFrame(() => { indicator.style.transition = ''; });
+      }
+      tabs.forEach(tab => {
+        tab.addEventListener('click', () => {
+          tabs.forEach(t => { t.classList.remove('search__tab--active'); t.setAttribute('aria-selected', 'false'); });
+          tab.classList.add('search__tab--active');
+          tab.setAttribute('aria-selected', 'true');
+          moveIndicator(tab);
+        });
+      });
+    }
+    document.querySelectorAll('.search__tabs').forEach(initSlidingTabs);
+    document.fonts.ready.then(() => {
+      document.querySelectorAll('.search__tabs').forEach(initSlidingTabs);
+    });
+  </script>
+
+</body>
+</html>
