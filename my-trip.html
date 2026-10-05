@@ -954,14 +954,15 @@
       gap: var(--space-16);
       padding: var(--space-24);
       cursor: pointer;
-      transition: background 0.15s var(--ease-expo);
+      transition: padding 0.4s var(--ease-expo);
     }
+
+    .trip-option:hover { padding-left: calc(var(--space-24) + 4px); }
 
     .trip-option:not(:last-child) {
       border-bottom: 1.5px solid var(--divider-light);
     }
 
-    .trip-option:hover { background: color-mix(in srgb, var(--warm-grey-900) 2%, transparent); }
 
     .trip-option__icon-wrap {
       width: 56px;
@@ -999,10 +1000,10 @@
       justify-content: center;
       cursor: pointer;
       overflow: hidden;
-      transition: border-color 0.2s var(--ease-expo);
+      transition: border-color 0.2s var(--ease-expo), background 0.2s var(--ease-expo);
     }
 
-    .trip-option__cta:hover { border-color: var(--border-contrast); }
+    .trip-option:hover .trip-option__cta { border-color: var(--border-contrast); background: color-mix(in srgb, var(--warm-grey-900) 2%, transparent); }
 
     @media (hover: hover) and (pointer: fine) {
       .trip-option:hover .icon-btn-arrows svg:first-child { transform: translateX(48px) scale(0.7); }
