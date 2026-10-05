@@ -830,8 +830,8 @@
       z-index: 2;
       width: 36px;
       height: 36px;
-      border-radius: 9999px;
-      corner-shape: round;
+      border-radius: 9999px; corner-shape: round;
+
       background: var(--surface-highlight);
       border: none;
       display: flex;
@@ -1079,8 +1079,8 @@
       justify-content: center;
       width: 48px;
       height: 48px;
-      border-radius: 9999px;
-      corner-shape: round;
+      border-radius: 9999px; corner-shape: round;
+
       background: var(--blue-200);
       border: none;
       padding: 0;
@@ -1340,8 +1340,8 @@
       justify-content: center;
       width: 48px;
       height: 48px;
-      border-radius: 9999px;
-      corner-shape: round;
+      border-radius: 9999px; corner-shape: round;
+
       background: var(--blue-200);
       border: none;
       padding: 0;
@@ -1373,14 +1373,6 @@
 
       border-bottom: 1.5px solid var(--border-subtle);
       cursor: pointer;
-      transition: padding-left 0.4s var(--ease-expo);
-
-    }
-
-    @media (hover: hover) and (pointer: fine) {
-      .dest-row:hover {
-        padding-left: var(--space-32);
-      }
     }
 
     @media (max-width: 959px) {
@@ -1438,11 +1430,28 @@
       white-space: nowrap;
     }
 
-    .dest-row__arrow {
-      width: 20px;
-      height: 20px;
-      color: var(--text-subtle);
+    .dest-row__arrow-wrap {
+      width: 48px;
+      height: 48px;
       flex-shrink: 0;
+      border-radius: 9999px; corner-shape: round;
+      background: transparent;
+      border: none;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      overflow: hidden;
+      transition: background 0.2s var(--ease-expo);
+      color: var(--text-subtle);
+    }
+
+    .dest-row:hover .dest-row__arrow-wrap { background: color-mix(in srgb, var(--warm-grey-900) 4%, transparent); }
+    .dest-row:active .dest-row__arrow-wrap { background: color-mix(in srgb, var(--warm-grey-900) 8%, transparent); }
+
+    @media (hover: hover) and (pointer: fine) {
+      .dest-row:hover .dest-row__arrow-wrap .icon-btn-arrows svg:first-child { transform: translateX(48px) scale(0.7); }
+      .dest-row:hover .dest-row__arrow-wrap .icon-btn-arrows svg:last-child  { transform: translateX(0) scale(1); }
     }
 
     .dest-list__footer {
@@ -1468,8 +1477,8 @@
       justify-content: center;
       width: 48px;
       height: 48px;
-      border-radius: 9999px;
-      corner-shape: round;
+      border-radius: 9999px; corner-shape: round;
+
       background: var(--colour-active);
       border: none;
       padding: 0;
@@ -1609,8 +1618,8 @@
       justify-content: center;
       width: 48px;
       height: 48px;
-      border-radius: 9999px;
-      corner-shape: round;
+      border-radius: 9999px; corner-shape: round;
+
       background: var(--colour-active);
       border: none;
       padding: 0;
@@ -2815,7 +2824,7 @@
                   <span class="dest-row__from">From</span>
                   <span class="dest-row__price">EUR 782</span>
                 </div>
-                <svg class="dest-row__arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <button class="dest-row__arrow-wrap" type="button" aria-hidden="true" tabindex="-1"><div class="icon-btn-arrows"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="currentColor"/></svg><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="currentColor"/></svg></div></button>
               </div>
             </div>
 
@@ -2829,7 +2838,7 @@
                   <span class="dest-row__from">From</span>
                   <span class="dest-row__price">EUR 782</span>
                 </div>
-                <svg class="dest-row__arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <button class="dest-row__arrow-wrap" type="button" aria-hidden="true" tabindex="-1"><div class="icon-btn-arrows"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="currentColor"/></svg><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="currentColor"/></svg></div></button>
               </div>
             </div>
 
@@ -2843,7 +2852,7 @@
                   <span class="dest-row__from">From</span>
                   <span class="dest-row__price">EUR 782</span>
                 </div>
-                <svg class="dest-row__arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <button class="dest-row__arrow-wrap" type="button" aria-hidden="true" tabindex="-1"><div class="icon-btn-arrows"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="currentColor"/></svg><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="currentColor"/></svg></div></button>
               </div>
             </div>
 
@@ -2857,7 +2866,7 @@
                   <span class="dest-row__from">From</span>
                   <span class="dest-row__price">EUR 782</span>
                 </div>
-                <svg class="dest-row__arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <button class="dest-row__arrow-wrap" type="button" aria-hidden="true" tabindex="-1"><div class="icon-btn-arrows"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="currentColor"/></svg><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="currentColor"/></svg></div></button>
               </div>
             </div>
 
@@ -2871,7 +2880,7 @@
                   <span class="dest-row__from">From</span>
                   <span class="dest-row__price">EUR 782</span>
                 </div>
-                <svg class="dest-row__arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <button class="dest-row__arrow-wrap" type="button" aria-hidden="true" tabindex="-1"><div class="icon-btn-arrows"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="currentColor"/></svg><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="currentColor"/></svg></div></button>
               </div>
             </div>
 
@@ -2885,7 +2894,7 @@
                   <span class="dest-row__from">From</span>
                   <span class="dest-row__price">EUR 782</span>
                 </div>
-                <svg class="dest-row__arrow" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12M11 5l5 5-5 5" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+                <button class="dest-row__arrow-wrap" type="button" aria-hidden="true" tabindex="-1"><div class="icon-btn-arrows"><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="currentColor"/></svg><svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="currentColor"/></svg></div></button>
               </div>
             </div>
 

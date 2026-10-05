@@ -987,7 +987,7 @@
       pointer-events: none;
     }
 
-    .trip-option:hover .trip-option__icon-wrap::after { opacity: 0.04; }
+    .trip-option:hover .trip-option__icon-wrap::after { opacity: 0.02; }
 
     .trip-option__copy {
       display: flex;
@@ -1004,8 +1004,8 @@
       width: 48px;
       height: 48px;
       flex-shrink: 0;
-      border-radius: 9999px;
-      corner-shape: round;
+      border-radius: 9999px; corner-shape: round;
+
       background: transparent;
       border: 1.5px solid var(--border-default);
       display: flex;
@@ -1051,8 +1051,8 @@
     .enhance__nav { display: flex; gap: var(--space-12); }
     .enhance__nav-btn {
       width: 40px; height: 40px; flex-shrink: 0;
-      border-radius: 9999px;
-      corner-shape: round;
+      border-radius: 9999px; corner-shape: round;
+
       border: 1.5px solid var(--border-active);
       background: transparent;
       display: flex; align-items: center; justify-content: center;
@@ -1078,14 +1078,27 @@
       flex-direction: column;
       gap: var(--space-16);
       cursor: pointer;
+      position: relative;
+      overflow: hidden;
       transition: background 0.15s var(--ease-expo);
     }
+
+    .enhance__card::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--blue-900);
+      opacity: 0;
+      transition: opacity 0.2s var(--ease-expo);
+      pointer-events: none;
+    }
+
+    .enhance__card:hover::after { opacity: 0.02; }
 
 
     .enhance__ill-wrap {
       width: 96px; height: 96px; flex-shrink: 0;
-      background: var(--blue-200); border-radius: 16px;
-      corner-shape: squircle;
+      background: var(--blue-200); border-radius: 16px; corner-shape: squircle;
       display: flex; align-items: center; justify-content: center;
       overflow: hidden;
     }
