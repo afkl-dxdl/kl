@@ -1005,6 +1005,16 @@
 
     .trip-option:hover .trip-option__cta { border-color: var(--border-contrast); background: color-mix(in srgb, var(--warm-grey-900) 2%, transparent); }
 
+    section[aria-label="Manage booking"] + section[aria-label="Manage booking"] .trip-option__cta { border: none; }
+    @keyframes chevron-bounce {
+      0%   { transform: translateY(0);   animation-timing-function: cubic-bezier(0.4, 0, 0.6, 1); }
+      50%  { transform: translateY(2px); animation-timing-function: cubic-bezier(0.0, 0, 0.2, 1); }
+      100% { transform: translateY(0); }
+    }
+    section[aria-label="Manage booking"] + section[aria-label="Manage booking"] .trip-option:hover .trip-option__cta img { animation: chevron-bounce 0.4s linear; }
+    section[aria-label="Manage booking"] + section[aria-label="Manage booking"] .trip-option:hover { padding-left: var(--space-24); }
+    section[aria-label="Manage booking"] + section[aria-label="Manage booking"] .trip-option:hover .trip-option__cta { background: color-mix(in srgb, var(--warm-grey-900) 4%, transparent); }
+
     @media (hover: hover) and (pointer: fine) {
       .trip-option:hover .icon-btn-arrows svg:first-child { transform: translateX(48px) scale(0.7); }
       .trip-option:hover .icon-btn-arrows svg:last-child  { transform: translateX(0) scale(1); }
@@ -1658,6 +1668,54 @@
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
               </div>
+            </button>
+          </li>
+
+        </ul>
+      </div>
+    </section>
+
+    <section aria-label="Manage booking">
+      <h2 class="headline-l extra-options__title">Expansion panel test</h2>
+      <div class="extra-options__card">
+        <ul class="trip-options">
+
+          <li class="trip-option">
+            <img src="assets/icons/icon-label.svg" aria-hidden="true" alt="" />
+            <div class="trip-option__copy">
+              <span class="body-m-medium trip-option__title">View price details</span>
+              <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Overview of all price specifications</span>
+            </div>
+            <button class="trip-option__cta" type="button" aria-label="View price details">
+              <img src="assets/icons/icon-chevron-down.svg" aria-hidden="true" alt="" />
+            </button>
+          </li>
+
+          
+
+          
+
+          
+
+          <li class="trip-option">
+            <img src="assets/icons/icon-voucher.svg" aria-hidden="true" alt="" />
+            <div class="trip-option__copy">
+              <span class="body-m-medium trip-option__title">Request refund</span>
+              <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Refunds are possible depending on your ticket conditions</span>
+            </div>
+            <button class="trip-option__cta" type="button" aria-label="Request refund">
+              <img src="assets/icons/icon-chevron-down.svg" aria-hidden="true" alt="" />
+            </button>
+          </li>
+
+          <li class="trip-option">
+            <img src="assets/icons/icon-checklist.svg" aria-hidden="true" alt="" />
+            <div class="trip-option__copy">
+              <span class="body-m-medium trip-option__title">Request reimbursement</span>
+              <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Would you like to file a claim for your trip?</span>
+            </div>
+            <button class="trip-option__cta" type="button" aria-label="Request reimbursement">
+              <img src="assets/icons/icon-chevron-down.svg" aria-hidden="true" alt="" />
             </button>
           </li>
 
