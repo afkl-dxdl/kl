@@ -973,7 +973,21 @@
       display: flex;
       align-items: center;
       justify-content: center;
+      position: relative;
+      overflow: hidden;
     }
+
+    .trip-option__icon-wrap::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: var(--blue-900);
+      opacity: 0;
+      transition: opacity 0.2s var(--ease-expo);
+      pointer-events: none;
+    }
+
+    .trip-option:hover .trip-option__icon-wrap::after { opacity: 0.04; }
 
     .trip-option__copy {
       display: flex;
