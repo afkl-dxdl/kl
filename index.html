@@ -1449,7 +1449,10 @@
     .dest-row:hover .dest-row__arrow-wrap { background: color-mix(in srgb, var(--warm-grey-900) 4%, transparent); }
     .dest-row:active .dest-row__arrow-wrap { background: color-mix(in srgb, var(--warm-grey-900) 8%, transparent); }
 
+    .dest-row__arrow-wrap .icon-btn-arrows svg { transition: none; }
+
     @media (hover: hover) and (pointer: fine) {
+      .dest-row:hover .dest-row__arrow-wrap .icon-btn-arrows svg { transition: transform 0.75s var(--ease-expo); }
       .dest-row:hover .dest-row__arrow-wrap .icon-btn-arrows svg:first-child { transform: translateX(48px) scale(0.7); }
       .dest-row:hover .dest-row__arrow-wrap .icon-btn-arrows svg:last-child  { transform: translateX(0) scale(1); }
     }
@@ -1631,7 +1634,10 @@
 
     .service-card__cta:active { transform: scale(0.96); }
 
+    .service-card__cta .icon-btn-arrows svg { transition: none; }
+
     @media (hover: hover) and (pointer: fine) {
+      .service-card:hover .service-card__cta .icon-btn-arrows svg { transition: transform 0.75s var(--ease-expo); }
       .service-card:hover .service-card__cta .icon-btn-arrows svg:first-child {
         transform: translateX(48px) scale(0.7);
       }
