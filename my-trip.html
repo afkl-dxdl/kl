@@ -642,16 +642,41 @@
     .image-block__title { color: var(--highlighted-title); }
     .image-block__body  { font-family: var(--font-text); font-size: var(--body-m-size); line-height: var(--body-m-lh); font-weight: 400; color: var(--text-contrast); }
 
+    /* ─── Icon button system ────────────────────────── */
+    .icon-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+      border-radius: 9999px; corner-shape: round;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+      overflow: hidden;
+      transition: background 0.2s var(--ease-expo);
+    }
+    .icon-btn--md { width: 48px; height: 48px; }
+    .icon-btn--sm { width: 40px; height: 40px; }
+
+    .icon-btn--primary   { background: var(--colour-active); color: var(--colour-active-contrast); }
+    .icon-btn--alt       { background: var(--blue-200); color: var(--text-default); }
+    .icon-btn--secondary { background: transparent; border: 1.5px solid var(--border-active); color: var(--text-active); transition: border-color 0.2s var(--ease-expo), background 0.2s var(--ease-expo); }
+    .icon-btn--ghost     { background: transparent; color: var(--text-subtle); }
+
+    @media (hover: hover) and (pointer: fine) {
+      .icon-btn--primary:hover,
+      .icon-btn--alt:hover     { background: color-mix(in srgb, var(--blue-900) 4%, var(--blue-200)); }
+      .icon-btn--secondary:hover,
+      .icon-btn--ghost:hover   { background: color-mix(in srgb, var(--warm-grey-900) 4%, transparent); }
+    }
+    .icon-btn--primary:active,
+    .icon-btn--alt:active      { background: color-mix(in srgb, var(--blue-900) 8%, var(--blue-200)); }
+    .icon-btn--secondary:active,
+    .icon-btn--ghost:active    { background: color-mix(in srgb, var(--warm-grey-900) 8%, transparent); }
+
     .image-block__cta {
       position: absolute; bottom: var(--space-24); right: var(--space-24);
-      display: inline-flex; align-items: center; justify-content: center;
-      width: 48px; height: 48px; border-radius: 9999px; corner-shape: round;
-      background: var(--blue-200); border: none; padding: 0; cursor: pointer;
-      flex-shrink: 0; overflow: hidden;
-      transition: background 0.2s var(--ease-expo), transform 0.2s var(--ease-expo);
     }
-
-    .image-block__cta:active { transform: scale(0.96); }
 
     /* ─── Icon button arrow animation ───────────────── */
     .icon-btn-arrows { position: relative; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center; }
@@ -1000,23 +1025,7 @@
     .trip-option__title { color: var(--text-default); }
     .trip-option__desc  { color: var(--text-default); }
 
-    .trip-option__cta {
-      width: 48px;
-      height: 48px;
-      flex-shrink: 0;
-      border-radius: 9999px; corner-shape: round;
-
-      background: transparent;
-      border: 1.5px solid var(--border-default);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      overflow: hidden;
-      transition: border-color 0.2s var(--ease-expo), background 0.2s var(--ease-expo);
-    }
-
-    .trip-option:hover .trip-option__cta { border-color: var(--border-contrast); background: color-mix(in srgb, var(--warm-grey-900) 2%, transparent); }
+    .trip-option:hover .trip-option__cta { border-color: var(--border-contrast); background: color-mix(in srgb, var(--warm-grey-900) 4%, transparent); }
 
     section[aria-label="Manage booking"] + section[aria-label="Manage booking"] .trip-option__cta { border: none; }
     @keyframes chevron-bounce {
@@ -1052,18 +1061,6 @@
     }
     .enhance__title { color: var(--text-default); }
     .enhance__nav { display: flex; gap: var(--space-12); }
-    .enhance__nav-btn {
-      width: 40px; height: 40px; flex-shrink: 0;
-      border-radius: 9999px; corner-shape: round;
-
-      border: 1.5px solid var(--border-active);
-      background: transparent;
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer;
-      transition: background 0.15s var(--ease-expo);
-    }
-    .enhance__nav-btn:hover { background: color-mix(in srgb, var(--blue-500) 8%, transparent); }
-    .enhance__nav-btn { color: var(--text-active); }
     .enhance__nav-btn svg { width: 24px; height: 24px; flex-shrink: 0; display: block; }
 
     .enhance__grid {
@@ -1356,7 +1353,7 @@
               <span class="body-s-bold trip-option__title">Seat</span>
               <span class="body-m-regular trip-option__desc">Economy Class</span>
             </div>
-            <button class="trip-option__cta" type="button" aria-label="Change seat">
+            <button class="trip-option__cta icon-btn icon-btn--md icon-btn--secondary" type="button" aria-label="Change seat">
               <div class="icon-btn-arrows" aria-hidden="true">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
@@ -1372,7 +1369,7 @@
               <span class="body-s-bold trip-option__title">Baggage</span>
               <span class="body-m-regular trip-option__desc">1x Accessory<br>1x Hand baggage<br>1x Checked baggage</span>
             </div>
-            <button class="trip-option__cta" type="button" aria-label="Change baggage">
+            <button class="trip-option__cta icon-btn icon-btn--md icon-btn--secondary" type="button" aria-label="Change baggage">
               <div class="icon-btn-arrows" aria-hidden="true">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
@@ -1388,7 +1385,7 @@
               <span class="body-s-bold trip-option__title">Meal</span>
               <span class="body-m-regular trip-option__desc">Standard meal</span>
             </div>
-            <button class="trip-option__cta" type="button" aria-label="Change meal">
+            <button class="trip-option__cta icon-btn icon-btn--md icon-btn--secondary" type="button" aria-label="Change meal">
               <div class="icon-btn-arrows" aria-hidden="true">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
@@ -1461,7 +1458,7 @@
         <div class="trip-image-block__content">
           <h2 class="headline-l image-block__title">Upgrade your Dubai journey</h2>
           <p class="image-block__body">More comfortable seats, a delightful meal and SkyPriority access</p>
-          <button class="image-block__cta" type="button" aria-label="Explore Cape Town">
+          <button class="image-block__cta icon-btn icon-btn--md icon-btn--alt" type="button" aria-label="Explore Cape Town">
             <div class="icon-btn-arrows" aria-hidden="true">
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
               <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
@@ -1561,7 +1558,7 @@
               </div>
               <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Ticket: 0742107844680</span>
             </div>
-            <button class="trip-option__cta" type="button" aria-label="View Chuck Bartowski">
+            <button class="trip-option__cta icon-btn icon-btn--md icon-btn--secondary" type="button" aria-label="View Chuck Bartowski">
               <div class="icon-btn-arrows" aria-hidden="true">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
@@ -1580,7 +1577,7 @@
               </div>
               <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Ticket: 0742107844526</span>
             </div>
-            <button class="trip-option__cta" type="button" aria-label="View John Smith">
+            <button class="trip-option__cta icon-btn icon-btn--md icon-btn--secondary" type="button" aria-label="View John Smith">
               <div class="icon-btn-arrows" aria-hidden="true">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
@@ -1599,7 +1596,7 @@
               </div>
               <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Ticket: 0742107844621</span>
             </div>
-            <button class="trip-option__cta" type="button" aria-label="View Daniel Young">
+            <button class="trip-option__cta icon-btn icon-btn--md icon-btn--secondary" type="button" aria-label="View Daniel Young">
               <div class="icon-btn-arrows" aria-hidden="true">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
@@ -1622,7 +1619,7 @@
               <span class="body-m-medium trip-option__title">View price details</span>
               <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Overview of all price specifications</span>
             </div>
-            <button class="trip-option__cta" type="button" aria-label="View price details">
+            <button class="trip-option__cta icon-btn icon-btn--md icon-btn--secondary" type="button" aria-label="View price details">
               <div class="icon-btn-arrows" aria-hidden="true">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
@@ -1636,7 +1633,7 @@
               <span class="body-m-medium trip-option__title">View ticket conditions</span>
               <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Conditions and terms for your tickets</span>
             </div>
-            <button class="trip-option__cta" type="button" aria-label="View ticket conditions">
+            <button class="trip-option__cta icon-btn icon-btn--md icon-btn--secondary" type="button" aria-label="View ticket conditions">
               <div class="icon-btn-arrows" aria-hidden="true">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
@@ -1650,7 +1647,7 @@
               <span class="body-m-medium trip-option__title">Request an invoice</span>
               <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Request and download an invoice</span>
             </div>
-            <button class="trip-option__cta" type="button" aria-label="Request an invoice">
+            <button class="trip-option__cta icon-btn icon-btn--md icon-btn--secondary" type="button" aria-label="Request an invoice">
               <div class="icon-btn-arrows" aria-hidden="true">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
@@ -1664,7 +1661,7 @@
               <span class="body-m-medium trip-option__title">Change my flight</span>
               <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Check if you're eligible for a flight change</span>
             </div>
-            <button class="trip-option__cta" type="button" aria-label="Change my flight">
+            <button class="trip-option__cta icon-btn icon-btn--md icon-btn--secondary" type="button" aria-label="Change my flight">
               <div class="icon-btn-arrows" aria-hidden="true">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
@@ -1678,7 +1675,7 @@
               <span class="body-m-medium trip-option__title">Request refund</span>
               <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Refunds are possible depending on your ticket conditions</span>
             </div>
-            <button class="trip-option__cta" type="button" aria-label="Request refund">
+            <button class="trip-option__cta icon-btn icon-btn--md icon-btn--secondary" type="button" aria-label="Request refund">
               <div class="icon-btn-arrows" aria-hidden="true">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
@@ -1692,7 +1689,7 @@
               <span class="body-m-medium trip-option__title">Request reimbursement</span>
               <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Would you like to file a claim for your trip?</span>
             </div>
-            <button class="trip-option__cta" type="button" aria-label="Request reimbursement">
+            <button class="trip-option__cta icon-btn icon-btn--md icon-btn--secondary" type="button" aria-label="Request reimbursement">
               <div class="icon-btn-arrows" aria-hidden="true">
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
                 <svg width="24" height="24" viewBox="0 0 24 24" fill="none"><path d="M14.3113 5.901L13.2649 6.97571L16.0334 9.6714C16.741 10.3603 17.2158 10.8249 17.5232 11.218C17.5317 11.2288 17.5399 11.2394 17.548 11.25L4.5 11.25V12.75L17.5479 12.75C17.5399 12.7605 17.5316 12.7711 17.5232 12.7819C17.2158 13.1749 16.741 13.6395 16.0334 14.3285L13.2649 17.0242L14.3113 18.0989L17.1177 15.3663C17.7776 14.7238 18.3272 14.1888 18.7047 13.706C19.1029 13.1969 19.3831 12.6569 19.3831 11.9999C19.3831 11.343 19.1029 10.8029 18.7047 10.2939C18.3272 9.81111 17.7776 9.27604 17.1177 8.63354L14.3113 5.901Z" fill="var(--blue-800)"/></svg>
@@ -1715,7 +1712,7 @@
               <span class="body-m-medium trip-option__title">View price details</span>
               <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Overview of all price specifications</span>
             </div>
-            <button class="trip-option__cta" type="button" aria-label="View price details">
+            <button class="trip-option__cta icon-btn icon-btn--md icon-btn--secondary" type="button" aria-label="View price details">
               <img src="assets/icons/icon-chevron-down.svg" aria-hidden="true" alt="" />
             </button>
           </li>
@@ -1732,7 +1729,7 @@
               <span class="body-m-medium trip-option__title">Request refund</span>
               <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Refunds are possible depending on your ticket conditions</span>
             </div>
-            <button class="trip-option__cta" type="button" aria-label="Request refund">
+            <button class="trip-option__cta icon-btn icon-btn--md icon-btn--secondary" type="button" aria-label="Request refund">
               <img src="assets/icons/icon-chevron-down.svg" aria-hidden="true" alt="" />
             </button>
           </li>
@@ -1743,7 +1740,7 @@
               <span class="body-m-medium trip-option__title">Request reimbursement</span>
               <span class="body-s-regular trip-option__desc" style="color:var(--text-alternative);">Would you like to file a claim for your trip?</span>
             </div>
-            <button class="trip-option__cta" type="button" aria-label="Request reimbursement">
+            <button class="trip-option__cta icon-btn icon-btn--md icon-btn--secondary" type="button" aria-label="Request reimbursement">
               <img src="assets/icons/icon-chevron-down.svg" aria-hidden="true" alt="" />
             </button>
           </li>
