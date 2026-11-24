@@ -402,57 +402,29 @@ Apply radius-xl on the bottom right corner.
 
 - Always use the typography token to set font size and weight — never set `font-size` or `font-weight` directly
 - Medium is the default size; apply `sm` or `lg` modifiers only when layout explicitly requires it
-- All button sizes use `--radius-16` (16px). This matches the form field radius so inputs and buttons align visually. The `--radius-pill` token is reserved for chips icon buttons — not for primary/secondary/tertiary action buttons.
+- All button sizes use `--radius-16` (16px). This matches the form field radius so inputs and buttons align visually. The `--radius-pill` token is reserved for chips and decorative pill elements — not for primary/secondary/tertiary action buttons.
 
 ## Icon button
 
-All icon buttons use `--radius-pill` for the radius.
+A fully rounded (pill) button that contains only an icon — no label. Used for destination/action CTAs within image cards and content containers.
 
-| Variant                    | Background                 | Icon colour      | Border                     | Usage                          |
-|----------------------------|----------------------------|------------------|----------------------------|--------------------------------|
-| Primary                    | Surface action primary     | text-contrast    | none                       | Main CTA's                     |
-| Alternative                | Surface action alternative | text-default     | none                       | Main CTA's with less emphasis  |
-| Secondary                  | none                       | text-active      | 1.5px solid border-active  | Secondary actions              |
-| Tertiary                   | Surface action tertiary    | text-active      | none                       | Tertiary actions               |
-| Ghost                      | none                       | text-active      | none                       | Tertiary actions               |
-
+| Property | Value |
+|---|---|
+| Shape | Fully rounded — `--radius-pill` |
+| Background | `--blue-200` (`#A5D5EF`) |
+| Icon colour | `--blue-800` (`#002746`) |
 
 ### Icon button sizes
 
 | Size | Button dimensions | Icon size |
 |---|---|---|
-| Large | 56 × 56 px | 24 × 24 px |
 | Medium (default) | 48 × 48 px | 24 × 24 px |
-| Small | 40 × 40 px | 24 × 24 px |
 
 - Always use `aria-label` on the button to describe the action (no visible label)
 - Icon must come from the `/assets/icons/` library; the default directional icon is `icon-arrow-right.svg`
 - Use `--radius-pill` (`border-radius: 9999px`) so the button is always perfectly circular regardless of size
-- Corner shape: round (overrides the global squircle — pill buttons must be perfectly circular)
-- No transform/scale on hover or press — only colour changes + the icon animation
-
-### Hover and active/press states
-
-| Variant     | Hover background                                          | Active/press background                                   |
-|-------------|-----------------------------------------------------------|-----------------------------------------------------------|
-| Primary     | `color-mix(in srgb, var(--blue-900) 4%, transparent)`    | `color-mix(in srgb, var(--blue-900) 8%, transparent)`    |
-| Alternative | `color-mix(in srgb, var(--blue-900) 4%, transparent)`    | `color-mix(in srgb, var(--blue-900) 8%, transparent)`    |
-| Secondary   | `color-mix(in srgb, var(--warm-grey-900) 4%, transparent)` | `color-mix(in srgb, var(--warm-grey-900) 8%, transparent)` |
-| Tertiary    | `color-mix(in srgb, var(--warm-grey-900) 4%, transparent)` | `color-mix(in srgb, var(--warm-grey-900) 8%, transparent)` |
-| Ghost       | `color-mix(in srgb, var(--warm-grey-900) 4%, transparent)` | `color-mix(in srgb, var(--warm-grey-900) 8%, transparent)` |
-
-Hover states are gated behind `@media (hover: hover) and (pointer: fine)`. The icon animation (dual-arrow entrance) is also triggered on hover — see below.
-
-### Icon animation
-
-All icon buttons use a dual-arrow entrance animation. Two identical arrow SVGs are stacked inside an `.icon-btn-arrows` wrapper; on hover the first exits to the right and the second enters from the left, creating a continuous looping feel.
-
-- **Structure:** `.icon-btn-arrows` contains two identical `<svg>` elements
-- **Default:** first arrow centred (`translateX(0) scale(1)`), second arrow off-screen left (`translateX(-48px) scale(0.7)`)
-- **On hover:** first arrow exits right (`translateX(48px) scale(0.7)`), second arrow enters centre (`translateX(0) scale(1)`)
-- **Transition:** `transform 0.75s var(--ease-expo)` — applied **only on hover**, not on default state. This means the animation plays in smoothly on hover and snaps back instantly when the mouse leaves (no reverse animation)
-- **Trigger:** always on the **parent container** (the row, card, or block), not the button itself
-- **Reduced motion:** transition is removed entirely (`transition: none`) when `prefers-reduced-motion: reduce` is set
+- Corner shape: squircle (inherited from global rule)
+- Hover state: `scale(1.08)`; active/press state: `scale(0.96)` — both on `transform` only
 
 ---
 
